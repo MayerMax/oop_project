@@ -10,7 +10,8 @@ namespace oopProject
     {
         static void Main(string[] args)
         {
-            MongDbHolder.ReadCsv("FullData.csv");
+            var holder = new MongDbHolder("FullData.csv", "Pictures");
+            holder.CreateFromCSV();
             Console.ReadKey();
         }
     }
