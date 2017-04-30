@@ -18,34 +18,29 @@ namespace oopProject
         public MongDbHolder(string sourcePath, string picturesPath) {
             this.sourcePath = sourcePath;
             this.picturesPath = picturesPath;
-
-        }
-        private Dictionary<string, int> CreateHeaderFromArray(string[] arrayHeader) {
-            var dict = new Dictionary<string, int>();
-            for (int i = 0; i < arrayHeader.Length; i++)
-                dict[arrayHeader[i]] = i;
-            return dict;
         }
 
-        public void CreateFromCSV() {
-            var client = new MongoClient();
-            var database = client.GetDatabase("PlayersCollection");
+        public async void CreateFromCSV() {
+            string connectionString = "mongodb://localhost:27017";
+            var client = new MongoClient(connectionString);
+            var database = client.GetDatabase("Players");
             var collection = database.GetCollection<Dictionary<string, string>>("playerAttributes");
 
             using (var sr = new StreamReader(sourcePath)) {
                 var parser = new CsvParser(sr);
-                var withPhotos = photosNames(picturesPath, "PNG");
+                var withPhotos = photosNames(picturesPath, ".png");
                 var header = parser.Read().ToList();
                 var namePos = header.IndexOf("Name");
                 while (true) {
                     var info = parser.Read();
                     if (info == null)
                         break;
+                    
                     if (!withPhotos.Contains(info[namePos]))
                         continue;
                     var attributes = header.Zip(info, (k, v) => new { Key = k, Value = v })
-                                           .ToDictionary(x => x.Key, x => x.Value);
-                    collection.InsertOne(attributes);
+                                           .ToDictionary(x => x.Key, x => x.Value);                
+                    await collection.InsertOneAsync(attributes);
                 } 
             }   
         }
@@ -55,7 +50,7 @@ namespace oopProject
             DirectoryInfo dirInfo = new DirectoryInfo(path);
             return new HashSet<string>(dirInfo.GetFiles()
                 .Where(file => file.Extension.Equals(fileExtension))
-                .Select(file => file.Name));
+                .Select(file => Path.GetFileNameWithoutExtension(file.Name)));
              
         }
 
