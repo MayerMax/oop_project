@@ -21,7 +21,7 @@ namespace oopProject
         }
 
         public async void CreateFromCSV() {
-            string connectionString = "mongodb://localhost:27017";
+            var connectionString = "mongodb://localhost:27017";
             var client = new MongoClient(connectionString);
             var database = client.GetDatabase("Players");
             var collection = database.GetCollection<Dictionary<string, string>>("playerAttributes");
