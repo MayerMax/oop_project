@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace oopProject.Game
+namespace oopProject
 {
     abstract class Card<T> where T: PlayerInfo
     {
@@ -21,10 +21,10 @@ namespace oopProject.Game
         }
 
 
-        public abstract int EvaluateGeneralRank();
-        public abstract int EvaluateAttackRank();
-        public abstract int EvaluateDefendRank();
-        public abstract int EvaluateBalanceRank();
+        protected abstract int EvaluateGeneralRank();
+        protected abstract int EvaluateAttackRank();
+        protected abstract int EvaluateDefendRank();
+        protected abstract int EvaluateBalanceRank();
 
         public abstract IEnumerable<string> GeneralDescription();
 

@@ -32,6 +32,7 @@ namespace oopProject
             try {
                 return int.Parse(this[attribute]);
             }
+
             catch (FormatException) {
                 throw new ArgumentException("Expected numeric string as attribute value");
             }
