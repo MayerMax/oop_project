@@ -10,11 +10,12 @@ namespace oopProject
     {
         static void Main(string[] args)
         {
-            var holder = new MongDbHolder("FullData.csv", "Pictures");
-            holder.CreateFromCSV();
-            Console.ReadKey();
-
-
+            //var holder = new MongDbHolder("FullData.csv", "Pictures");
+            //holder.CreateFromCSV();
+            //Console.ReadKey();
+            var f = new FootballDatabase(new MongoDatabase());
+            var d = f.GetCardOfType(ZoneType.GK);
+            var c = 1;
         }
     }
 }

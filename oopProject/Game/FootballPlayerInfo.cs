@@ -16,13 +16,13 @@ namespace oopProject
 
         public readonly List<string> MID = new List<string> {
             "Skill_Moves","Ball_Control", "Dribbling",
-            "Reactions", "Interception", "Vision",
+            "Reactions", "Interceptions", "Vision",
             "Composure", "Crossing", "Short_Pass", "Long_Pass"};
 
         public readonly List<string> ATT = new List<string>() {
             "Skill_Moves","Ball_Control", "Dribbling",
             "Composure", "Heading", "Finishing", "Long_Shots",
-            "Penalty", "Shot_Power"};
+            "Penalties", "Shot_Power"};
 
         public readonly List<string> GENERAL = new List<string>() {
             "Stamina", "Balance", "Agility", "Strength"};

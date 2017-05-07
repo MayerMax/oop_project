@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace oopProject.Game
+namespace oopProject
 {
     enum ZoneType
     {
-        GK, DEF, MID, ATT
+        NONE, GK, DEF, MID, ATT
     }
 }

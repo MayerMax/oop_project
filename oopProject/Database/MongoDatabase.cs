@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    public class MongoDatabase : IDatabase
+    class MongoDatabase : IDatabase
     {
         private IMongoCollection<BsonDocument> collection;
 
@@ -25,19 +25,35 @@ namespace oopProject
             var document = collection.AsQueryable()
                                      .Where(attrs => attrs["Name"].Equals(name))
                                      .First();
-            document.Remove("_id");
-            var attributes = document.ToDictionary(elem => elem.Name, elem => elem.Value.AsString);
+            var attributes = BsonDocToDictionary(document);
             return new FootballPlayerInfo(attributes);
         }
 
-        public IEnumerable<PlayerInfo> WithEqualAttribute(string attribute)
+        public PlayerInfo GetPlayerOfType(params string[] types)
         {
-            var a = collection.Aggregate()
-                              .Group(new BsonDocument { { "_id", "$Club" } })
-                              .ToList();
-            var d = collection.Find(doc => doc[attribute]);
-            var b = new Dictionary<string, string>();
-            return new List<PlayerInfo>() { new FootballPlayerInfo(b) };
+            var bson_types = types.Select(type => (BsonValue)type);
+            var query = collection.AsQueryable()
+                                  .Where(attrs => bson_types.Contains(attrs["Club_Position"]))
+                                  .Sample(1)
+                                  .First();
+            var player = collection.AsQueryable()
+                                    .Where(attrs => bson_types.Contains(attrs["Club_Position"]))
+                                    .Sample(1)
+                                    .First();
+            var attributes = BsonDocToDictionary(player);
+            return new FootballPlayerInfo(attributes);
+        }
+
+        public IEnumerable<PlayerInfo> GetPlayers(int count)
+        {
+            foreach (var document in collection.AsQueryable().Sample(count))
+                yield return new FootballPlayerInfo(BsonDocToDictionary(document));
+        }
+
+        private Dictionary<string, string> BsonDocToDictionary(BsonDocument document)
+        {
+            document.Remove("_id");
+            return document.ToDictionary(elem => elem.Name, elem => elem.Value.AsString);
         }
     }
 }

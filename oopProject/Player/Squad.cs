@@ -1,4 +1,4 @@
-﻿using oopProject.Game;
+﻿using oopProject;
 using System;
 using System.Collections.Generic;
 using System.Linq;

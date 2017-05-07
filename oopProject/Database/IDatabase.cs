@@ -5,8 +5,10 @@ using System.Linq;
 namespace oopProject
 {
     interface IDatabase
-    {
+    { 
         PlayerInfo GetPlayerInfo(string name);
-        IEnumerable<PlayerInfo> WithEqualAttribute(string attribute);
+        PlayerInfo GetPlayerOfType(params string[] types);
+        IEnumerable<PlayerInfo> GetPlayers(int count);
+        //IEnumerable<PlayerInfo> WithEqualAttribute(string attribute);
     }
 }

@@ -1,4 +1,4 @@
-﻿using oopProject.Game;
+﻿using oopProject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,7 +68,7 @@ namespace oopProject
         }
 
         private ZoneType GetCardPrefferedZone() {
-            var positionDescription = playerInfo["Position"];
+            var positionDescription = playerInfo["Club_Position"];
             /// here we need to put next logic : how to get ZoneType base on String description of player position
             /// This is where Util folder might be useful - put code with method in this folder
             throw new NotImplementedException("Not Implemented");

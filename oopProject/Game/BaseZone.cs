@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace oopProject.Game
+namespace oopProject
 {   
     // this class describes container for a squad line 
     class BaseZone
