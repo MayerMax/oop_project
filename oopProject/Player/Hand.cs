@@ -11,7 +11,7 @@ namespace oopProject
         public static int MaxHandSize;
         private List<FootballCard> hand;
         private Squad squad;
-        public int HandSize { get; private set; }
+        public int HandSize { get { return hand.Count; } private set { } }
 
         public Hand(List<FootballCard> starterPack, Squad playerFormation) {
             if (starterPack.Count > MaxHandSize)
@@ -34,12 +34,20 @@ namespace oopProject
             return false;
         }
 
-        public bool Swap(FootballCard newCard, FootballCard oldCard) {
-            if (!hand.Contains(oldCard))
-                throw new InvalidOperationException("There is no such card that you want to swap");
-            var oldCardIndex = hand.IndexOf(oldCard);
-            hand[oldCardIndex] = newCard;
-            return true;
+        public void InsertCard(FootballCard card) {
+            hand.Add(card);
+
+        }
+
+        public void SortCardsByCriteria(string attributeCriteria) {
+            hand.Sort();
+            // implement Icomparer ? 
+        }
+
+        public IEnumerable<FootballCard> GetCardsByRank(int count) {
+            if (count > HandSize)
+                count = HandSize -1;
+            return hand.OrderByDescending(card => card.Rank).Take(count);
         }
     }
 }
