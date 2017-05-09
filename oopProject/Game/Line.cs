@@ -21,6 +21,15 @@ namespace oopProject
 
         }
 
+        public void ReplaceCard(FootballCard oldCard, FootballCard newCard ) {
+            int index = cards.IndexOf(oldCard);
+            cards[index] = newCard;
+        }
+
+        public void TrashCard(FootballCard card) {
+            cards.Remove(card);
+            size--;
+        }
         public int ZonePower() {
             var totalAvgDef = cards.Select(f => f.Defend).Average();
             var totalAvgMid = cards.Select(f => f.Midfield).Average();

@@ -13,18 +13,15 @@ namespace oopProject
         public int ZonePower { get { return line.ZonePower(); } }
 
 
-        public Zone(int size, ZoneType type, List<FootballCard> cards, bool hasBall = false) : base(size, type)
+        public Zone(ZoneType type, List<FootballCard> cards, bool hasBall = false) : base(cards.Count, type)
         {
             HasBall = hasBall;
             line = new Line(cards, type, HasBall);
 
         }
 
-
-        public static Zone Create(int size, ZoneType type, List<FootballCard> cards) {
-
-            return new Zone(size, type, cards);
+        public void ReplaceCard(FootballCard oldCard, FootballCard newCard) {
+            line.ReplaceCard(oldCard, newCard);
         }
-
     }
 }

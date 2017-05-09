@@ -13,35 +13,46 @@ namespace oopProject
         public static int TOTAL_FULL_AMOUNT = 4;
         public static int TOTAL_SHORT_AMOUNT = 3;
 
-        public static int ZONE_LIMIT = 4;
+        public static int ZONE_LIMIT = 5;
         private Dictionary<ZoneType, Zone> squad;
+        private Hand hand;
         
         public string SquadName { get; private set; }
-        public Squad(string name, string givenForamtion) {
+
+        public Squad(string name, FootballCard keeper, Dictionary<ZoneType, List<FootballCard>> team, Hand subs) {
             SquadName = name;
-            squad = FillSquadBeforeStart(givenForamtion);
+            hand = subs;
+
+            squad.Add(ZoneType.GK, new Zone(ZoneType.GK, team[ZoneType.GK]));
+            squad.Add(ZoneType.DEF, new Zone(ZoneType.DEF, team[ZoneType.DEF]));
+            squad.Add(ZoneType.MID, new Zone(ZoneType.MID, team[ZoneType.MID]));
+            squad.Add(ZoneType.ATT, new Zone(ZoneType.ATT, team[ZoneType.ATT]));
         }
 
-        private Dictionary<ZoneType, Zone> FillSquadBeforeStart(string givenFormation) {
-            int[] eachzoneSize = givenFormation.Split('-').Select(elem => int.Parse(elem)).ToArray();
-            if (eachzoneSize.Length != TOTAL_FULL_AMOUNT || eachzoneSize.Length != TOTAL_SHORT_AMOUNT)
-                throw new ArgumentException("Not a football squad");
+        public void ReplaceCardWithHand(ZoneType type,FootballCard oldCard, FootballCard newCard) {
+            var zone = squad[type];
+            zone.ReplaceCard(oldCard, newCard);
+            hand.InsertCard(oldCard);
+        }
+        public void TrashCard(ZoneType type, FootballCard card) {
+            squad[type].TrashCard(card);
+        }
+
+        // Validates that formation is correct, expected "4-5-1"
+        public static bool ValidateSquad(string formation) {
+            int[] eachzoneSize = formation.Split('-').Select(elem => int.Parse(elem)).ToArray();
+            if (eachzoneSize.Length != TOTAL_SHORT_AMOUNT)
+                return false;
+
             int totalSum = eachzoneSize.Sum();
-            if (totalSum != SQUAD_SIZE || totalSum != SQUAD_SIZE -1)
-                throw new ArgumentException("Not a football squad");
+            if (totalSum != SQUAD_SIZE - 1)
+                return false;
 
             foreach (var count in eachzoneSize)
-                if (!(count < ZONE_LIMIT))
-                    throw new ArgumentException("Incorect amount of players in zone");
-
-            // here we need only to write next code
-            //squad.Add(ZoneType.GK, DB.GetCardOfType()); to fill goalkeepeer
-            //squad.Add(ZoneType.DEF, DB.GetFewCards(eachzoneSize[(int) ZoneType.DEF]));
-            //.. and so on
-
-            throw new NotImplementedException(); 
+                if (count > ZONE_LIMIT)
+                    return false;
+            return true;
         }
-
-
+           
     }
 }
