@@ -18,16 +18,22 @@ namespace oopProject
         public readonly int Midfield;
 
         public readonly ZoneType PreferredZone;
-        public ZoneType CurrentZone { get; private set; }
+        public ZoneType CurrentZone { get; set; }
+
+        public override string ToString() {
+            var list = GeneralDescription().ToList();
+            return playerInfo["Name"] + " " + string.Join(" ", list.Select(value => value + " " + playerInfo[value])) + " " + PreferredZone.ToString();
+            
+        }
 
         public FootballCard(FootballPlayerInfo playerInfo, ZoneType curZone) : base(playerInfo, MAXCHAR) {
             evaluateFunction = AverageThroughValues;
-            Rank = EvaluateGeneralRank();
             Defend = EvaluateDefendRank();
             Midfield = EvaluateBalanceRank();
             Attack = EvaluateAttackRank();
             CurrentZone = curZone;
-            PreferredZone = GetCardPrefferedZone(); /// TODO    
+            PreferredZone = curZone;
+            Rank = EvaluateGeneralRank();
         }
 
         // probably generalize idea of evaluation functions by creating for each single class, where intrinsic logic will be added.
@@ -67,11 +73,6 @@ namespace oopProject
             return (int) list.Select(el => playerInfo.ParseAttribute(el)).Average();
         }
 
-        private ZoneType GetCardPrefferedZone() {
-            var positionDescription = playerInfo["Club_Position"];
-            /// here we need to put next logic : how to get ZoneType base on String description of player position
-            /// This is where Util folder might be useful - put code with method in this folder
-            throw new NotImplementedException("Not Implemented");
-        }
+        
     }
 }
