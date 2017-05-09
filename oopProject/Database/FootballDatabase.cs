@@ -35,8 +35,9 @@ namespace oopProject
         {
             foreach (var playerInfo in database.GetPlayers(count))
             {
-                var correctZone = reversedTypes[playerInfo["Club_Position"]];
-                yield return new FootballCard((FootballPlayerInfo)playerInfo, correctZone);
+                var availableZones = playerInfo["Preffered_Position"];
+                var mostPreferred = reversedTypes[availableZones.Split('/').ToList()[0]];
+                yield return new FootballCard((FootballPlayerInfo)playerInfo, mostPreferred);
             }
         }
 
