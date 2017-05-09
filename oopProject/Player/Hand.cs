@@ -8,23 +8,15 @@ namespace oopProject
 {
     class Hand
     {
-        public static int MaxHandSize;
         private List<FootballCard> hand;
-        private Squad squad;
         public int HandSize { get { return hand.Count; } private set { } }
 
-        public Hand(List<FootballCard> starterPack, Squad playerFormation) {
-            if (starterPack.Count > MaxHandSize)
-                throw new InvalidOperationException("Too many players");
+        public Hand(List<FootballCard> starterPack) {
             hand = starterPack;
-            HandSize = hand.Count;
-            squad = playerFormation;
+            HandSize = hand.Count;   
         }
 
-        public bool RemoveToSquad(FootballCard card) {
-            return false;
-        }
-
+        
         public bool Remove(FootballCard card) {
             if (hand.Contains(card)) {
                 hand.Remove(card);

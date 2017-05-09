@@ -20,8 +20,12 @@ namespace oopProject
 
         }
 
-        public void ReplaceCard(FootballCard oldCard, FootballCard newCard) {
-            line.ReplaceCard(oldCard, newCard);
+        public void RemoveCard(FootballCard card) {
+            line.Remove(card);
+        }
+
+        public void InsertCard(FootballCard card) {
+            line.Insert(card);
         }
     }
 }

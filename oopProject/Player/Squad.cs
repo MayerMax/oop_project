@@ -15,27 +15,26 @@ namespace oopProject
 
         public static int ZONE_LIMIT = 5;
         private Dictionary<ZoneType, Zone> squad;
-        private Hand hand;
+        
         
         public string SquadName { get; private set; }
 
-        public Squad(string name, FootballCard keeper, Dictionary<ZoneType, List<FootballCard>> team, Hand subs) {
+        public Squad(string name, FootballCard keeper, Dictionary<ZoneType, List<FootballCard>> team) {
             SquadName = name;
-            hand = subs;
-
             squad.Add(ZoneType.GK, new Zone(ZoneType.GK, team[ZoneType.GK]));
             squad.Add(ZoneType.DEF, new Zone(ZoneType.DEF, team[ZoneType.DEF]));
             squad.Add(ZoneType.MID, new Zone(ZoneType.MID, team[ZoneType.MID]));
             squad.Add(ZoneType.ATT, new Zone(ZoneType.ATT, team[ZoneType.ATT]));
         }
 
-        public void ReplaceCardWithHand(ZoneType type,FootballCard oldCard, FootballCard newCard) {
+        public void Remove(ZoneType type,FootballCard oldCard) {
             var zone = squad[type];
-            zone.ReplaceCard(oldCard, newCard);
-            hand.InsertCard(oldCard);
+            zone.RemoveCard(oldCard);  
         }
-        public void TrashCard(ZoneType type, FootballCard card) {
-            squad[type].TrashCard(card);
+
+        public void Insert(ZoneType type, FootballCard card) {
+            var zone = squad[type];
+            zone.InsertCard(card);
         }
 
         // Validates that formation is correct, expected "4-5-1"
