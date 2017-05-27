@@ -11,9 +11,10 @@ namespace oopProject
         public readonly string Name;
         public readonly string Formation;
 
-        private Squad sqad;
+        private Squad squad;
         private Hand hand;
-        public Team team;
+        private Dictionary<Bonus, int> bonusesCount;
+        public Team Team { get; set; }
 
         public Player(FootballDatabase db, string name, string formation) {
             if (!Squad.ValidateSquad(formation))
@@ -22,8 +23,26 @@ namespace oopProject
             Formation = formation;
             var filledSquad = FillSquadWithRandom(formation, db);
             hand = new Hand(new List<FootballCard> { }); // Left it free for now
-            sqad = new Squad(name, db.GetCardOfType(ZoneType.GK), filledSquad);
-            team = new Team(sqad, hand);
+            squad = new Squad(name, db.GetCardOfType(ZoneType.GK), filledSquad);
+            Team = new Team(squad, hand);
+        }
+
+        public bool HasBonus(Bonus bonus) => bonusesCount.ContainsKey(bonus);
+
+        public void ReceiveBonus(Bonus bonus)
+        {
+            if (bonusesCount.ContainsKey(bonus))
+                bonusesCount[bonus]++;
+            else
+                bonusesCount[bonus] = 1;
+        }
+
+        public void RemoveUsedBonus(Bonus bonus)
+        {
+            if (!bonusesCount.ContainsKey(bonus))
+                throw new InvalidOperationException(
+                    string.Format("{0} hasn't been received by the player yet", bonus.Name));
+            bonusesCount[bonus]--;
         }
 
         private Dictionary<ZoneType, List<FootballCard>> FillSquadWithRandom(string formation, FootballDatabase db) {
