@@ -16,12 +16,12 @@ namespace oopProject
             Hand = subs;
         }
 
-        public void SubstitutionFromHandToSquad(ZoneType type, FootballCard oldCard, FootballCard newCard) {
+        public void SubstitutionFromHandToSquad(ZoneType type, int oldCardPosition, 
+                                                FootballCard newCard, int newCardPosition) {
             Hand.Remove(newCard);
-            Squad.Remove(type, oldCard);
-            Squad.Insert(type, newCard);
+            var oldCard = Squad.Remove(type, oldCardPosition);
+            Squad.Insert(type, newCard, newCardPosition);
             Hand.InsertCard(oldCard);
         }
-
     }
 }

@@ -18,6 +18,7 @@ namespace oopProject
         
         
         public string SquadName { get; private set; }
+        public bool Any { get { return squad.Values.Any(); } }
 
         public Squad(string name, FootballCard keeper, Dictionary<ZoneType, List<FootballCard>> team) {
             SquadName = name;
@@ -27,14 +28,14 @@ namespace oopProject
             squad.Add(ZoneType.ATT, new Zone(ZoneType.ATT, team[ZoneType.ATT]));
         }
 
-        public void Remove(ZoneType type,FootballCard oldCard) {
+        public FootballCard Remove(ZoneType type, int cardIndex) {
             var zone = squad[type];
-            zone.RemoveCard(oldCard);  
+            return zone.RemoveCard(cardIndex);  
         }
 
-        public void Insert(ZoneType type, FootballCard card) {
+        public void Insert(ZoneType type, FootballCard card, int position) {
             var zone = squad[type];
-            zone.InsertCard(card);
+            zone.InsertCard(card, position);
         }
 
         // Validates that formation is correct, expected "4-5-1"

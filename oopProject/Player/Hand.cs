@@ -9,18 +9,17 @@ namespace oopProject
     class Hand
     {
         private List<FootballCard> hand;
-        public int HandSize { get { return hand.Count; } private set { } }
+        public int HandSize { get { return hand.Count; }}
+        public bool Any { get { return hand.Any(); } }
 
         public Hand(List<FootballCard> starterPack) {
             hand = starterPack;
-            HandSize = hand.Count;   
         }
 
         
         public bool Remove(FootballCard card) {
             if (hand.Contains(card)) {
                 hand.Remove(card);
-                HandSize = hand.Count;
                 return true;
             }
             return false;
@@ -28,7 +27,6 @@ namespace oopProject
 
         public void InsertCard(FootballCard card) {
             hand.Add(card);
-
         }
 
         public void SortCardsByCriteria(string attributeCriteria) {

@@ -6,26 +6,21 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class SwapCard : IAction
+    class SwapCard : IAction<SwapParameters>
     {
         private Team team;
         public SwapCard(Team team) {
             this.team = team;
         }
 
-        public void Execute()
+        public void Execute(SwapParameters parameters)
         {
-            throw new NotImplementedException();
+            team.SubstitutionFromHandToSquad(parameters.OldCardZone,
+                parameters.OldCardPosition, parameters.NewCard, parameters.NewCardPosition);
         }
 
-        public string Explanation()
-        {
-            throw new NotImplementedException();
-        }
+        public string Explanation => "Swap cards";
 
-        public bool IsAvailable()
-        {
-            throw new NotImplementedException();
-        }
+        public bool IsAvailable => team.Hand.Any && team.Squad.Any;
     }
 }
