@@ -13,9 +13,9 @@ namespace oopProject
         private Func<List<string>, int> evaluateFunction;
 
         public int Rank { get; private set; }
-        public readonly int Defend;
-        public readonly int Attack;
-        public readonly int Midfield;
+        public int Defend { get; set; }
+        public int Attack { get; set; }
+        public int Midfield { get; set; }
 
         public readonly ZoneType PreferredZone;
         public ZoneType CurrentZone { get; set; }
