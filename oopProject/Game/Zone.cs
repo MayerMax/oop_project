@@ -6,26 +6,62 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class Zone : BaseZone
+    class Zone : BaseZone, IGameElement
     {
         public bool HasBall { get; private set; } // TODO
-        private Line line;
-        public int ZonePower { get { return line.ZonePower(); } }
+        private List<Position> cards;
+        public int ZonePower { get { return CalculateZonePower(); } }
 
 
         public Zone(ZoneType type, List<FootballCard> cards, bool hasBall = false) : base(cards.Count, type)
         {
             HasBall = hasBall;
-            line = new Line(cards, type, HasBall);
-
+            this.cards = FillWithCards(cards);
         }
 
-        public void RemoveCard(FootballCard card) {
-            line.Remove(card);
+        public Position this[int index]
+        {
+            get
+            {
+                if (index < 0 || index >= cards.Count)
+                    throw new IndexOutOfRangeException();
+                return cards[index];
+            }
         }
 
-        public void InsertCard(FootballCard card) {
-            line.Insert(card);
+        public IEnumerable<FootballCard> GetCards()
+        {
+            foreach (var card in cards.Select(p => p.Card).Where(c => c != null))
+                yield return card;
+        }
+
+        public FootballCard RemoveCard(int cardIndex) {
+            var card = cards[cardIndex].Card;
+            cards[cardIndex].ReleasePosition();
+            return card;
+        }
+
+        public void InsertCard(FootballCard card, int position) {
+            if (!cards[position].IsFree)
+                throw new InvalidOperationException("This position is not available");
+            cards[position].Card = card;
+        }
+
+        private int CalculateZonePower()
+        {
+            var totalAvgDef = cards.Select(f => f.Card.Defend).Average();
+            var totalAvgMid = cards.Select(f => f.Card.Midfield).Average();
+            var totalAvgAtt = cards.Select(f => f.Card.Attack).Average();
+            var averageRank = cards.Select(f => f.Card.Rank).Average();
+            return (int)(averageRank * Math.Min(totalAvgDef, Math.Min(totalAvgAtt, totalAvgMid)));
+        }
+
+        private List<Position> FillWithCards(List<FootballCard> cards)
+        {
+            var places = new List<Position>(cards.Count);
+            for (int i = 0; i < cards.Count; i++)
+                places[i] = new Position(i, cards[i]);
+            return places;
         }
     }
 }
