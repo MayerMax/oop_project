@@ -4,16 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace oopProject.Actions
+namespace oopProject
 {
-    interface BaseAction
+    interface IAction<T> where T: IParameters
     {
-        bool IsAvailable();
-
-        void Execute();
-
-        string Explanation();
-
-
+        bool IsAvailable { get; }
+        string Explanation { get; }
+        void Execute(T parameters);
     }
 }
