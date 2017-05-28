@@ -27,7 +27,7 @@ namespace oopProject
             Team = new Team(squad, hand);
         }
 
-        public bool HasBonus(Bonus bonus) => bonusesCount.ContainsKey(bonus);
+        public bool HasBonuses => bonusesCount.Any();
 
         public void ReceiveBonus(Bonus bonus)
         {
@@ -41,7 +41,8 @@ namespace oopProject
         {
             if (!bonusesCount.ContainsKey(bonus))
                 throw new InvalidOperationException(
-                    string.Format("{0} hasn't been received by the player yet", bonus.Name));
+                    string.Format("Can't remove {0}, it hasn't been received by the player yet", 
+                                  bonus.Name));
             bonusesCount[bonus]--;
         }
 

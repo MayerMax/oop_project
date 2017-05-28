@@ -4,9 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace oop_project.Actions.Bonuses
+namespace oopProject
 {
-    class AttackBonus
+    class AttackBonus : Bonus
     {
+        public override void Apply(FootballCard card) => card.Attack++;
+
+        public override string Name => "AttackBonus";
     }
 }
