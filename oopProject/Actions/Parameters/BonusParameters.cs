@@ -4,9 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace oop_project.Actions.Parameters
+namespace oopProject
 {
-    class BonusParameters
+    class BonusParameters : IParameters
     {
+        public readonly Bonus Bonus;
+        public readonly FootballCard Card;
+
+        public BonusParameters(Bonus bonus, FootballCard card)
+        {
+            Bonus = bonus;
+            Card = card;
+        }
     }
 }

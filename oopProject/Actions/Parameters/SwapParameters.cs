@@ -11,12 +11,15 @@ namespace oopProject
         public readonly int OldCardPosition;
         public readonly int NewCardPosition;
         public readonly FootballCard NewCard;
+        public readonly ZoneType OldCardZone;
 
-        public SwapParameters(int oldCardPosition, FootballCard newCard, int newCardPosition)
+        public SwapParameters(int oldCardPosition, ZoneType oldCardZone,
+                              FootballCard newCard, int newCardPosition)
         {
             OldCardPosition = oldCardPosition;
             NewCardPosition = newCardPosition;
             NewCard = newCard;
+            OldCardZone = oldCardZone;
         }
     }
 }

@@ -9,6 +9,7 @@ namespace oopProject
     class SwapCard : IAction<SwapParameters>
     {
         private Team team;
+
         public SwapCard(Team team) {
             this.team = team;
         }
