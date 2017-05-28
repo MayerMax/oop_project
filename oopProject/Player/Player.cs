@@ -11,8 +11,7 @@ namespace oopProject
         public readonly string Name;
         public readonly string Formation;
 
-        private Squad squad;
-        private Hand hand;
+        
         private Dictionary<Bonus, int> bonusesCount;
         public Team Team { get; set; }
 
@@ -22,8 +21,8 @@ namespace oopProject
             Name = name;
             Formation = formation;
             var filledSquad = FillSquadWithRandom(formation, db);
-            hand = new Hand(new List<FootballCard> { }); // Left it free for now
-            squad = new Squad(name, db.GetCardOfType(ZoneType.GK), filledSquad);
+            var hand = new Hand(db.GetCards(10).ToList()); // Left it free for now
+            var squad = new Squad(name, db.GetCardOfType(ZoneType.GK), filledSquad);
             Team = new Team(squad, hand);
         }
 
@@ -46,9 +45,12 @@ namespace oopProject
             bonusesCount[bonus]--;
         }
 
+        public string PrintTeam() {
+            return $"Player {Name}\nSquad is:\n{Team.Squad.Print()}";
+        } 
+
         private Dictionary<ZoneType, List<FootballCard>> FillSquadWithRandom(string formation, FootballDatabase db) {
             int[] eachzoneSize = formation.Split('-').Select(elem => int.Parse(elem)).ToArray();
-
             var resultFiller = new Dictionary<ZoneType, List<FootballCard>>();
             resultFiller.Add(ZoneType.DEF, db.GetCards(eachzoneSize[0]).ToList());
             resultFiller.Add(ZoneType.MID, db.GetCards(eachzoneSize[1]).ToList());

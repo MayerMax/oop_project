@@ -22,7 +22,9 @@ namespace oopProject
 
         public Squad(string name, FootballCard keeper, Dictionary<ZoneType, List<FootballCard>> team) {
             SquadName = name;
-            squad.Add(ZoneType.GK, new Zone(ZoneType.GK, team[ZoneType.GK]));
+            squad = new Dictionary<ZoneType, Zone>();
+
+            squad.Add(ZoneType.GK, new Zone(ZoneType.GK, new List<FootballCard> { keeper}));
             squad.Add(ZoneType.DEF, new Zone(ZoneType.DEF, team[ZoneType.DEF]));
             squad.Add(ZoneType.MID, new Zone(ZoneType.MID, team[ZoneType.MID]));
             squad.Add(ZoneType.ATT, new Zone(ZoneType.ATT, team[ZoneType.ATT]));
@@ -36,6 +38,13 @@ namespace oopProject
         public void Insert(ZoneType type, FootballCard card, int position) {
             var zone = squad[type];
             zone.InsertCard(card, position);
+        }
+
+        public string Print() {
+            StringBuilder sb = new StringBuilder();
+            foreach (var zone in squad)
+                sb.Append($"{(int)zone.Key}. {zone.Key} - {zone.Value.Print()}\n");
+            return sb.ToString();
         }
 
         // Validates that formation is correct, expected "4-5-1"

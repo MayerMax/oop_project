@@ -55,12 +55,21 @@ namespace oopProject
             var averageRank = cards.Select(f => f.Card.Rank).Average();
             return (int)(averageRank * Math.Min(totalAvgDef, Math.Min(totalAvgAtt, totalAvgMid)));
         }
+        public string Print() {
+            var names = 
+                cards.Where(pos => !pos.IsFree)
+                .Select(pos =>$"{pos.Number +1}.{pos.Card.cardName}");
+
+            return string.Join("--", names);
+
+        }
 
         private List<Position> FillWithCards(List<FootballCard> cards)
         {
-            var places = new List<Position>(cards.Count);
+
+            var places = new List<Position>(cards.Count+1);
             for (int i = 0; i < cards.Count; i++)
-                places[i] = new Position(i, cards[i]);
+               places.Insert(i, new Position(i, cards[i]));
             return places;
         }
     }
