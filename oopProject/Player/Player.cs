@@ -11,11 +11,10 @@ namespace oopProject
         public readonly string Name;
         public readonly string Formation;
 
-        
-        private Dictionary<Bonus, int> bonusesCount;
         public Team Team { get; set; }
+        public BonusHolder BonusHolder { get; set; }
 
-        public Player(FootballDatabase db, string name, string formation) {
+        public Player(FootballDatabase db, string name, string formation){
             if (!Squad.ValidateSquad(formation))
                 throw new ArgumentException("Incorrect squad given!");
             Name = name;
@@ -24,25 +23,7 @@ namespace oopProject
             var hand = new Hand(db.GetCards(10).ToList()); // Left it free for now
             var squad = new Squad(name, db.GetCardOfType(ZoneType.GK), filledSquad);
             Team = new Team(squad, hand);
-        }
-
-        public bool HasBonuses => bonusesCount.Any();
-
-        public void ReceiveBonus(Bonus bonus)
-        {
-            if (bonusesCount.ContainsKey(bonus))
-                bonusesCount[bonus]++;
-            else
-                bonusesCount[bonus] = 1;
-        }
-
-        public void RemoveUsedBonus(Bonus bonus)
-        {
-            if (!bonusesCount.ContainsKey(bonus))
-                throw new InvalidOperationException(
-                    string.Format("Can't remove {0}, it hasn't been received by the player yet", 
-                                  bonus.Name));
-            bonusesCount[bonus]--;
+            BonusHolder = new BonusHolder();
         }
 
         public string PrintTeam() {

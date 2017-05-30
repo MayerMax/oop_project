@@ -6,22 +6,24 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class BonusAction : IAction<BonusParameters>
+    class BonusAction : IAction
     {
-        private Player player;
+        private BonusHolder bonusOwner;
 
-        public BonusAction(Player player) {
-            this.player = player;
+        public BonusAction(BonusHolder bonusOwner)
+        {
+            this.bonusOwner = bonusOwner;
         }
 
-        public void Execute(BonusParameters parameters)
+        public void Execute(IParameters parameters)
         {
-            player.RemoveUsedBonus(parameters.Bonus);
-            parameters.Bonus.Apply(parameters.Card);
+            var bonusParameters = parameters as BonusParameters;
+            bonusOwner.RemoveUsedBonus(bonusParameters.Bonus);
+            bonusParameters.Bonus.Apply(bonusParameters.Card);
         }
 
         public string Explanation => "Apply a bonus to a given card";
 
-        public bool IsAvailable => player.HasBonuses;
+        public bool IsAvailable => bonusOwner.HasBonuses;
     }
 }
