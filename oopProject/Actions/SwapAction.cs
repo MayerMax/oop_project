@@ -6,18 +6,19 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class SwapAction : IAction<SwapParameters>
+    class SwapAction : IAction
     {
         private Team team;
 
-        public SwapAction(Team team) {
+        public SwapAction(Team team){
             this.team = team;
         }
 
-        public void Execute(SwapParameters parameters)
+        public void Execute(IParameters parameters)
         {
-            team.SubstitutionFromHandToSquad(parameters.OldCardZone,
-                parameters.OldCardPosition, parameters.NewCard, parameters.NewCardPosition);
+            var swapParameters = parameters as SwapParameters;
+            team.SubstitutionFromHandToSquad(swapParameters.OldCardZone,
+                swapParameters.OldCardPosition, swapParameters.NewCard, swapParameters.NewCardPosition);
         }
 
         public string Explanation => "Swap cards";
