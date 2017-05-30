@@ -35,11 +35,15 @@ namespace oopProject
         [Test]
         public void CheckActionReflection() {
             var player = new Player(db, "Max", "4-3-3");
-            var holder = new ActionHolder(new List<Type> { Type.GetType("oopProject.SwapAction") });
+            var a = new List<IAction>() {new SwapAction(player.Team)};
+            var swapParameters = new SwapParameters(1, ZoneType.ATT, null, 3);
+
+            var holder = new ActionHolder(new List<Type> { Type.GetType("oopProject.SwapAction"),
+                                                           Type.GetType("oopProject.BonusAction")});
 
             holder.SetToPlayer(player);
             var res = holder.Get();
-            Assert.Equals(1, res.Count());
+            Assert.AreEqual(2, res.Count());
 
         }
 
