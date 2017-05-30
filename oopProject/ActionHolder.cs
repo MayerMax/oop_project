@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,11 +10,11 @@ namespace oopProject
     class ActionHolder
     {
         private List<Type> actionTypes;
-        private List<IAction<IParameters>> actions;
+        private List<IAction> actions;
 
         public ActionHolder(List<Type> acts) {
             actionTypes = acts;       
-            actions = new List<IAction<IParameters>>();
+            actions = new List<IAction>();
         }
 
         public void SetToPlayer(Player player) {
@@ -37,14 +38,12 @@ namespace oopProject
                     .Where(prop => needed.Contains(prop.PropertyType))
                     .Select(prop => prop.GetValue(player))
                     .ToArray();
-                var c = (IAction<IParameters>)constructor.Invoke(playerElements);
-                // DOES NOT WORK
-                //BULLSHIT
-            }
 
+                actions.Add((IAction)constructor.Invoke(playerElements));
+            }
         }
 
-        public IEnumerable<IAction<IParameters>> Get() {
+        public IEnumerable<IAction> Get() {
             foreach (var act in actions)
                 yield return act;
         }
