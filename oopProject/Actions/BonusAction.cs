@@ -22,6 +22,16 @@ namespace oopProject
             bonusParameters.Bonus.Apply(bonusParameters.Card);
         }
 
+        public bool AreSuitable(IParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
+        bool IAction.Execute(IParameters parameters)
+        {
+            throw new NotImplementedException();
+        }
+
         public string Explanation => "Apply a bonus to a given card";
 
         public bool IsAvailable => bonusHolder.HasBonuses;

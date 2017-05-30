@@ -14,11 +14,17 @@ namespace oopProject
             this.team = team;
         }
 
-        public void Execute(IParameters parameters)
+        public bool Execute(IParameters parameters)
         {
             var swapParameters = parameters as SwapParameters;
             team.SubstitutionFromHandToSquad(swapParameters.OldCardZone,
                 swapParameters.OldCardPosition, swapParameters.NewCard, swapParameters.NewCardPosition);
+            return true;
+        }
+
+        public bool AreSuitable(IParameters parameters)
+        {
+            throw new NotImplementedException();
         }
 
         public string Explanation => "Swap cards";

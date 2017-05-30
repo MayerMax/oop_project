@@ -10,6 +10,11 @@ namespace oopProject
     {
         bool IsAvailable { get; }
         string Explanation { get; }
-        void Execute(IParameters parameters);
+
+
+        bool AreSuitable(IParameters parameters);
+        bool Execute(IParameters parameters);
+
+
     }
 }
