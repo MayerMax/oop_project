@@ -14,9 +14,13 @@ namespace oopProject
         public Team Team { get; set; }
         public BonusHolder BonusHolder { get; set; }
 
-        public Player(FootballDatabase db, string name, string formation){
+        public bool HasBall { get { return ball.Owner.Equals(this); } }
+        private Ball ball;
+
+        public Player(FootballDatabase db, string name, string formation, Ball b){
             if (!Squad.ValidateSquad(formation))
                 throw new ArgumentException("Incorrect squad given!");
+
             Name = name;
             Formation = formation;
             var filledSquad = FillSquadWithRandom(formation, db);
@@ -24,6 +28,9 @@ namespace oopProject
             var squad = new Squad(name, db.GetCardOfType(ZoneType.GK), filledSquad);
             Team = new Team(squad, hand);
             BonusHolder = new BonusHolder();
+            ball = b;
+            ball.AddObserver(this);
+            
         }
 
         public string PrintTeam() {
@@ -39,5 +46,18 @@ namespace oopProject
 
            return resultFiller;
         }
+
+        public override bool Equals(object obj)
+        {
+            var player = obj as Player;
+
+            return player.Formation.Equals(Formation) && player.Name.Equals(Name);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
     }
 }

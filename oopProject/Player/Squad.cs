@@ -15,8 +15,8 @@ namespace oopProject
 
         public static int ZONE_LIMIT = 5;
         private Dictionary<ZoneType, Zone> squad;
-        
-        
+
+
         public string SquadName { get; private set; }
         public bool Any { get { return squad.Values.Any(); } }
 
@@ -40,6 +40,8 @@ namespace oopProject
             zone.InsertCard(card, position);
         }
 
+        
+        
         public string Print() {
             StringBuilder sb = new StringBuilder();
             foreach (var zone in squad)

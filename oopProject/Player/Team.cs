@@ -10,7 +10,7 @@ namespace oopProject
     {
         public readonly Squad Squad;
         public readonly Hand Hand;
-
+        
         public Team(Squad starts, Hand subs) {
             Squad = starts;
             Hand = subs;
@@ -23,5 +23,7 @@ namespace oopProject
             Squad.Insert(type, newCard, newCardPosition);
             Hand.InsertCard(oldCard);
         }
+
+        
     }
 }
