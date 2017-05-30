@@ -8,22 +8,22 @@ namespace oopProject
 {
     class BonusAction : IAction
     {
-        private BonusHolder bonusOwner;
+        private BonusHolder bonusHolder;
 
         public BonusAction(BonusHolder bonusOwner)
         {
-            this.bonusOwner = bonusOwner;
+            this.bonusHolder = bonusOwner;
         }
 
         public void Execute(IParameters parameters)
         {
             var bonusParameters = parameters as BonusParameters;
-            bonusOwner.RemoveUsedBonus(bonusParameters.Bonus);
+            bonusHolder.RemoveUsedBonus(bonusParameters.Bonus);
             bonusParameters.Bonus.Apply(bonusParameters.Card);
         }
 
         public string Explanation => "Apply a bonus to a given card";
 
-        public bool IsAvailable => bonusOwner.HasBonuses;
+        public bool IsAvailable => bonusHolder.HasBonuses;
     }
 }
