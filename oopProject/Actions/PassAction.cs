@@ -1,37 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace oopProject
 {
     class PassAction : IAction
     {
-        public string Explanation
+        private Player player;
+
+        public PassAction(Player player)
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
+            this.player = player;
         }
 
-        public bool IsAvailable
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public string Explanation => "Pass the ball to the next zone";
+
+        public bool IsAvailable => player.HasBall && player.Ball.BallPlace != ZoneType.ATT;
 
         public bool AreSuitable(IParameters parameters)
         {
-            throw new NotImplementedException();
+            return parameters is PassParameters;
+            // ???
         }
 
         public bool Execute(IParameters parameters)
         {
-            throw new NotImplementedException();
+            var passParameters = parameters as PassParameters;
+            if (SuccessfulPass(passParameters))
+            {
+                player.Ball.Move();
+                return true;
+            }
+            return false;
+        }
+
+        private bool SuccessfulPass(PassParameters parameters)
+        {
+            var ballZone = player.Ball.BallPlace;
+            var ballZonePower = player.Team.Squad.GetZonePower(ballZone);
+            var enemyOppositeZonePower = parameters.Enemy.Team.Squad.GetZonePower(Ball.Transitions[ballZone]);
+            return ballZonePower > enemyOppositeZonePower;
+            //add random factor
         }
     }
 }

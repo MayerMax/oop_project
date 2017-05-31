@@ -37,9 +37,10 @@ namespace oopProject
                     .GetProperties()
                     .Where(prop => needed.Contains(prop.PropertyType))
                     .Select(prop => prop.GetValue(player))
-                    .ToArray();
-
-                actions.Add((IAction)constructor.Invoke(playerElements));
+                    .ToList();
+                if (types.Contains(player.GetType()))
+                    playerElements.Add(player);
+                actions.Add((IAction)constructor.Invoke(playerElements.ToArray()));
             }
         }
 
