@@ -14,10 +14,10 @@ namespace oopProject
         public Team Team { get; set; }
         public BonusHolder BonusHolder { get; set; }
 
-        public bool HasBall { get { return ball.Owner.Equals(this); } }
-        private Ball ball;
+        public bool HasBall { get { return Ball != null && Ball.IsOwner(this); } }
+        public Ball Ball { get; private set; }
 
-        public Player(FootballDatabase db, string name, string formation, Ball b){
+        public Player(FootballDatabase db, string name, string formation, Ball ball){
             if (!Squad.ValidateSquad(formation))
                 throw new ArgumentException("Incorrect squad given!");
 
@@ -28,10 +28,11 @@ namespace oopProject
             var squad = new Squad(name, db.GetCardOfType(ZoneType.GK), filledSquad);
             Team = new Team(squad, hand);
             BonusHolder = new BonusHolder();
-            ball = b;
-            ball.AddObserver(this);
-            
+            Ball = ball;
+            Ball.AddObserver(this);
         }
+
+        public void Update(Ball ball) => Ball = ball;
 
         public string PrintTeam() {
             return $"Player {Name}\nSquad is:\n{Team.Squad.Print()}";
@@ -50,7 +51,6 @@ namespace oopProject
         public override bool Equals(object obj)
         {
             var player = obj as Player;
-
             return player.Formation.Equals(Formation) && player.Name.Equals(Name);
         }
 
