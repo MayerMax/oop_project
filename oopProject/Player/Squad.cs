@@ -40,7 +40,7 @@ namespace oopProject
             zone.InsertCard(card, position);
         }
 
-        
+        public int GetZonePower(ZoneType zoneType) => squad[zoneType].ZonePower;
         
         public string Print() {
             StringBuilder sb = new StringBuilder();
