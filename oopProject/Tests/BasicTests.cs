@@ -14,7 +14,7 @@ namespace oopProject
         
         [Test]
         public void InitPlayer() {
-            var player = new Player(db, "Max", "4-3-3");
+            var player = new Player(db, "Max", "4-3-3", new Ball());
             Console.WriteLine(player.PrintTeam());
         }
         [Test]
@@ -34,7 +34,7 @@ namespace oopProject
 
         [Test]
         public void CheckActionReflection() {
-            var player = new Player(db, "Max", "4-3-3");
+            var player = new Player(db, "Max", "4-3-3", new Ball());
             var a = new List<IAction>() {new SwapAction(player.Team)};
             var swapParameters = new SwapParameters(1, ZoneType.ATT, null, 3);
 
