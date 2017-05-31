@@ -8,18 +8,11 @@ namespace oopProject
 {
     class BonusAction : IAction
     {
-        private BonusHolder bonusHolder;
+        private BonusHolder bonusOwner;
 
         public BonusAction(BonusHolder bonusOwner)
         {
-            this.bonusHolder = bonusOwner;
-        }
-
-        public void Execute(IParameters parameters)
-        {
-            var bonusParameters = parameters as BonusParameters;
-            bonusHolder.RemoveUsedBonus(bonusParameters.Bonus);
-            bonusParameters.Bonus.Apply(bonusParameters.Card);
+            this.bonusOwner = bonusOwner;
         }
 
         public bool AreSuitable(IParameters parameters)
@@ -29,11 +22,14 @@ namespace oopProject
 
         bool IAction.Execute(IParameters parameters)
         {
-            throw new NotImplementedException();
+            var bonusParameters = parameters as BonusParameters;
+            bonusOwner.RemoveUsedBonus(bonusParameters.Bonus);
+            bonusParameters.Bonus.Apply(bonusParameters.Card);
+            return true;
         }
 
         public string Explanation => "Apply a bonus to a given card";
 
-        public bool IsAvailable => bonusHolder.HasBonuses;
+        public bool IsAvailable => bonusOwner.HasBonuses;
     }
 }
