@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    abstract class Card<T> : IGameElement
+    abstract class Card<T>
         where T: PlayerInfo
     {
         public readonly string cardName;

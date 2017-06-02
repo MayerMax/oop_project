@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class Zone : BaseZone, IGameElement
+    class Zone : BaseZone
     {
         public bool HasBall { get; private set; } // TODO
         private List<Position> cards;

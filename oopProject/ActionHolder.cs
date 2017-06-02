@@ -48,5 +48,12 @@ namespace oopProject
                 yield return act;
         }
 
+        public static List<Type> GetAllActionTypes()
+        {
+            var type = typeof(IAction);
+            return AppDomain.CurrentDomain.GetAssemblies()
+                            .SelectMany(s => s.GetTypes())
+                            .Where(p => type.IsAssignableFrom(p)).ToList();
+        }
     }
 }

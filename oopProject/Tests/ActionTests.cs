@@ -1,5 +1,6 @@
 ﻿using System;
 using NUnit.Framework;
+using System.Linq;
 
 namespace oopProject
 {
@@ -12,19 +13,19 @@ namespace oopProject
         public void PassAction()
         {
             var ball = new Ball();
-            var first = new Player(db, "Max", "3-4-3", ball);
-            var second = new Player(db, "Leo", "3-2-5", ball);
+            var first = new Player("Max", Squad.GetRandomSquad(db, "N", "3-4-3"),
+                                   new Hand(db.GetCards(10).ToList()), ball);
+            var second = new Player("Leo", Squad.GetRandomSquad(db, "M", "3-2-5"),
+                                    new Hand(db.GetCards(10).ToList()), ball);
             var action = new PassAction(first.Team);
             Assert.True(first.Team.HasBall);
             Assert.AreEqual(first.Team.Ball.BallPlace, ZoneType.MID);
             var parameters = new PassParameters(second.Team);
-            var a = first.Team.Squad.GetZonePower(ZoneType.MID);
-            var b = second.Team.Squad.GetZonePower(ZoneType.MID);
             if (action.Execute(parameters))
                 Assert.AreEqual(first.Team.Ball.BallPlace, ZoneType.ATT);
             else
                 Assert.AreEqual(first.Team.Ball.BallPlace, ZoneType.MID);
-                
+                // should be checked that another team has the ball now
         }
     }
 }

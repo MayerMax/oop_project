@@ -13,8 +13,10 @@ namespace oopProject
         private FootballDatabase db = new FootballDatabase(new MongoDatabase());
        
         private Tuple<Player, Player> GetPlayers(Ball ball) {
-            var first = new Player(db, "Max", "3-4-3", ball);
-            var second = new Player(db, "Leo", "3-2-5", ball);
+            var first = new Player("Max", Squad.GetRandomSquad(db, "N", "3-4-3"),
+                                   new Hand(db.GetCards(10).ToList()), ball);
+            var second = new Player("Leo", Squad.GetRandomSquad(db, "M", "3-2-5"),
+                                    new Hand(db.GetCards(10).ToList()), ball);
             return Tuple.Create(first, second);
         }
 
