@@ -8,9 +8,9 @@ namespace oopProject
 {
     class PassParameters : IParameters
     {
-        public readonly Player Enemy;
+        public readonly Team Enemy;
 
-        public PassParameters(Player enemy)
+        public PassParameters(Team enemy)
         {
             Enemy = enemy;
         }

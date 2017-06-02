@@ -24,8 +24,8 @@ namespace oopProject
             var players = GetPlayers(ball);
             ball.Move();
             Assert.True(ball.BallPlace == ZoneType.ATT);
-            Assert.True(ball.IsOwner(players.Item1));
-            Assert.False(players.Item2.HasBall);
+            Assert.True(ball.IsOwner(players.Item1.Team));
+            Assert.False(players.Item2.Team.HasBall);
         }
 
         [Test]
@@ -33,10 +33,10 @@ namespace oopProject
             Ball ball = new Ball();
             var players = GetPlayers(ball);
             ball.Move();
-            ball.Intercept(players.Item2);
+            ball.Intercept(players.Item2.Team);
             Assert.True(ball.BallPlace == ZoneType.DEF);
-            Assert.True(ball.IsOwner(players.Item2));
-            Assert.False(players.Item1.HasBall);
+            Assert.True(ball.IsOwner(players.Item2.Team));
+            Assert.False(players.Item1.Team.HasBall);
         }
     }
 }

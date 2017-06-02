@@ -14,9 +14,6 @@ namespace oopProject
         public Team Team { get; set; }
         public BonusHolder BonusHolder { get; set; }
 
-        public bool HasBall { get { return Ball != null && Ball.IsOwner(this); } }
-        public Ball Ball { get; private set; }
-
         public Player(FootballDatabase db, string name, string formation, Ball ball){
             if (!Squad.ValidateSquad(formation))
                 throw new ArgumentException("Incorrect squad given!");
@@ -26,13 +23,9 @@ namespace oopProject
             var filledSquad = FillSquadWithRandom(formation, db);
             var hand = new Hand(db.GetCards(10).ToList()); // Left it free for now
             var squad = new Squad(name, db.GetCardOfType(ZoneType.GK), filledSquad);
-            Team = new Team(squad, hand);
+            Team = new Team(squad, hand, ball);
             BonusHolder = new BonusHolder();
-            Ball = ball;
-            Ball.AddObserver(this);
         }
-
-        public void Update(Ball ball) => Ball = ball;
 
         public string PrintTeam() {
             return $"Player {Name}\nSquad is:\n{Team.Squad.Print()}";
