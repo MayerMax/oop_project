@@ -17,13 +17,13 @@ namespace oopProject
 
         public bool AreSuitable(IParameters parameters)
         {
-            return parameters is PassParameters;
+            return parameters is EnemyParameters;
             // ???
         }
 
         public bool Execute(IParameters parameters)
         {
-            var passParameters = parameters as PassParameters;
+            var passParameters = parameters as EnemyParameters;
             if (SuccessfulPass(passParameters))
             {
                 team.Ball.Move();
@@ -32,7 +32,7 @@ namespace oopProject
             return false;
         }
 
-        private bool SuccessfulPass(PassParameters parameters)
+        private bool SuccessfulPass(EnemyParameters parameters)
         {
             var ballZone = team.Ball.BallPlace;
             var ballZonePower = team.Squad.GetZonePower(ballZone);

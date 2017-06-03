@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class PassParameters : IParameters
+    class EnemyParameters : IParameters
     {
         public readonly Team Enemy;
 
-        public PassParameters(Team enemy)
+        public EnemyParameters(Team enemy)
         {
             Enemy = enemy;
         }
