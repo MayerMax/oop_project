@@ -10,11 +10,11 @@ namespace oopProject
     class ActionHolder
     {
         private List<Type> actionTypes;
-        private List<IAction> actions;
+        private List<Action> actions;
 
         public ActionHolder(List<Type> acts) {
             actionTypes = acts;       
-            actions = new List<IAction>();
+            actions = new List<Action>();
         }
 
         public void SetToPlayer(Player player) {
@@ -42,7 +42,7 @@ namespace oopProject
                         .Select(prop => prop.GetValue(player))
                         .ToList();
 
-                    actions.Add((IAction)constructor.Invoke(playerElements.ToArray()));
+                    actions.Add((Action)constructor.Invoke(playerElements.ToArray()));
                 }
                 catch (InvalidOperationException) {
                     continue;
@@ -51,12 +51,12 @@ namespace oopProject
             }
         }
 
-        public IEnumerable<IAction> Get() {
+        public IEnumerable<Action> Get() {
             foreach (var act in actions)
                 yield return act;
         }
 
-        public T Get<T>() where T : class, IAction
+        public T Get<T>() where T : Action
         {
             foreach (var action in actions){
                 var converted = action as T;
@@ -68,7 +68,7 @@ namespace oopProject
 
         public static List<Type> GetAllActionTypes()
         {
-            var type = typeof(IAction);
+            var type = typeof(Action);
             return AppDomain.CurrentDomain.GetAssemblies()
                             .SelectMany(s => s.GetTypes())
                             .Where(p => type.IsAssignableFrom(p)).ToList();

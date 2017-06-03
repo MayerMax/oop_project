@@ -6,23 +6,28 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class GetFromDeckAction : IAction
+    class GetFromDeckAction : Action
     {
         private Team team;
+        private GetFromDeckParameters parameters;
 
         public GetFromDeckAction(Team team) {
             this.team = team;
         }
 
-        public string Explanation => "Get card from deck and put it in hand";
+        public override string Explanation => "Get card from deck and put it in hand";
 
-        public bool IsAvailable => true;
+        public override bool IsAvailable => true;
 
-        public bool AreSuitable(IParameters parameters) => parameters is GetFromDeckParameters;
+        public override bool SetSuitable(IParameters parameters) {
+            this.parameters = SetParameters<GetFromDeckParameters>(parameters);
+            return true;
+        }
 
-        public bool Execute(IParameters parameters) {
-            var deckParams = parameters as GetFromDeckParameters;
-            Deck deck = deckParams.Deck;
+        public override bool Execute() {
+            CheckParameters(parameters);
+
+            Deck deck = parameters.Deck;
             if (!deck.Any)
                 return false;
             team.Hand.InsertCard(deck.GetCard());

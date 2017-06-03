@@ -2,29 +2,32 @@
 
 namespace oopProject
 {
-    class PassAction : IAction
+    class PassAction : Action
     {
         private Team team;
+        private EnemyParameters parameters;
 
         public PassAction(Team team)
         {
             this.team = team;
         }
 
-        public string Explanation => "Pass the ball to the next zone";
+        public override string Explanation => "Pass the ball to the next zone";
 
-        public bool IsAvailable => team.HasBall && team.Ball.BallPlace != ZoneType.ATT;
+        public override bool IsAvailable => team.HasBall && team.Ball.BallPlace != ZoneType.ATT;
 
-        public bool AreSuitable(IParameters parameters)
+        public override bool SetSuitable(IParameters parameters)
         {
-            return parameters is EnemyParameters;
-            // ???
+            this.parameters = SetParameters<EnemyParameters>(parameters);
+            return true;
+            
         }
 
-        public bool Execute(IParameters parameters)
+        public override bool Execute()
         {
-            var passParameters = parameters as EnemyParameters;
-            if (SuccessfulPass(passParameters))
+            CheckParameters(parameters);
+
+            if (SuccessfulPass())
             {
                 team.Ball.Move();
                 return true;
@@ -32,7 +35,7 @@ namespace oopProject
             return false;
         }
 
-        private bool SuccessfulPass(EnemyParameters parameters)
+        private bool SuccessfulPass()
         {
             var ballZone = team.Ball.BallPlace;
             var ballZonePower = team.Squad.GetZonePower(ballZone);

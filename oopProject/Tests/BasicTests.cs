@@ -38,7 +38,7 @@ namespace oopProject
         {
             var player = new Player("Max", Squad.GetRandomSquad(db, "N", "4-3-3"),
                                     new Hand(db.GetCards(10).ToList()), new Ball());
-            var a = new List<IAction>() { new SwapAction(player.Team) };
+            var a = new List<Action>() { new SwapAction(player.Team) };
             var swapParameters = new SwapParameters(1, ZoneType.ATT, null, 3);
 
             var holder = new ActionHolder(new List<Type> { Type.GetType("oopProject.SwapAction"),

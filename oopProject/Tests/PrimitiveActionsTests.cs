@@ -79,7 +79,9 @@ namespace oopProject
 
             var deckParameters = new GetFromDeckParameters(deck);
             Assert.True(action.IsAvailable);
-            var executed = action.Execute(deckParameters);
+            action.SetSuitable(deckParameters);
+
+            var executed = action.Execute();
             Assert.True(executed);
 
             Assert.True(player.Team.Hand.Any);
