@@ -29,4 +29,17 @@ namespace oopProject
         }
          
     }
+
+    static class ActionExtensions
+    {
+        public static bool SuccessfulOperation(this Action action, Team curTeam, Func<Zone, double> currentPlayerFunc, 
+                                               Team anotherTeam, Func<Zone, double> opponentFunc)
+        {
+            var ballZone = curTeam.Ball.BallPlace;
+            var ballZonePower = curTeam.Squad.GetZonePower(ballZone, currentPlayerFunc);
+            var enemyOppositeZonePower = anotherTeam.Squad.GetZonePower(Ball.Transitions[ballZone],
+                                                                             opponentFunc);
+            return ballZonePower > enemyOppositeZonePower;
+        }
+    }
 }

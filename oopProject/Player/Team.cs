@@ -30,7 +30,5 @@ namespace oopProject
             Squad.Insert(type, newCard, newCardPosition);
             Hand.InsertCard(oldCard);
         }
-
-        
     }
 }

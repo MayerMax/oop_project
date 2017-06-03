@@ -89,5 +89,31 @@ namespace oopProject
             Console.WriteLine(card.ToString());
         }
     }
+
+    [TestFixture]
+    class PassActionTest
+    {
+        [Test]
+        public void CheckPassTransition()
+        {
+            var ball = new Ball();
+            var players = Parameters.GetPlayers(ball);
+            var first = players.Item1;
+            var second = players.Item2;
+            var action = new PassAction(first.Team);
+
+            Assert.True(first.Team.HasBall);
+            Assert.AreEqual(first.Team.Ball.BallPlace, ZoneType.MID);
+
+            var parameters = new EnemyParameters(second.Team);
+            action.SetSuitable(parameters);
+
+            if (action.Execute())
+                Assert.AreEqual(first.Team.Ball.BallPlace, ZoneType.ATT);
+            else
+                Assert.AreEqual(first.Team.Ball.BallPlace, ZoneType.MID);
+                // should be checked that another team has the ball now
+        }
+    }
 }
     

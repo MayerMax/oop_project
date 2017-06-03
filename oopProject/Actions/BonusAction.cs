@@ -6,30 +6,31 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    //class BonusAction : Action
-    //{
-    //    private BonusHolder bonusOwner;
+    class BonusAction : Action
+    {
+        private BonusHolder bonusOwner;
+        private BonusParameters parameters;
 
-    //    public BonusAction(BonusHolder bonusOwner)
-    //    {
-    //        this.bonusOwner = bonusOwner;
-    //    }
+        public BonusAction(BonusHolder bonusOwner)
+        {
+            this.bonusOwner = bonusOwner;
+        }
 
-    //    public bool AreSuitable(IParameters parameters)
-    //    {
-    //        throw new NotImplementedException();
-    //    }
+        public override bool SetSuitable(IParameters parameters)
+        {
+            this.parameters = SetParameters<BonusParameters>(parameters);
+            return true;
+        }
 
-    //    bool Action.Execute(IParameters parameters)
-    //    {
-    //        var bonusParameters = parameters as BonusParameters;
-    //        bonusOwner.RemoveUsedBonus(bonusParameters.Bonus);
-    //        bonusParameters.Bonus.Apply(bonusParameters.Card);
-    //        return true;
-    //    }
+        public override bool Execute()
+        {
+            bonusOwner.RemoveUsedBonus(parameters.Bonus);
+            parameters.Bonus.Apply(parameters.Card);
+            return true;
+        }
 
-    //    public string Explanation => "Apply a bonus to a given card";
+        public override string Explanation => "Apply a bonus to a given card";
 
-    //    public bool IsAvailable => bonusOwner.HasBonuses;
-    //}
+        public override bool IsAvailable => bonusOwner.HasBonuses;
+    }
 }

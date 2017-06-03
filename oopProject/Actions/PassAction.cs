@@ -27,21 +27,13 @@ namespace oopProject
         {
             CheckParameters(parameters);
 
-            if (SuccessfulPass())
+            var result = this.SuccessfulOperation(team, z => z.PassPower(), parameters.Enemy, z => z.DefendPower());
+            if (result)
             {
                 team.Ball.Move();
                 return true;
             }
             return false;
-        }
-
-        private bool SuccessfulPass()
-        {
-            var ballZone = team.Ball.BallPlace;
-            var ballZonePower = team.Squad.GetZonePower(ballZone);
-            var enemyOppositeZonePower = parameters.Enemy.Squad.GetZonePower(Ball.Transitions[ballZone]);
-            return ballZonePower > enemyOppositeZonePower;
-            //add random factor
         }
     }
 }

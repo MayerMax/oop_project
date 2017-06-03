@@ -1,0 +1,34 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace oopProject
+{
+    class InterceptionAction : Action
+    {
+        private Team team;
+        private EnemyParameters parameters;
+
+        public InterceptionAction(Team team)
+        {
+            this.team = team;
+        }
+
+        public override bool IsAvailable => !team.HasBall;
+
+        public override string Explanation => "Try to intercept the ball";
+
+        public override bool SetSuitable(IParameters parameters)
+        {
+            this.parameters = SetParameters<EnemyParameters>(parameters);
+            return true;
+        }
+
+        public override bool Execute()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

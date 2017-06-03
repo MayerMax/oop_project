@@ -29,6 +29,7 @@ namespace oopProject
         }
 
         public void ReleasePosition() {
+            Card.CurrentZone = ZoneType.NONE;
             Card = null;
         }
     }

@@ -18,7 +18,9 @@ namespace oopProject
 
         public readonly string Formation;
         public string SquadName { get; private set; }
-        public bool Any { get { return squad.Values.Any(); } }
+
+        public bool Any => squad.Values.Select(z => z.Any).Aggregate((a, b) => a | b);
+        public bool AnyZone(ZoneType zone) => squad[zone].Any;
 
         public Squad(string name, FootballCard keeper, 
                      Dictionary<ZoneType, List<FootballCard>> team, string formation) {
@@ -43,7 +45,7 @@ namespace oopProject
             zone.InsertCard(card, position);
         }
 
-        public int GetZonePower(ZoneType zoneType) => squad[zoneType].ZonePower;
+        public double GetZonePower(ZoneType zoneType, Func<Zone, double> calculate) => calculate(squad[zoneType]);
         
         public string Print() {
             StringBuilder sb = new StringBuilder();

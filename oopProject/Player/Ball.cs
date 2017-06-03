@@ -44,8 +44,19 @@ namespace oopProject
         }
 
         public void Intercept(Team newOwner) {
-            owner = observers[observers.IndexOf(newOwner)];
+            UpdateObservers(newOwner);
             BallPlace = Transitions[BallPlace];
+        }
+
+        public void Restart(Team newOwner)
+        {
+            UpdateObservers(newOwner);
+            BallPlace = ZoneType.MID;
+        }
+
+        private void UpdateObservers(Team newOwner)
+        {
+            owner = observers[observers.IndexOf(newOwner)];
             owner.Update(this);
             NotifyObserversExcept(owner);
         }

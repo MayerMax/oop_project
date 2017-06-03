@@ -9,6 +9,8 @@ namespace oopProject.Actions
     class ShootAction : Action
     {
         private Team team;
+        private EnemyParameters parameters;
+
         public ShootAction(Team team)
         {
             this.team = team;
@@ -20,17 +22,21 @@ namespace oopProject.Actions
 
         public override bool SetSuitable(IParameters parameters)
         {
-            var enemyParams = parameters as EnemyParameters;
-            if (enemyParams == null)
-                return false;
-            return !enemyParams.Enemy.HasBall;
+            this.parameters = SetParameters<EnemyParameters>(parameters);
+            return !this.parameters.Enemy.HasBall;
         }
 
         public override bool Execute()
         {
-            throw new NotImplementedException();
+            CheckParameters(parameters);
+
+            var result = this.SuccessfulOperation(team, z => z.ShootPower(), parameters.Enemy, z => z.DefendPower());
+            if (result)
+            {
+                team.Ball.Restart(parameters.Enemy);
+                return true;
+            }
+            return false;
         }
-
-
     }
 }
