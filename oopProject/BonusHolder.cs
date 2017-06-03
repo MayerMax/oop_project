@@ -10,7 +10,11 @@ namespace oopProject
     {
         private Dictionary<Bonus, int> bonusesCount;
 
-        public BonusHolder() => bonusesCount = new Dictionary<Bonus, int>();
+        public BonusHolder()
+        {
+            bonusesCount = new Dictionary<Bonus, int>();
+        }
+
 
         public bool HasBonuses => bonusesCount.Any();
 

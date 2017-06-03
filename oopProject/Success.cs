@@ -24,7 +24,7 @@ namespace oopProject
                 throw new NotImplementedException();
             }
 
-            private set { }
+            
         }
 
         public void Apply(PassAction action, bool isTrue)

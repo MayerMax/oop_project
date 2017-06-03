@@ -20,6 +20,7 @@ namespace oopProject
             return deck.Pop();
         }
 
+        public bool Any { get { return deck.Any(); } }
 
     }
 }

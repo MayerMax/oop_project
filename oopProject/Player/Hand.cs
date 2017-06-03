@@ -29,6 +29,8 @@ namespace oopProject
             hand.Add(card);
         }
 
+        public FootballCard this[int index] => hand[index];
+
         public void SortCardsByCriteria(string attributeCriteria) {
             hand.Sort();
             // implement Icomparer ? 

@@ -24,28 +24,46 @@ namespace oopProject
                 .ToList();
 
             foreach (var actionType in actionTypes) {
-                var constructor = actionType.GetConstructors().First();
-                var types = constructor
-                    .GetParameters()
-                    .Select(param => param.ParameterType)
-                    .ToList();
+               try
+                {
+                    var constructor = actionType.GetConstructors().First();
 
-                var needed = playerAttributes.Where(attrib => types.Contains(attrib)).ToList();
-                var playerElements =
-                     player
-                    .GetType()
-                    .GetProperties()
-                    .Where(prop => needed.Contains(prop.PropertyType))
-                    .Select(prop => prop.GetValue(player))
-                    .ToList();
+                    var types = constructor
+                        .GetParameters()
+                        .Select(param => param.ParameterType)
+                        .ToList();
 
-                actions.Add((IAction)constructor.Invoke(playerElements.ToArray()));
+                    var needed = playerAttributes.Where(attrib => types.Contains(attrib)).ToList();
+                    var playerElements =
+                         player
+                        .GetType()
+                        .GetProperties()
+                        .Where(prop => needed.Contains(prop.PropertyType))
+                        .Select(prop => prop.GetValue(player))
+                        .ToList();
+
+                    actions.Add((IAction)constructor.Invoke(playerElements.ToArray()));
+                }
+                catch (InvalidOperationException) {
+                    continue;
+                }
+
             }
         }
 
         public IEnumerable<IAction> Get() {
             foreach (var act in actions)
                 yield return act;
+        }
+
+        public T Get<T>() where T : class, IAction
+        {
+            foreach (var action in actions){
+                var converted = action as T;
+                if (converted != null)
+                    return converted;
+            }
+            return null;
         }
 
         public static List<Type> GetAllActionTypes()
