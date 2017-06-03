@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace oopProject.Actions
 {
-    class ShootAction
-    {
-    }
+    //class ShootAction
+    //{
+    //    public ShootAction() {
+
+    //    }
+    //}
 }
