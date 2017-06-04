@@ -43,7 +43,7 @@ namespace oopProject
                 BallPlace = (ZoneType)((int)BallPlace + 1);
         }
 
-        public void Intercept(Team newOwner) {
+        public void InterceptedBy(Team newOwner) {
             UpdateObservers(newOwner);
             BallPlace = Transitions[BallPlace];
         }

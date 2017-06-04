@@ -15,7 +15,6 @@ namespace oopProject
         public Hand(List<FootballCard> starterPack) {
             hand = starterPack;
         }
-
         
         public bool Remove(FootballCard card) {
             if (hand.Contains(card)) {
@@ -41,5 +40,7 @@ namespace oopProject
                 count = HandSize -1;
             return hand.OrderByDescending(card => card.Rank).Take(count);
         }
+
+        public bool Contains(FootballCard card) => hand.Contains(card);
     }
 }

@@ -22,6 +22,18 @@ namespace oopProject
         public bool Any => squad.Values.Select(z => z.Any).Aggregate((a, b) => a | b);
         public bool AnyZone(ZoneType zone) => squad[zone].Any;
 
+        public bool IsActive(ZoneType zone, int position)
+        {
+            try
+            {
+                return !squad[zone][position].IsFree;
+            }
+            catch (IndexOutOfRangeException)
+            {
+                return false;
+            }
+        }
+
         public Squad(string name, FootballCard keeper, 
                      Dictionary<ZoneType, List<FootballCard>> team, string formation) {
             SquadName = name;

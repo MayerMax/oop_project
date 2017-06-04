@@ -73,6 +73,19 @@ namespace oopProject
             return (int) list.Select(el => playerInfo.ParseAttribute(el)).Average();
         }
 
-        
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            if (!(obj is FootballCard))
+                return false;
+            var card = (FootballCard)obj;
+            return cardName == card.cardName;
+        }
+
+        public override int GetHashCode()
+        {
+            return cardName.GetHashCode();
+        }
     }
 }
