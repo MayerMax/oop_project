@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 namespace oopProject
 {
      interface ISuccess {
-
         string Message { get;}
         void Apply(PassAction action, bool isTrue);
         void Apply(ShootAction action, bool isTrue);
@@ -29,19 +28,16 @@ namespace oopProject
 
         public void Apply(SwapAction action, bool isTrue)
         {
-            if (isTrue)
-            {
-
-            }
-            else {
-
-            }
-            // TODO
+            Action<Player> applier =
+                p => Message = $"{game.CurrentPlayer.Team.Hand.Peek.CardName} has been substituted";
+            Apply(applier);
         }
 
         public void Apply(PressureAction action, bool isTrue)
         {
-           // TODO 
+            Action<Player> successPressing = p => Message = "Successful pressing!";
+            Action<Player> failurePressing = p => Message = "You have been injured!";
+            Apply(successPressing, failurePressing, isTrue);
         }
         
         public void Apply(GetFromDeckAction action, bool isTrue)
@@ -52,7 +48,9 @@ namespace oopProject
 
         public void Apply(InterceptionAction action, bool isTrue)
         {
-            //TODO
+            Action<Player> successInterception = p => Message = $"What a move! Ball is in your possession now";
+            Action<Player> failureInterception = p => Message = "Unfortunately, you couldn't intercept the ball";
+            Apply(successInterception, failureInterception, isTrue);
         }
 
         public void Apply(ShootAction action, bool isTrue)
