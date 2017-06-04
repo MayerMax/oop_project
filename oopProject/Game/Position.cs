@@ -28,7 +28,7 @@ namespace oopProject
             return base.GetHashCode();
         }
 
-        public void ReleasePosition() {
+        public void Release() {
             Card.CurrentZone = ZoneType.NONE;
             Card = null;
         }

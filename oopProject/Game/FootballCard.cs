@@ -12,7 +12,12 @@ namespace oopProject
         public static readonly int MAXCHAR = 10;
         private Func<List<string>, int> evaluateFunction;
 
-        public int Rank { get; private set; }
+        private double rank;
+        public double Rank { get { return EvaluateGeneralRank(); }
+            private set {
+                rank = value;
+            }
+        }
         public int Defend { get; set; }
         public int Attack { get; set; }
         public int Midfield { get; set; }
@@ -46,9 +51,9 @@ namespace oopProject
         protected override int EvaluateDefendRank() => ClampByModulo(evaluateFunction(playerInfo.DEF));
 
 
-        protected override int EvaluateGeneralRank() {
+        protected override double EvaluateGeneralRank() {
 
-            var optimum = playerInfo.ParseAttribute("Rating");
+            var optimum = playerInfo.ParseAttribute("Rating") / MAXCHAR;
             if (CurrentZone != PreferredZone)
             {
                 optimum = (optimum / 3);
@@ -57,6 +62,11 @@ namespace oopProject
 
             }
             return optimum;
+        }
+
+        public void DecreaseRank(int percent) {
+            double coef = 1 - percent / 100;
+            Rank = (int) (Rank * coef);
         }
         
 

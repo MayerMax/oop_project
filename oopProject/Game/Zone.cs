@@ -10,7 +10,8 @@ namespace oopProject
     {
         private List<Position> cards;
 
-        public bool Any => cards.Any();
+        public bool Any => Count > 0;
+        public int Count => cards.Where(f => !(f.IsFree)).Count();
 
         public Zone(ZoneType type, List<FootballCard> cards) : base(cards.Count, type)
         {
@@ -35,10 +36,14 @@ namespace oopProject
 
         public FootballCard RemoveCard(int cardIndex) {
             var card = cards[cardIndex].Card;
-            cards[cardIndex].ReleasePosition();
+            cards[cardIndex].Release();
             return card;
         }
-
+        public void RemoveDeadCards() {
+            foreach (var position in cards)
+                if (position.Card.Rank <= 0)
+                    position.Release();
+        }
         public void InsertCard(FootballCard card, int position) {
             if (!cards[position].IsFree)
                 throw new InvalidOperationException("This position is not available");
@@ -67,6 +72,8 @@ namespace oopProject
 
     static class ZoneExtensions
     {
+        private static Random rand = new Random();
+
         public static double PassPower(this Zone zone)
         {
             var totalAvgDef = zone.CardsAttributes(f => f.Defend).Average();
@@ -92,11 +99,23 @@ namespace oopProject
             return Math.Min(att, rank);
         }
 
-        private static IEnumerable<int> CardsAttributes(this Zone zone, Func<FootballCard, int> attributeSelector)
+        public static double PressurePower(this Zone zone) =>
+            zone.CardsAttributes(f => f.Rank).Average() * rand.NextDouble();
+        
+
+        public static void DecreaseRandomCardRank(this Zone zone, int percent) {
+            var randomPosition = zone[rand.Next(0, zone.Count)];
+            if (!randomPosition.IsFree) {
+                var card = randomPosition.Card;
+                card.DecreaseRank(percent);
+            }
+        }
+
+        private static IEnumerable<double> CardsAttributes(this Zone zone, Func<FootballCard, double> attributeSelector)
         {
             var attributes = zone.GetCards().Select(f => attributeSelector(f));
             if (!attributes.Any())
-                return new List<int>() { 0 };
+                return new List<double>() { 0 };
             return attributes;
         }
     }

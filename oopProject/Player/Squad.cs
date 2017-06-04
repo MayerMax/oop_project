@@ -17,7 +17,7 @@ namespace oopProject
         private Dictionary<ZoneType, Zone> squad;
 
         public readonly string Formation;
-        public string SquadName { get; private set; }
+        public string Name { get; private set; }
 
         public bool Any => squad.Values.Select(z => z.Any).Aggregate((a, b) => a | b);
         public bool AnyZone(ZoneType zone) => squad[zone].Any;
@@ -34,9 +34,11 @@ namespace oopProject
             }
         }
 
+        public Zone this[ZoneType type] => squad[type];
+
         public Squad(string name, FootballCard keeper, 
                      Dictionary<ZoneType, List<FootballCard>> team, string formation) {
-            SquadName = name;
+            Name = name;
             Formation = formation;
             squad = new Dictionary<ZoneType, Zone>
             {

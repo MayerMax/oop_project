@@ -22,7 +22,7 @@ namespace oopProject
         }
 
 
-        protected abstract int EvaluateGeneralRank();
+        protected abstract double EvaluateGeneralRank();
         protected abstract int EvaluateAttackRank();
         protected abstract int EvaluateDefendRank();
         protected abstract int EvaluateBalanceRank();

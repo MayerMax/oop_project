@@ -27,8 +27,18 @@ namespace oopProject
                                                 FootballCard newCard) {
             Hand.Remove(newCard);
             var oldCard = Squad.Remove(type, cardPosition);
-            Squad.Insert(type, newCard, newCardPosition);
+            Squad.Insert(type, newCard, cardPosition);
             Hand.InsertCard(oldCard);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+            if (!(obj is Team))
+                return false;
+            var team = (Team)obj;
+            return Squad.Name == team.Squad.Name;
         }
     }
 }
