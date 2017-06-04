@@ -28,7 +28,16 @@ namespace oopProject
 
         public override bool Execute()
         {
-            throw new NotImplementedException();
+            CheckParameters(parameters);
+
+            var result = this.SuccessfulOperation(team, z => z.InterceptPower(), parameters.Enemy, 
+                                                        z => z.DefendPower());
+            if (result)
+            {
+                parameters.Enemy.Ball.InterceptedBy(team);
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -10,6 +10,7 @@ namespace oopProject
     {
         private Team team;
         private SwapParameters parameters;
+
         public SwapAction(Team team){
             this.team = team;
         }
@@ -17,15 +18,15 @@ namespace oopProject
         public override bool Execute()
         {
             team.SubstitutionFromHandToSquad(parameters.OldCardZone,
-                parameters.OldCardPosition, parameters.NewCard, parameters.NewCardPosition);
+                parameters.CardPosition, parameters.NewCard);
             return true;
         }
 
         public override bool SetSuitable(IParameters parameters)
         {
-            parameters = SetParameters<SwapParameters>(parameters);
-            return true;
-            // REDO 
+            this.parameters = SetParameters<SwapParameters>(parameters);
+            var isActive = team.Squad.IsActive(this.parameters.OldCardZone, this.parameters.CardPosition);
+            return isActive && team.Hand.Contains(this.parameters.NewCard);
         }
 
         public override string Explanation => "Swap cards";

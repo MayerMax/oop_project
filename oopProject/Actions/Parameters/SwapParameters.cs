@@ -8,16 +8,14 @@ namespace oopProject
 {
     class SwapParameters : IParameters
     {
-        public readonly int OldCardPosition;
-        public readonly int NewCardPosition;
+        public readonly int CardPosition;
         public readonly FootballCard NewCard;
         public readonly ZoneType OldCardZone;
 
-        public SwapParameters(int oldCardPosition, ZoneType oldCardZone,
-                              FootballCard newCard, int newCardPosition)
+        public SwapParameters(int cardPosition, ZoneType oldCardZone,
+                              FootballCard newCard)
         {
-            OldCardPosition = oldCardPosition;
-            NewCardPosition = newCardPosition;
+            CardPosition = cardPosition;
             NewCard = newCard;
             OldCardZone = oldCardZone;
         }
