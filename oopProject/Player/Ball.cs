@@ -20,6 +20,8 @@ namespace oopProject
         private Team owner;
         public ZoneType BallPlace { get; private set; }
 
+        public string Owner => owner.Squad.Name;
+
         public Ball(ZoneType whereToStart=ZoneType.NONE) {
             observers = new List<Team>();
             if (whereToStart != ZoneType.NONE)

@@ -90,12 +90,12 @@ namespace oopProject
             if (!(obj is FootballCard))
                 return false;
             var card = (FootballCard)obj;
-            return cardName == card.cardName;
+            return CardName == card.CardName;
         }
 
         public override int GetHashCode()
         {
-            return cardName.GetHashCode();
+            return CardName.GetHashCode();
         }
     }
 }

@@ -15,6 +15,18 @@ namespace oopProject
         private Deck deck;
         private Ball ball;
 
+        private int currentPlayerIdx;
+
+        public Player CurrentPlayer {get { return players[currentPlayerIdx].Player; }}
+
+        public string Score {
+            get {
+                var names = string.Join("vs ", players.Select(f => f.Player.Team.Squad.Name));
+                var scores = string.Join(" : ", players.Select(f => f.Player.Score));
+                return $"{names},{scores}";
+                }
+        }
+
         public Game()
         {
             db = new FootballDatabase(new MongoDatabase());
@@ -23,13 +35,24 @@ namespace oopProject
             deck = new Deck(db);
         }
 
-        public void AddPlayer(string name, string squadFormation, string squadName)
+        private void Next() 
+            =>currentPlayerIdx = (currentPlayerIdx + 1) % players.Count;
+
+        private void Round() {
+
+        }
+
+        public void Run() {
+            // TODO
+        }
+        public Game AddPlayer(string name, string squadFormation, string squadName)
         {
             if (!Squad.ValidateSquad(squadFormation))
                 throw new ArgumentException("Incorrect squad given!");
             var squad = Squad.GetRandomSquad(db, squadName, squadFormation);
             var player = new Player(name, squad, new Hand(db.GetCards(10).ToList()), ball);
             players.Add(new PlayerController(player));
+            return this;
         }
 
         private class PlayerController

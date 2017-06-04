@@ -9,7 +9,7 @@ namespace oopProject
     abstract class Card<T>
         where T: PlayerInfo
     {
-        public readonly string cardName;
+        public readonly string CardName;
 
         protected readonly T playerInfo;
         protected readonly int maxAttributeRank;
@@ -17,7 +17,7 @@ namespace oopProject
         
         public Card(T pl, int maxValue) {
             playerInfo = pl;
-            cardName = pl["Name"];
+            CardName = pl["Name"];
             maxAttributeRank = maxValue;
         }
 

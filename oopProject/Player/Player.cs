@@ -13,11 +13,16 @@ namespace oopProject
         public Team Team { get; set; }
         public BonusHolder BonusHolder { get; set; }
 
+        public int Score { get; private set; }
+
         public Player(string name, Squad squad, Hand hand, Ball ball){
             Name = name;
             Team = new Team(squad, hand, ball);
             BonusHolder = new BonusHolder();
         }
+
+        public void IncreaseScore() => Score += 1;
+        
 
         public string PrintTeam() {
             return $"Player {Name}\nSquad is:\n{Team.Squad.Print()}";

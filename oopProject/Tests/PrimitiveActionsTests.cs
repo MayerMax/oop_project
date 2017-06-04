@@ -79,7 +79,6 @@ namespace oopProject
 
                 action.SetSuitable(shootParams);
                 Assert.True(ball.BallPlace == ZoneType.ATT);
-                Console.WriteLine(opponent.Team.Squad[ZoneType.GK].Print());
                 var executionStatus = action.Execute();
                 if (executionStatus)
                 {

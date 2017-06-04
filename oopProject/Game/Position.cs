@@ -20,7 +20,7 @@ namespace oopProject
         public override bool Equals(object obj)
         {
             var card = (FootballCard)obj;
-            return card.cardName.Equals(Card.cardName);
+            return card.CardName.Equals(Card.CardName);
         }
 
         public override int GetHashCode()

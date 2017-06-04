@@ -11,6 +11,7 @@ namespace oopProject
         private List<FootballCard> hand;
         public int HandSize { get { return hand.Count; }}
         public bool Any { get { return hand.Any(); } }
+        public FootballCard Peek { get { return Any ? hand[hand.Count - 1] : null; } }
 
         public Hand(List<FootballCard> starterPack) {
             hand = starterPack;

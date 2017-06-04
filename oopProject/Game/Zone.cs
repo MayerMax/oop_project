@@ -55,7 +55,7 @@ namespace oopProject
         public string Print() {
             var names = 
                 cards.Where(pos => !pos.IsFree)
-                .Select(pos =>$"{pos.Number +1}.{pos.Card.cardName}");
+                .Select(pos =>$"{pos.Number +1}.{pos.Card.CardName}");
 
             return string.Join("--", names);
 
