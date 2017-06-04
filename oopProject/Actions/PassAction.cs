@@ -33,6 +33,7 @@ namespace oopProject
                 team.Ball.Move();
                 return true;
             }
+            team.Ball.InterceptedBy(parameters.Enemy);
             return false;
         }
     }

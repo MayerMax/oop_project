@@ -180,13 +180,77 @@ namespace oopProject
             Assert.AreEqual(first.Team.Ball.BallPlace, ZoneType.MID);
 
             var parameters = new EnemyParameters(second.Team);
-            action.SetSuitable(parameters);
+            Assert.True(action.SetSuitable(parameters));
 
             if (action.Execute())
                 Assert.AreEqual(first.Team.Ball.BallPlace, ZoneType.ATT);
             else
-                Assert.AreEqual(first.Team.Ball.BallPlace, ZoneType.MID);
-                // should be checked that another team has the ball now
+            {
+                Assert.True(second.Team.HasBall);
+                Assert.AreEqual(second.Team.Ball.BallPlace, ZoneType.MID);
+            }
+        }
+    }
+
+    [TestFixture]
+    class SwapActionTest
+    {
+        [Test]
+        public void CheckSwap()
+        {
+            var ball = new Ball();
+            Deck deck = new Deck(Parameters.db);
+            var controller = Parameters.GetRawPlayerController(ball);
+            var player = controller.Item1;
+            var holder = controller.Item2;
+            var action = holder.Get<SwapAction>();
+            Assert.True(action.IsAvailable);
+
+            var invalidParameters = new SwapParameters(12, ZoneType.MID, deck.GetCard());
+            Assert.False(action.SetSuitable(invalidParameters));
+
+            var position = 3;
+            var zone = ZoneType.MID;
+            var parameters = new SwapParameters(position, zone, player.Team.Hand[2]);
+            Assert.True(action.SetSuitable(parameters));
+
+            var swappedCard = player.Team.Squad[zone][position].Card;
+            action.Execute();
+            Assert.AreEqual(player.Team.Squad[zone][position].Card, parameters.NewCard);
+            Assert.True(player.Team.Hand.Contains(swappedCard));
+            Assert.False(player.Team.Hand.Contains(parameters.NewCard));
+        }
+    }
+
+    [TestFixture]
+    class InterceptionActionTest
+    {
+        [Test]
+        public void CheckIntercept()
+        {
+            var ball = new Ball();
+            var players = Parameters.GetPlayers(ball);
+            var first = players.Item1;
+            var second = players.Item2;
+            var action = new InterceptionAction(first.Team);
+
+            var ballPlace = ZoneType.MID;
+            Assert.True(first.Team.HasBall);
+            Assert.AreEqual(first.Team.Ball.BallPlace, ballPlace);
+
+            var parameters = new EnemyParameters(first.Team);
+            Assert.True(action.SetSuitable(parameters));
+
+            if (action.Execute())
+            {
+                Assert.True(second.Team.HasBall);
+                Assert.AreEqual(second.Team.Ball.BallPlace, ballPlace);
+            }
+            else
+            {
+                Assert.True(first.Team.HasBall);
+                Assert.AreEqual(first.Team.Ball.BallPlace, ballPlace);
+            }
         }
     }
 }
