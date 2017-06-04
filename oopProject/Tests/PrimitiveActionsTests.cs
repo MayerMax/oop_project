@@ -30,6 +30,11 @@ namespace oopProject
             return Tuple.Create(player, actionHolder);
         }
 
+        public static Player GeneratePlayer(Ball ball, string name = "Leo") {
+            return new Player(name, Squad.GetRandomSquad(db, "N", "3-4-3"),
+                                   new Hand(db.GetCards(10).ToList()), ball);
+        }
+
     }
 
     [TestFixture]
@@ -53,15 +58,84 @@ namespace oopProject
             Ball ball = new Ball();
             var players = Parameters.GetPlayers(ball);
             ball.Move();
-            ball.Intercept(players.Item2.Team);
+            ball.InterceptedBy(players.Item2.Team);
             Assert.True(ball.BallPlace == ZoneType.DEF);
             Assert.True(ball.IsOwner(players.Item2.Team));
             Assert.False(players.Item1.Team.HasBall);
         }
 
-        // Pass
-        //Shoot
-        
+        [TestFixture]
+        class ShotActionTesting {
+
+            [Test]
+            public void MakeShotAndVerifyResults() {
+                Ball ball = new Ball(whereToStart : ZoneType.ATT);
+                var players = Parameters.GetPlayers(ball);
+                var player = players.Item1;
+                var opponent = players.Item2;
+
+                ShootAction action = new ShootAction(player.Team);
+                var shootParams = new EnemyParameters(opponent.Team);
+
+                action.SetSuitable(shootParams);
+                Assert.True(ball.BallPlace == ZoneType.ATT);
+                Console.WriteLine(opponent.Team.Squad[ZoneType.GK].Print());
+                var executionStatus = action.Execute();
+                if (executionStatus)
+                {
+                    
+                    Assert.True(ball.BallPlace == ZoneType.MID);
+                    Assert.True(player.Team.HasBall == false);
+                }
+                else {
+                    
+                    Assert.True(ball.IsOwner(opponent.Team));
+                    Assert.True(ball.BallPlace == ZoneType.DEF);
+                }
+            }
+        }
+
+    }
+
+    [TestFixture]
+    class PressureActionTesting
+    {
+        [Test]
+        public void SuppressOpponent() {
+            Ball ball = new Ball();
+            var players = Parameters.GetPlayers(ball);
+
+            var player = players.Item1;
+            var opponent = players.Item2;
+
+            PressureAction action = new PressureAction(player.Team);
+            var attackingZone = player.Team.Squad[ZoneType.DEF];
+            var defendingZone = opponent.Team.Squad[ZoneType.ATT];
+
+            var opponetZoneRankings = defendingZone.GetCards().Select(f => f.Rank).ToList();
+            var playerZoneRankings = attackingZone.GetCards().Select(f => f.Rank).ToList();
+
+            var parameters = new PressureParameters(attackingZone, opponent.Team);
+            action.SetSuitable(parameters);
+
+            var executed = action.Execute();
+            if (executed)
+            {
+                var newOpponentsRanking = defendingZone.GetCards().Select(f => f.Rank).ToList();
+                for (int idx = 0; idx < newOpponentsRanking.Count(); idx++)
+                {
+                    Assert.True(newOpponentsRanking[idx] <= opponetZoneRankings[idx]);
+                }
+            }
+            else {
+
+                var newPlayersRanking = attackingZone.GetCards().Select(f => f.Rank).ToList();
+                for (int idx = 0; idx < newPlayersRanking.Count(); idx++)
+                {
+                    Assert.True(newPlayersRanking[idx] <= playerZoneRankings[idx]);
+                }
+            }
+        }
     }
 
     [TestFixture]

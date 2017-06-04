@@ -39,6 +39,7 @@ namespace oopProject
             cards[cardIndex].Release();
             return card;
         }
+
         public void RemoveDeadCards() {
             foreach (var position in cards)
                 if (position.Card.Rank <= 0)
@@ -84,6 +85,11 @@ namespace oopProject
 
         public static double DefendPower(this Zone zone)
             => zone.CardsAttributes(f => f.Defend).Average();
+
+        public static double WithAdditionalPower(this Zone zone, FootballCard additional) {
+            var defendPower = zone.DefendPower();
+            return defendPower + 0.1 * additional.Rank;
+        }
 
         public static double InterceptPower(this Zone zone)
         {

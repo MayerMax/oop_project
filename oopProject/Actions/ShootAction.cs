@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace oopProject.Actions
+namespace oopProject
 {
     class ShootAction : Action
     {
@@ -29,13 +29,15 @@ namespace oopProject.Actions
         public override bool Execute()
         {
             CheckParameters(parameters);
-
-            var result = this.SuccessfulOperation(team, z => z.ShootPower(), parameters.Enemy, z => z.DefendPower());
+            var opponentKeeper = parameters.Enemy.Squad[ZoneType.GK].GetCards().First();
+            var result = this.SuccessfulOperation(team, z => z.ShootPower(), 
+                                                  parameters.Enemy, z => z.WithAdditionalPower(opponentKeeper));
             if (result)
             {
                 team.Ball.Restart(parameters.Enemy);
                 return true;
             }
+            team.Ball.InterceptedBy(parameters.Enemy);
             return false;
         }
     }

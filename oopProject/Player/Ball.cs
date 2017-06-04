@@ -20,14 +20,18 @@ namespace oopProject
         private Team owner;
         public ZoneType BallPlace { get; private set; }
 
-        public Ball() {
+        public Ball(ZoneType whereToStart=ZoneType.NONE) {
             observers = new List<Team>();
+            if (whereToStart != ZoneType.NONE)
+                BallPlace = whereToStart;
+
         }
 
         public void AddObserver(Team observer) {
             if (observers.Count == 0) {
                 owner = observer;
-                BallPlace = ZoneType.MID;
+                if (BallPlace == ZoneType.NONE)
+                    BallPlace = ZoneType.MID;
             }
             observers.Add(observer);
         }

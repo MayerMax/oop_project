@@ -28,7 +28,7 @@ namespace oopProject
             var pressure = parameters.Zone.PressurePower();
             var opponentZone = parameters.Enemy.Squad[Ball.Transitions[parameters.Zone.Type]];
             var opponentPressure = opponentZone.PressurePower();
-            if (pressure > opponentPressure)
+            if (pressure >= opponentPressure)
             {
                 DecreaseRankings(opponentZone, 10, 30);
                 return true;
