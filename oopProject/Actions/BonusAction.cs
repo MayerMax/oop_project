@@ -29,6 +29,11 @@ namespace oopProject
             return true;
         }
 
+        public override void Accept(ISuccess success)
+        {
+            throw new NotImplementedException();
+        }
+
         public override string Explanation => "Apply a bonus to a given card";
 
         public override bool IsAvailable => bonusOwner.HasBonuses;

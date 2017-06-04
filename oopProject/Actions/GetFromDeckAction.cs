@@ -31,8 +31,10 @@ namespace oopProject
             if (!deck.Any)
                 return false;
             team.Hand.InsertCard(deck.GetCard());
-            return true;
+            wasSuccessfullyExecuted = true;
+            return wasSuccessfullyExecuted;
         }
 
+        public override void Accept(ISuccess success) => success.Apply(this, wasSuccessfullyExecuted);
     }
 }

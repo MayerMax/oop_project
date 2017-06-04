@@ -11,10 +11,11 @@ namespace oopProject
         public abstract bool IsAvailable { get; }
         public abstract string Explanation { get; }
 
-
         public abstract bool SetSuitable(IParameters parameters);
         public abstract bool Execute();
+        public abstract void Accept(ISuccess success);
 
+        protected bool wasSuccessfullyExecuted;
 
         protected T SetParameters<T>( IParameters parameters) where T :class {
             var converted = parameters as T;

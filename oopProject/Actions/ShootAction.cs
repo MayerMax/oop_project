@@ -35,10 +35,13 @@ namespace oopProject
             if (result)
             {
                 team.Ball.Restart(parameters.Enemy);
-                return true;
+                wasSuccessfullyExecuted = true;
             }
-            team.Ball.InterceptedBy(parameters.Enemy);
-            return false;
+            else
+                team.Ball.InterceptedBy(parameters.Enemy);
+            return wasSuccessfullyExecuted;
         }
+
+        public override void Accept(ISuccess success) => success.Apply(this, wasSuccessfullyExecuted);
     }
 }

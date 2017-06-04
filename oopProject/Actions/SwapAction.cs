@@ -19,7 +19,8 @@ namespace oopProject
         {
             team.SubstitutionFromHandToSquad(parameters.OldCardZone,
                 parameters.CardPosition, parameters.NewCard);
-            return true;
+            wasSuccessfullyExecuted = true;
+            return wasSuccessfullyExecuted;
         }
 
         public override bool SetSuitable(IParameters parameters)
@@ -32,5 +33,7 @@ namespace oopProject
         public override string Explanation => "Swap cards";
 
         public override bool IsAvailable => team.Hand.Any && team.Squad.Any;
+
+        public override void Accept(ISuccess success) => success.Apply(this, wasSuccessfullyExecuted);
     }
 }

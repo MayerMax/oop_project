@@ -31,12 +31,11 @@ namespace oopProject
             if (pressure >= opponentPressure)
             {
                 DecreaseRankings(opponentZone, 10, 30);
-                return true;
+                wasSuccessfullyExecuted = true;
             }
-            else {
+            else
                 DecreaseRankings(parameters.Zone, 10, 15);
-                return false;
-            }
+            return wasSuccessfullyExecuted;
         }
 
         private void DecreaseRankings(Zone zone, int minDecrease, int maxDecrease) {
@@ -49,5 +48,7 @@ namespace oopProject
             this.parameters = SetParameters<PressureParameters>(parameters);
             return team.Squad.AnyZone(this.parameters.Zone.Type) && team != this.parameters.Enemy;
         }
+
+        public override void Accept(ISuccess success) => success.Apply(this, wasSuccessfullyExecuted);
     }
 }

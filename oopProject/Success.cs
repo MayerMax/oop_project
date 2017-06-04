@@ -29,7 +29,7 @@ namespace oopProject
         public void Apply(SwapAction action, bool isTrue)
         {
             Action<Player> applier =
-                p => Message = $"{game.CurrentPlayer.Team.Hand.Peek.CardName} has been substituted";
+                p => Message = $"{p.Team.Hand.Peek.CardName} has been substituted";
             Apply(applier);
         }
 

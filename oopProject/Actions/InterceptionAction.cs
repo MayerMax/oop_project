@@ -35,9 +35,11 @@ namespace oopProject
             if (result)
             {
                 parameters.Enemy.Ball.InterceptedBy(team);
-                return true;
+                wasSuccessfullyExecuted = true;
             }
-            return false;
+            return wasSuccessfullyExecuted;
         }
+
+        public override void Accept(ISuccess success) => success.Apply(this, wasSuccessfullyExecuted);
     }
 }
