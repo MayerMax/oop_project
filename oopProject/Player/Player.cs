@@ -11,14 +11,12 @@ namespace oopProject
         public readonly string Name;
 
         public Team Team { get; set; }
-        public BonusHolder BonusHolder { get; set; }
-
+        
         public int Score { get; private set; }
 
         public Player(string name, Squad squad, Hand hand, Ball ball){
             Name = name;
             Team = new Team(squad, hand, ball);
-            BonusHolder = new BonusHolder();
         }
 
         public void IncreaseScore() => Score += 1;

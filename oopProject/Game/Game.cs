@@ -18,6 +18,10 @@ namespace oopProject
 
         public readonly Deck Deck;
         public Player CurrentPlayer => players[currentPlayerIdx].Player;
+
+        public IEnumerable<Action> GetActions()
+            => players[currentPlayerIdx].Actions.Get();
+        
         public IEnumerable<Player> GetOpponents => players.Select(c => c.Player)
                                                           .Where(p => p != CurrentPlayer);
 
@@ -39,7 +43,7 @@ namespace oopProject
 
         private void Next() 
             =>currentPlayerIdx = (currentPlayerIdx + 1) % players.Count;
-
+        
         private void Round() {
 
         }
@@ -47,14 +51,13 @@ namespace oopProject
         public void Run() {
             // TODO
         }
-        public Game AddPlayer(string name, string squadFormation, string squadName)
+        public void AddPlayer(string name, string squadFormation, string squadName)
         {
             if (!Squad.ValidateSquad(squadFormation))
                 throw new ArgumentException("Incorrect squad given!");
             var squad = Squad.GetRandomSquad(db, squadName, squadFormation);
             var player = new Player(name, squad, new Hand(db.GetCards(10).ToList()), ball);
             players.Add(new PlayerController(player));
-            return this;
         }
 
         private class PlayerController
