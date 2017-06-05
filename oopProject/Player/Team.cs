@@ -24,10 +24,11 @@ namespace oopProject
         public void Update(Ball ball) => Ball = ball;
 
         public void SubstitutionFromHandToSquad(ZoneType type, int cardPosition, 
-                                                FootballCard newCard) {
-            Hand.Remove(newCard);
+                                                int newCardPosition) {
+            var substitution = Hand[newCardPosition];
+            Hand.Remove(substitution);
             var oldCard = Squad.Remove(type, cardPosition);
-            Squad.Insert(type, newCard, cardPosition);
+            Squad.Insert(type, substitution, cardPosition);
             Hand.InsertCard(oldCard);
         }
 

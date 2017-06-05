@@ -108,13 +108,14 @@ namespace oopProject
             var opponent = players.Item2;
 
             PressureAction action = new PressureAction(player.Team);
-            var attackingZone = player.Team.Squad[ZoneType.DEF];
+            var attackingZoneType = ZoneType.DEF;
+            var attackingZone = player.Team.Squad[attackingZoneType];
             var defendingZone = opponent.Team.Squad[ZoneType.ATT];
 
             var opponetZoneRankings = defendingZone.GetCards().Select(f => f.Rank).ToList();
             var playerZoneRankings = attackingZone.GetCards().Select(f => f.Rank).ToList();
 
-            var parameters = new PressureParameters(attackingZone, opponent.Team);
+            var parameters = new PressureParameters(attackingZoneType, opponent.Team);
             action.SetSuitable(parameters);
 
             var executed = action.Execute();
@@ -205,19 +206,20 @@ namespace oopProject
             var action = holder.Get<SwapAction>();
             Assert.True(action.IsAvailable);
 
-            var invalidParameters = new SwapParameters(12, ZoneType.MID, deck.GetCard());
+            var invalidParameters = new SwapParameters(12, ZoneType.MID, 150);
             Assert.False(action.SetSuitable(invalidParameters));
 
             var position = 3;
             var zone = ZoneType.MID;
-            var parameters = new SwapParameters(position, zone, player.Team.Hand[2]);
+            var parameters = new SwapParameters(position, zone, 2);
             Assert.True(action.SetSuitable(parameters));
 
             var swappedCard = player.Team.Squad[zone][position].Card;
+            var substitution = player.Team.Hand[parameters.NewCardPosition];
             action.Execute();
-            Assert.AreEqual(player.Team.Squad[zone][position].Card, parameters.NewCard);
+            Assert.AreEqual(player.Team.Squad[zone][position].Card, substitution);
             Assert.True(player.Team.Hand.Contains(swappedCard));
-            Assert.False(player.Team.Hand.Contains(parameters.NewCard));
+            Assert.False(player.Team.Hand.Contains(substitution));
         }
     }
 

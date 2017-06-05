@@ -18,7 +18,7 @@ namespace oopProject
         public override bool Execute()
         {
             team.SubstitutionFromHandToSquad(parameters.OldCardZone,
-                parameters.CardPosition, parameters.NewCard);
+                parameters.CardPosition, parameters.NewCardPosition);
             wasSuccessfullyExecuted = true;
             return wasSuccessfullyExecuted;
         }
@@ -27,7 +27,7 @@ namespace oopProject
         {
             this.parameters = SetParameters<SwapParameters>(parameters);
             var isActive = team.Squad.IsActive(this.parameters.OldCardZone, this.parameters.CardPosition);
-            return isActive && team.Hand.Contains(this.parameters.NewCard);
+            return isActive && team.Hand.Contains(this.parameters.NewCardPosition);
         }
 
         public override string Explanation => "Swap cards";

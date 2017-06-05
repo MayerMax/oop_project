@@ -12,12 +12,14 @@ namespace oopProject
 
         private FootballDatabase db;
         private List<PlayerController> players;
-        private Deck deck;
         private Ball ball;
 
         private int currentPlayerIdx;
 
-        public Player CurrentPlayer {get { return players[currentPlayerIdx].Player; }}
+        public readonly Deck Deck;
+        public Player CurrentPlayer => players[currentPlayerIdx].Player;
+        public IEnumerable<Player> GetOpponents => players.Select(c => c.Player)
+                                                          .Where(p => p != CurrentPlayer);
 
         public string Score {
             get {
@@ -32,7 +34,7 @@ namespace oopProject
             db = new FootballDatabase(new MongoDatabase());
             players = new List<PlayerController>();
             ball = new Ball();
-            deck = new Deck(db);
+            Deck = new Deck(db);
         }
 
         private void Next() 

@@ -13,6 +13,5 @@ namespace oopProject
         public GetFromDeckParameters(Deck gameDeck) {
             Deck = gameDeck;
         }
-
     }
 }

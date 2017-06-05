@@ -8,12 +8,12 @@ namespace oopProject
 {
     class PressureParameters : IParameters
     {
-        public readonly Zone Zone;
+        public readonly ZoneType ZoneType;
         public readonly Team Enemy;
 
-        public PressureParameters(Zone zone, Team enemy)
+        public PressureParameters(ZoneType zoneType, Team enemy)
         {
-            Zone = zone;
+            ZoneType = zoneType;
             Enemy = enemy;
         }
     }

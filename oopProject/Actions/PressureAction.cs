@@ -25,8 +25,9 @@ namespace oopProject
         public override bool Execute()
         {
             CheckParameters(parameters);
-            var pressure = parameters.Zone.PressurePower();
-            var opponentZone = parameters.Enemy.Squad[Ball.Transitions[parameters.Zone.Type]];
+            var zone = team.Squad[parameters.ZoneType];
+            var pressure = zone.PressurePower();
+            var opponentZone = parameters.Enemy.Squad[Ball.Transitions[parameters.ZoneType]];
             var opponentPressure = opponentZone.PressurePower();
             if (pressure >= opponentPressure)
             {
@@ -34,7 +35,7 @@ namespace oopProject
                 wasSuccessfullyExecuted = true;
             }
             else
-                DecreaseRankings(parameters.Zone, 10, 15);
+                DecreaseRankings(zone, 10, 15);
             return wasSuccessfullyExecuted;
         }
 
@@ -46,7 +47,7 @@ namespace oopProject
         public override bool SetSuitable(IParameters parameters)
         {
             this.parameters = SetParameters<PressureParameters>(parameters);
-            return team.Squad.AnyZone(this.parameters.Zone.Type) && team != this.parameters.Enemy;
+            return team.Squad.AnyZone(this.parameters.ZoneType) && team != this.parameters.Enemy;
         }
 
         public override void Accept(ISuccess success) => success.Apply(this, wasSuccessfullyExecuted);
