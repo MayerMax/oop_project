@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    abstract class Card<T>
+    public abstract class Card<T>
         where T: PlayerInfo
     {
         public readonly string CardName;
@@ -30,7 +30,5 @@ namespace oopProject
         public abstract IEnumerable<string> GeneralDescription();
 
         protected abstract int ClampByModulo(int curValue);
-
-
     }
 }

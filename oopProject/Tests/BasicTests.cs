@@ -7,10 +7,19 @@ using NUnit.Framework;
 
 namespace oopProject
 {
+    [SetUpFixture]
     [TestFixture]
     class BasicTests
     {
-        private FootballDatabase db = new FootballDatabase(new MongoDatabase());
+        private FootballDatabase db;
+        private Game game;
+
+        [SetUp]
+        public void SetUp()
+        {
+            db = new FootballDatabase(new MongoDatabase());
+            game = new Game(db, new Ball());
+        }
         
         [Test]
         public void InitPlayer() {
@@ -31,21 +40,6 @@ namespace oopProject
             Assert.True(Squad.ValidateSquad("4-3-3"));
             Assert.True(Squad.ValidateSquad("3-5-2"));
             Assert.False(Squad.ValidateSquad("5-1-1-1"));
-        }
-
-        [Test]
-        public void CheckActionReflection()
-        {
-            var player = new Player("Max", Squad.GetRandomSquad(db, "N", "4-3-3"),
-                                    new Hand(db.GetCards(10).ToList()), new Ball());
-            var a = new List<Action>() { new SwapAction(player.Team) };
-            var swapParameters = new SwapParameters(1, ZoneType.ATT, 0);
-
-            var holder = new ActionHolder(new List<Type> { Type.GetType("oopProject.SwapAction"),
-                                                           Type.GetType("oopProject.PassAction")});
-            holder.SetToPlayer(player);
-            var res = holder.Get();
-            Assert.AreEqual(2, res.Count());
         }
     }
 }

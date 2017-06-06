@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class AttackBonus : Bonus
+    public interface IFootballDatabase
     {
-        public override void Apply(FootballCard card) => card.Attack++;
-
-        public override string Name => "AttackBonus";
+        FootballCard GetCardOfType(ZoneType zone);
+        IEnumerable<FootballCard> GetCards(int count);
     }
 }

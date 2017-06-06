@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class Position
+    public class Position
     {
         public FootballCard Card { get; set; }
         public readonly int Number;

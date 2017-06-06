@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class Zone : BaseZone
+    public class Zone : BaseZone
     {
         private List<Position> cards;
 

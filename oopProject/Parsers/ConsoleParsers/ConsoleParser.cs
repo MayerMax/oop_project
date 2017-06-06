@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    abstract class ConsoleParser<T> where T : class, IParameters
+    public abstract class ConsoleParser<T> where T : class, IParameters
     {
         protected Game game;
 

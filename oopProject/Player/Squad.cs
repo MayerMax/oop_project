@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class Squad
+    public class Squad
     {
         public static int SQUAD_SIZE = 11;
         public static int TOTAL_FULL_AMOUNT = 4;
@@ -84,10 +84,10 @@ namespace oopProject
             return true;
         }
            
-        public static Squad GetRandomSquad(FootballDatabase db, string name, string formation) =>
+        public static Squad GetRandomSquad(IFootballDatabase db, string name, string formation) =>
             new Squad(name, db.GetCardOfType(ZoneType.GK), GetSquadZones(db, formation), formation);
 
-        private static Dictionary<ZoneType, List<FootballCard>> GetSquadZones(FootballDatabase db, 
+        private static Dictionary<ZoneType, List<FootballCard>> GetSquadZones(IFootballDatabase db, 
                                                                               string formation)
         {
             int[] eachzoneSize = formation.Split('-').Select(elem => int.Parse(elem)).ToArray();

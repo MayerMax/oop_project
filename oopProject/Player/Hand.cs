@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class Hand
+    public class Hand
     {
         private List<FootballCard> hand;
         public int HandSize { get { return hand.Count; }}

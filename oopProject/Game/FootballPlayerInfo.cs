@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class FootballPlayerInfo: PlayerInfo
+    public class FootballPlayerInfo: PlayerInfo
     {
         public FootballPlayerInfo(Dictionary<string, string> attributes) : base(attributes) { }
 

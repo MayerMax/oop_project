@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class Ball
+    public class Ball
     {
         public static ReadOnlyDictionary<ZoneType, ZoneType> Transitions =
             new ReadOnlyDictionary < ZoneType, ZoneType>(
@@ -18,22 +18,22 @@ namespace oopProject
         
         private List<Team> observers;
         private Team owner;
-        public ZoneType BallPlace { get; private set; }
+        public ZoneType Place { get; private set; }
 
         public string Owner => owner.Squad.Name;
 
         public Ball(ZoneType whereToStart=ZoneType.NONE) {
             observers = new List<Team>();
             if (whereToStart != ZoneType.NONE)
-                BallPlace = whereToStart;
+                Place = whereToStart;
 
         }
 
         public void AddObserver(Team observer) {
             if (observers.Count == 0) {
                 owner = observer;
-                if (BallPlace == ZoneType.NONE)
-                    BallPlace = ZoneType.MID;
+                if (Place == ZoneType.NONE)
+                    Place = ZoneType.MID;
             }
             observers.Add(observer);
         }
@@ -45,19 +45,19 @@ namespace oopProject
         }
 
         public void Move() {
-            if (BallPlace < ZoneType.ATT)
-                BallPlace = (ZoneType)((int)BallPlace + 1);
+            if (Place < ZoneType.ATT)
+                Place = (ZoneType)((int)Place + 1);
         }
 
         public void InterceptedBy(Team newOwner) {
             UpdateObservers(newOwner);
-            BallPlace = Transitions[BallPlace];
+            Place = Transitions[Place];
         }
 
         public void Restart(Team newOwner)
         {
             UpdateObservers(newOwner);
-            BallPlace = ZoneType.MID;
+            Place = ZoneType.MID;
         }
 
         private void UpdateObservers(Team newOwner)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class EnemyParser : ConsoleParser<EnemyParameters>
+    public class EnemyParser : ConsoleParser<EnemyParameters>
     {
         public EnemyParser(Game game) : base(game) { }
 

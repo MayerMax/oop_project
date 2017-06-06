@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class SwapParser : ConsoleParser<SwapParameters>
+    public class SwapParser : ConsoleParser<SwapParameters>
     {
         public SwapParser(Game game) : base(game) { }
 

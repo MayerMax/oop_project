@@ -6,26 +6,24 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class PressureAction : Action
+    public class PressureAction : Action
     {
-        private Team team;
         private PressureParameters parameters;
         private Random rand;
 
-        public PressureAction(Team team)
+        public PressureAction()
         {
-            this.team = team;
             rand = new Random();
         }
 
-        public override bool IsAvailable => team.Squad.Any;
+        public override bool IsAvailable => game.CurrentPlayer.Team.Squad.Any;
 
         public override string Explanation => "Attacking an opponent zone, aiming to put off opponent's players";
 
         public override bool Execute()
         {
             CheckParameters(parameters);
-            var zone = team.Squad[parameters.ZoneType];
+            var zone = game.CurrentPlayer.Team.Squad[parameters.ZoneType];
             var pressure = zone.PressurePower();
             var opponentZone = parameters.Enemy.Squad[Ball.Transitions[parameters.ZoneType]];
             var opponentPressure = opponentZone.PressurePower();
@@ -47,6 +45,7 @@ namespace oopProject
         public override bool SetSuitable(IParameters parameters)
         {
             this.parameters = SetParameters<PressureParameters>(parameters);
+            var team = game.CurrentPlayer.Team;
             return team.Squad.AnyZone(this.parameters.ZoneType) && team != this.parameters.Enemy;
         }
 

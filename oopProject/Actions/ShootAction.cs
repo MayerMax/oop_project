@@ -6,19 +6,14 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class ShootAction : Action
+    public class ShootAction : Action
     {
-        private Team team;
         private EnemyParameters parameters;
-
-        public ShootAction(Team team)
-        {
-            this.team = team;
-        }
 
         public override string Explanation => $"Make shoot if you're owning the ball and it is in {ZoneType.ATT}";
 
-        public override bool IsAvailable => team.HasBall && team.Ball.BallPlace == ZoneType.ATT;
+        public override bool IsAvailable => game.CurrentPlayer.Team.HasBall && 
+                                            game.CurrentPlayer.Team.Ball.Place == ZoneType.ATT;
 
         public override bool SetSuitable(IParameters parameters)
         {
@@ -29,6 +24,8 @@ namespace oopProject
         public override bool Execute()
         {
             CheckParameters(parameters);
+
+            var team = game.CurrentPlayer.Team;
             var opponentKeeper = parameters.Enemy.Squad[ZoneType.GK].GetCards().First();
             var result = this.SuccessfulOperation(team, z => z.ShootPower(), 
                                                   parameters.Enemy, z => z.WithAdditionalPower(opponentKeeper));

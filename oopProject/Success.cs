@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-     interface ISuccess {
+     public interface ISuccess {
         string Message { get;}
         void Apply(PassAction action, bool isTrue);
         void Apply(ShootAction action, bool isTrue);
@@ -16,7 +16,7 @@ namespace oopProject
         void Apply(PressureAction action, bool isTrue);
     }
 
-    class Success : ISuccess
+    public class Success : ISuccess
     {
         private Game game;
         public Success(Game game) {
@@ -68,7 +68,7 @@ namespace oopProject
 
         public void Apply(PassAction action, bool isTrue)
         {
-            Action<Player> successPass = p => Message = $"ball moves to {p.Team.Ball.BallPlace}, Nice!";
+            Action<Player> successPass = p => Message = $"ball moves to {p.Team.Ball.Place}, Nice!";
             Action<Player> failurePass = p => Message = $"ball was intercepted by {p.Team.Ball.Owner}";
             Apply(successPass, failurePass, isTrue);
         }

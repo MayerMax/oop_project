@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class SwapParameters : IParameters
+    public class SwapParameters : IParameters
     {
         public readonly int CardPosition;
         public readonly int NewCardPosition;

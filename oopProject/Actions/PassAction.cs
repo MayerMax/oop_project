@@ -2,19 +2,14 @@
 
 namespace oopProject
 {
-    class PassAction : Action
+    public class PassAction : Action
     {
-        private Team team;
         private EnemyParameters parameters;
-
-        public PassAction(Team team)
-        {
-            this.team = team;
-        }
 
         public override string Explanation => "Pass the ball to the next zone";
 
-        public override bool IsAvailable => team.HasBall && team.Ball.BallPlace != ZoneType.ATT;
+        public override bool IsAvailable => game.CurrentPlayer.Team.HasBall && 
+                                            game.CurrentPlayer.Team.Ball.Place != ZoneType.ATT;
 
         public override bool SetSuitable(IParameters parameters)
         {
@@ -27,6 +22,7 @@ namespace oopProject
         {
             CheckParameters(parameters);
 
+            var team = game.CurrentPlayer.Team;
             var result = this.SuccessfulOperation(team, z => z.PassPower(), parameters.Enemy, z => z.DefendPower());
             if (result)
             {

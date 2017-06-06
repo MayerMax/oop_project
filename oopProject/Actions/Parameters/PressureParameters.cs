@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class PressureParameters : IParameters
+    public class PressureParameters : IParameters
     {
         public readonly ZoneType ZoneType;
         public readonly Team Enemy;

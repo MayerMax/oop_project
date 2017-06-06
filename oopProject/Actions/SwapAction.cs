@@ -6,18 +6,13 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class SwapAction : Action
+    public class SwapAction : Action
     {
-        private Team team;
         private SwapParameters parameters;
-
-        public SwapAction(Team team){
-            this.team = team;
-        }
 
         public override bool Execute()
         {
-            team.SubstitutionFromHandToSquad(parameters.OldCardZone,
+            game.CurrentPlayer.Team.SubstitutionFromHandToSquad(parameters.OldCardZone,
                 parameters.CardPosition, parameters.NewCardPosition);
             wasSuccessfullyExecuted = true;
             return wasSuccessfullyExecuted;
@@ -26,13 +21,15 @@ namespace oopProject
         public override bool SetSuitable(IParameters parameters)
         {
             this.parameters = SetParameters<SwapParameters>(parameters);
+            var team = game.CurrentPlayer.Team;
             var isActive = team.Squad.IsActive(this.parameters.OldCardZone, this.parameters.CardPosition);
             return isActive && team.Hand.Contains(this.parameters.NewCardPosition);
         }
 
         public override string Explanation => "Swap cards";
 
-        public override bool IsAvailable => team.Hand.Any && team.Squad.Any;
+        public override bool IsAvailable => game.CurrentPlayer.Team.Hand.Any && 
+                                            game.CurrentPlayer.Team.Squad.Any;
 
         public override void Accept(ISuccess success) => success.Apply(this, wasSuccessfullyExecuted);
     }

@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class Deck
+    public class Deck
     {
         public static readonly int DECK_SIZE = 50;
 
         private Stack<FootballCard> deck;
 
-        public Deck(FootballDatabase db) {
+        public Deck(IFootballDatabase db) {
             deck = new Stack<FootballCard>( db.GetCards(DECK_SIZE));
         }
 

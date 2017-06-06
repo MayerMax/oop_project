@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class FootballDatabase
+    public class FootballDatabase : IFootballDatabase
     {
         private IDatabase database;
         private Dictionary<ZoneType, string[]> types = new Dictionary<ZoneType, string[]>

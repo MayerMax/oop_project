@@ -6,38 +6,34 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class Game
+    public class Game
     {
         public static readonly int PLAYERS_AMOUNT = 2;
 
-        private FootballDatabase db;
-        private List<PlayerController> players;
+        private IFootballDatabase db;
+        private List<Player> players;
         private Ball ball;
 
         private int currentPlayerIdx;
 
         public readonly Deck Deck;
-        public Player CurrentPlayer => players[currentPlayerIdx].Player;
-
-        public IEnumerable<Action> GetActions()
-            => players[currentPlayerIdx].Actions.Get();
+        public Player CurrentPlayer => players[currentPlayerIdx];
         
-        public IEnumerable<Player> GetOpponents => players.Select(c => c.Player)
-                                                          .Where(p => p != CurrentPlayer);
+        public IEnumerable<Player> GetOpponents => players.Where(p => p != CurrentPlayer);
 
         public string Score {
             get {
-                var names = string.Join("vs ", players.Select(f => f.Player.Team.Squad.Name));
-                var scores = string.Join(" : ", players.Select(f => f.Player.Score));
+                var names = string.Join("vs ", players.Select(f => f.Team.Squad.Name));
+                var scores = string.Join(" : ", players.Select(f => f.Score));
                 return $"{names},{scores}";
                 }
         }
 
-        public Game()
+        public Game(IFootballDatabase database, Ball ball)
         {
-            db = new FootballDatabase(new MongoDatabase());
-            players = new List<PlayerController>();
-            ball = new Ball();
+            db = database;
+            players = new List<Player>();
+            this.ball = ball;
             Deck = new Deck(db);
         }
 
@@ -56,21 +52,13 @@ namespace oopProject
             if (!Squad.ValidateSquad(squadFormation))
                 throw new ArgumentException("Incorrect squad given!");
             var squad = Squad.GetRandomSquad(db, squadName, squadFormation);
-            var player = new Player(name, squad, new Hand(db.GetCards(10).ToList()), ball);
-            players.Add(new PlayerController(player));
+            players.Add(new Player(name, squad, new Hand(db.GetCards(10).ToList()), ball));
         }
 
-        private class PlayerController
+        public Game AddPlayer(Player player)
         {
-            public readonly ActionHolder Actions;
-            public readonly Player Player;
-
-            public PlayerController(Player player)
-            {
-                Player = player;
-                Actions = new ActionHolder(ActionHolder.GetAllActionTypes());
-                Actions.SetToPlayer(Player);
-            }
+            players.Add(player);
+            return this;
         }
     }    
 }

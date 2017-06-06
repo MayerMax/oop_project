@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class ConsoleController
+    public class ConsoleController
     {
-
         private Game game;
-        public ConsoleController() {
-            game = new Game();
+        private List<Action> actions;
+    
+        public ConsoleController(Game game, List<Action> actions) {
+            this.game = game;
+            this.actions = actions;
             for (int i = 0; i < Game.PLAYERS_AMOUNT; i++)
                 InitPlayer();
         }
@@ -32,8 +34,7 @@ namespace oopProject
         }
 
         private int PlayerChoice() {
-            var actionsList = game.GetActions().ToList();
-            ShowActions(actionsList);
+            ShowActions(actions);
             Console.WriteLine("Choose available action");
 
             while (true)
@@ -41,7 +42,7 @@ namespace oopProject
                 try
                 {
                     var choice = int.Parse(Console.ReadLine());
-                    if (actionsList[choice].IsAvailable)
+                    if (actions[choice].IsAvailable)
                         return choice;
                 }
                 catch (Exception) {

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace oopProject
 {   
     // this class describes container for a squad line 
-    abstract class BaseZone
+    public abstract class BaseZone
     {
         public readonly int Size;
         public readonly ZoneType Type;

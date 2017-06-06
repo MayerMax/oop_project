@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class PressureParser : ConsoleParser<PressureParameters>
+    public class PressureParser : ConsoleParser<PressureParameters>
     {
         public PressureParser(Game game) : base(game) { }
 

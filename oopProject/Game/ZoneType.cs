@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    enum ZoneType
+    public enum ZoneType
     {
         NONE, GK, DEF, MID, ATT
     }

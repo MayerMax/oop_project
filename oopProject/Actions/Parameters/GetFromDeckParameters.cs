@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class GetFromDeckParameters :IParameters
+    public class GetFromDeckParameters :IParameters
     {
         public readonly Deck Deck;
 

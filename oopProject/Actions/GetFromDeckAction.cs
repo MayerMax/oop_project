@@ -6,14 +6,9 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class GetFromDeckAction : Action
+    public class GetFromDeckAction : Action
     {
-        private Team team;
         private GetFromDeckParameters parameters;
-
-        public GetFromDeckAction(Team team) {
-            this.team = team;
-        }
 
         public override string Explanation => "Get card from deck and put it in hand";
 
@@ -30,7 +25,7 @@ namespace oopProject
             Deck deck = parameters.Deck;
             if (!deck.Any)
                 return false;
-            team.Hand.InsertCard(deck.GetCard());
+            game.CurrentPlayer.Team.Hand.InsertCard(deck.GetCard());
             wasSuccessfullyExecuted = true;
             return wasSuccessfullyExecuted;
         }

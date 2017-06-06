@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class Team
+    public class Team
     {
         public readonly Squad Squad;
         public readonly Hand Hand;

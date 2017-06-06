@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class MongoDatabase : IDatabase
+    public class MongoDatabase : IDatabase
     {
         private IMongoCollection<BsonDocument> collection;
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class FootballCard : Card<FootballPlayerInfo>
+    public class FootballCard : Card<FootballPlayerInfo>
     {
         public static readonly int MAXCHAR = 10;
         private Func<List<string>, int> evaluateFunction;
@@ -18,6 +18,7 @@ namespace oopProject
                 rank = value;
             }
         }
+
         public int Defend { get; set; }
         public int Attack { get; set; }
         public int Midfield { get; set; }

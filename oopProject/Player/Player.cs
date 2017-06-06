@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class Player
+    public class Player
     {
         public readonly string Name;
 

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace oopProject
 {
-    interface IDatabase
+    public interface IDatabase
     { 
         PlayerInfo GetPlayerInfo(string name);
         PlayerInfo GetPlayerOfType(params string[] types);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class DeckParser : ConsoleParser<GetFromDeckParameters>
+    public class DeckParser : ConsoleParser<GetFromDeckParameters>
     {
         public DeckParser(Game game) : base(game) { }
 

@@ -6,17 +6,11 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class InterceptionAction : Action
+    public class InterceptionAction : Action
     {
-        private Team team;
         private EnemyParameters parameters;
 
-        public InterceptionAction(Team team)
-        {
-            this.team = team;
-        }
-
-        public override bool IsAvailable => !team.HasBall;
+        public override bool IsAvailable => !game.CurrentPlayer.Team.HasBall;
 
         public override string Explanation => "Try to intercept the ball";
 
@@ -30,8 +24,9 @@ namespace oopProject
         {
             CheckParameters(parameters);
 
+            var team = game.CurrentPlayer.Team;
             var result = this.SuccessfulOperation(team, z => z.InterceptPower(), parameters.Enemy, 
-                                                        z => z.DefendPower());
+                                                  z => z.DefendPower());
             if (result)
             {
                 parameters.Enemy.Ball.InterceptedBy(team);

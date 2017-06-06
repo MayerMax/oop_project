@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    abstract class Action
+    public abstract class Action
     {
         public abstract bool IsAvailable { get; }
         public abstract string Explanation { get; }
@@ -16,8 +16,11 @@ namespace oopProject
         public abstract void Accept(ISuccess success);
 
         protected bool wasSuccessfullyExecuted;
+        protected Game game;
 
-        protected T SetParameters<T>( IParameters parameters) where T :class {
+        public void SetUp(Game game) => this.game = game;
+
+        protected T SetParameters<T>(IParameters parameters) where T :class {
             var converted = parameters as T;
             if (converted == null)
                 throw new ArgumentException("Invalid parameters");
@@ -31,12 +34,12 @@ namespace oopProject
          
     }
 
-    static class ActionExtensions
+    public static class ActionExtensions
     {
         public static bool SuccessfulOperation(this Action action, Team curTeam, Func<Zone, double> currentPlayerFunc, 
                                                Team anotherTeam, Func<Zone, double> opponentFunc)
         {
-            var ballZone = curTeam.Ball.BallPlace;
+            var ballZone = curTeam.Ball.Place;
             var ballZonePower = curTeam.Squad.GetZonePower(ballZone, currentPlayerFunc);
             var enemyOppositeZonePower = anotherTeam.Squad.GetZonePower(Ball.Transitions[ballZone],
                                                                              opponentFunc);

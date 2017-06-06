@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    class EnemyParameters : IParameters
+    public class EnemyParameters : IParameters
     {
         public readonly Team Enemy;
 
