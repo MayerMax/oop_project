@@ -61,10 +61,13 @@ namespace oopProject
 
         public double GetZonePower(ZoneType zoneType, Func<Zone, double> calculate) => calculate(squad[zoneType]);
         
-        public string Print() {
+        public string Print(ZoneType ballPlace, bool withBall) {
             StringBuilder sb = new StringBuilder();
             foreach (var zone in squad)
-                sb.Append($"{zone.Key}. {zone.Key} - {zone.Value.Print()}\n");
+            {
+                sb.Append($"{zone.Key}. {zone.Value.Print()}");
+                if (zone.Key == ballPlace && withBall) sb.Append(" [BALL]\n"); else sb.Append("\n");
+            }
             return sb.ToString();
         }
 

@@ -24,7 +24,7 @@ namespace oopProject
         {
             var player = new Player("Max", Squad.GetRandomSquad(db, "N", "4-3-3"),
                                     new Hand(db.GetCards(10).ToList()), new Ball());
-            Console.WriteLine(player.PrintTeam());
+            Console.WriteLine(player.PrintTeam(game.BallPlace));
         }
         [Test]
         public void CheckDeck()

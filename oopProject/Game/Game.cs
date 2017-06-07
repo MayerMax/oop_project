@@ -9,7 +9,7 @@ namespace oopProject
     public class Game
     {
         public static readonly int PLAYERS_AMOUNT = 2;
-        public static readonly int MOVES_AMOUNT = 45;
+        public static readonly int MOVES_AMOUNT = 2;
 
         private IFootballDatabase db;
         private List<Player> players;
@@ -22,14 +22,17 @@ namespace oopProject
         public int MovesLeft { get; private set; }
 
         public Player CurrentPlayer => players[currentPlayerIdx];
+        public string BallOwner => ball.Owner;
+        public ZoneType BallPlace => ball.Place;
         public string Message => success.Message;
+        public string Winner => players.OrderByDescending(p => p.Score).First().Name;
 
         public IEnumerable<Player> GetOpponents => players.Where(p => p != CurrentPlayer);
         public string Score {
             get {
-                var names = string.Join("vs ", players.Select(f => f.Team.Squad.Name));
+                var names = string.Join(" vs ", players.Select(f => f.Team.Squad.Name));
                 var scores = string.Join(" : ", players.Select(f => f.Score));
-                return $"{names},{scores}";
+                return $"{names}, {scores}";
                 }
         }
 

@@ -24,24 +24,41 @@ namespace oopProject
                 InitPlayer();
         }
 
-        private Tuple<IAction, IParameters> RequireChoice()
+        private Tuple<IAction, IParameters> GetActionAndParameters(int playerChoice)
         {
-            int playerChoice = PlayerChoice();
             var action = GetAvailableActions().ElementAt(playerChoice);
             var parser = GetParser(action);
             var parametersFormat = (string)parser.GetType()
                                                  .GetMethod("GetParametersFormat")
                                                  .Invoke(parser, new object[] { });
-            var strParameters = GetUserInput(parametersFormat);
-            return Tuple.Create(action, GetParameters(parser, strParameters));
+            while (true)
+            {
+                var strParameters = GetUserInput(parametersFormat);
+                try
+                {
+                    return Tuple.Create(action, GetParameters(parser, strParameters));
+                }
+                catch (ArgumentException e)
+                {
+                    Console.WriteLine($"{e.Message}. Retry!");
+                }
+            }
         }
 
         private void Turn() {
             Console.WriteLine("--------------------");
-            Console.WriteLine($"{game.CurrentPlayer.Name}'s turn");
-            Console.WriteLine($"{game.CurrentPlayer.PrintTeam()}");
+            PrintGameInfo();
             ShowAvailableActions();
-            game.Turn(RequireChoice());
+            int playerChoice = PlayerChoice();
+            while (true)
+            {
+                try
+                {
+                    game.Turn(GetActionAndParameters(playerChoice));
+                    break;
+                }
+                catch (ArgumentException e) { Console.WriteLine($"{e.Message}. Retry!"); }
+            }
             Console.WriteLine(game.Message);
             Console.WriteLine("--------------------\n");
 
@@ -49,20 +66,23 @@ namespace oopProject
 
         public void Loop() {
             Console.WriteLine("The game is On!");
-            while (true) {
+            while (!game.IsEnd) {
                 try
                 {
                     Turn();
                 }
                 catch (GameEndException) {
-                    Console.WriteLine("The game is over!");
-                    /// TODO
+                    break;
                 }
             }
+            Console.WriteLine("The game is over!");
+            Console.WriteLine($"{game.Score}\nThe winner is {game.Winner}");
+            return;
         }
+
         private void ShowAvailableActions()
         {
-            var i = 0;
+            var i = 1;
             foreach (var action in GetAvailableActions())
                 Console.WriteLine($"{i++}.{action.Explanation}");
         }
@@ -70,25 +90,29 @@ namespace oopProject
         private int PlayerChoice()
         {
             Console.WriteLine("Choose available action");
-
+            var availableActionsAmount = GetAvailableActions().Count();
             while (true)
             {
                 try
                 {
-                    return int.Parse(Console.ReadLine());
+                    var choice = int.Parse(Console.ReadLine());
+                    if (choice > 0 && choice <= availableActionsAmount)
+                        return --choice;
                 }
                 catch (Exception)
                 {
                     Console.WriteLine("Expected to see integer");
                 }
-                //Console.WriteLine("You've typed (UNAVAILABLE) action number, Retry!");
+                Console.WriteLine("Invalid input, Retry!");
             }
         }
 
         private void InitPlayer()
         {
             var playerName = GetUserInput("Enter Your name!");
-            var formation = GetUserInput($"Hey, {playerName}, enter your formation, within next format: X-X-X");
+            var formationInfo = $"maximum {Squad.SQUAD_SIZE} players in total, zone limit - {Squad.ZONE_LIMIT} players";
+            var formation = 
+                GetUserInput($"Hey, {playerName}, enter your formation, within next format: X-X-X ({formationInfo})");
             var teamName = GetUserInput($"Hey, {playerName}, enter your team name");
 
             while (true)
@@ -98,7 +122,7 @@ namespace oopProject
                     game.AddPlayer(playerName, formation, teamName);
                     break;
                 }
-                catch (ArgumentException e)
+                catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                     formation = GetUserInput("Enter your formation, within next format: X-X-X");
@@ -114,7 +138,13 @@ namespace oopProject
         }
 
         private IParameters GetParameters(object parser, string strParameters)
-            => (IParameters)parser.GetType().GetMethod("Parse").Invoke(parser, new[] { strParameters });
+        {
+            try
+            {
+                return (IParameters)parser.GetType().GetMethod("Parse").Invoke(parser, new[] { strParameters });
+            }
+            catch (TargetInvocationException e) { throw (e.InnerException); }
+        }
 
         private object GetParser(IAction action)
         {
@@ -132,6 +162,18 @@ namespace oopProject
                            .GetTypes()
                            .Where(t => t.BaseType != null && t.BaseType.IsGenericType &&
                                        t.BaseType.GetGenericTypeDefinition() == typeof(ConsoleParser<>));
+        }
+
+        private void PrintGameInfo()
+        {
+            Console.WriteLine(game.Score);
+            Console.WriteLine($"Moves left: {game.MovesLeft}\n");
+            Console.WriteLine($"{game.CurrentPlayer.Name}'s turn\n");
+            Console.WriteLine($"{game.CurrentPlayer.PrintTeam(game.BallPlace)}");
+            Console.WriteLine("Opponent teams");
+            foreach (var enemy in game.GetOpponents)
+                Console.WriteLine($"{enemy.PrintTeam(game.BallPlace)}\n");
+            Console.WriteLine($"Your Hand: {game.CurrentPlayer.Team.Hand.Print()}\n");
         }
     }
 }

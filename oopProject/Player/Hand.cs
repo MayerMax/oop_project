@@ -45,5 +45,11 @@ namespace oopProject
         public bool Contains(FootballCard card) => hand.Contains(card);
 
         public bool Contains(int index) => index < hand.Count;
+
+        public string Print()
+        {
+            var cards = string.Join(", ", hand.Select(c => c.CardName).ToArray());
+            return $"[{cards}]";
+        }
     }
 }

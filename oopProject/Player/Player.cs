@@ -19,11 +19,10 @@ namespace oopProject
             Team = new Team(squad, hand, ball);
         }
 
-        public void IncreaseScore() => Score += 1;
-        
+        public void IncreaseScore(int points) => Score += points;
 
-        public string PrintTeam() {
-            return $"Player {Name}\nSquad is:\n{Team.Squad.Print()}";
+        public string PrintTeam(ZoneType ballPlace) {
+            return $"Player {Name}\nSquad is:\n{Team.Squad.Print(ballPlace, Team.HasBall)}";
         } 
 
         public override bool Equals(object obj)
