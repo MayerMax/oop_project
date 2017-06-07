@@ -64,7 +64,7 @@ namespace oopProject
         public string Print() {
             StringBuilder sb = new StringBuilder();
             foreach (var zone in squad)
-                sb.Append($"{(int)zone.Key}. {zone.Key} - {zone.Value.Print()}\n");
+                sb.Append($"{zone.Key}. {zone.Key} - {zone.Value.Print()}\n");
             return sb.ToString();
         }
 

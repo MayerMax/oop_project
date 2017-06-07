@@ -17,7 +17,7 @@ namespace oopProject
         public override bool Execute(EnemyParameters parameters)
         {
             var team = game.CurrentPlayer.Team;
-            var result = this.SuccessfulOperation(team, z => z.InterceptPower(), parameters.Enemy, 
+            var result = this.SuccessfulOperation(parameters.Enemy, z => z.InterceptPower(), team, 
                                                   z => z.DefendPower());
             if (result)
             {

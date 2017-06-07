@@ -12,5 +12,6 @@ namespace oopProject
         bool IsAvailable { get; }
         bool Execute(IParameters parameters);
         void SetUp(Game game);
+        void Accept(ISuccess success);
     }
 }

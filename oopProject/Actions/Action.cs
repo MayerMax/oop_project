@@ -41,6 +41,7 @@ namespace oopProject
         public static bool SuccessfulOperation(this IAction action, Team curTeam, Func<Zone, double> currentPlayerFunc, 
                                                Team anotherTeam, Func<Zone, double> opponentFunc)
         {
+            ////
             var ballZone = curTeam.Ball.Place;
             var ballZonePower = curTeam.Squad.GetZonePower(ballZone, currentPlayerFunc);
             var enemyOppositeZonePower = anotherTeam.Squad.GetZonePower(Ball.Transitions[ballZone],

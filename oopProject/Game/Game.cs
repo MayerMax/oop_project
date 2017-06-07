@@ -9,18 +9,22 @@ namespace oopProject
     public class Game
     {
         public static readonly int PLAYERS_AMOUNT = 2;
+        public static readonly int MOVES_AMOUNT = 45;
 
         private IFootballDatabase db;
         private List<Player> players;
         private Ball ball;
+        private ISuccess success;
 
         private int currentPlayerIdx;
 
         public readonly Deck Deck;
-        public Player CurrentPlayer => players[currentPlayerIdx];
-        
-        public IEnumerable<Player> GetOpponents => players.Where(p => p != CurrentPlayer);
+        public int MovesLeft { get; private set; }
 
+        public Player CurrentPlayer => players[currentPlayerIdx];
+        public string Message => success.Message;
+
+        public IEnumerable<Player> GetOpponents => players.Where(p => p != CurrentPlayer);
         public string Score {
             get {
                 var names = string.Join("vs ", players.Select(f => f.Team.Squad.Name));
@@ -29,24 +33,31 @@ namespace oopProject
                 }
         }
 
-        public Game(IFootballDatabase database, Ball ball)
+        public Game(IFootballDatabase database)
         {
             db = database;
             players = new List<Player>();
-            this.ball = ball;
+            ball = new Ball();
             Deck = new Deck(db);
+            success = new Success(this);
+            MovesLeft = MOVES_AMOUNT; 
         }
 
         private void Next() 
             =>currentPlayerIdx = (currentPlayerIdx + 1) % players.Count;
-        
-        private void Round() {
 
+        public void Turn(Tuple<IAction, IParameters> executionPair) {
+            if (IsEnd)
+                throw new GameEndException();
+            executionPair.Item1.Execute(executionPair.Item2);
+            executionPair.Item1.Accept(success);
+            MovesLeft--;
+            Next();
         }
 
-        public void Run() {
-            // TODO
-        }
+        public bool IsEnd => (MovesLeft == 0) || (!CurrentPlayer.Team.Squad.Any);
+              
+           
         public void AddPlayer(string name, string squadFormation, string squadName)
         {
             ValidateFormation(squadFormation);
@@ -66,5 +77,9 @@ namespace oopProject
             if (!Squad.ValidateSquad(formation))
                 throw new ArgumentException("Incorrect squad given!");
         }
+    }
+
+    public class GameEndException : InvalidOperationException {
+
     }    
 }

@@ -60,7 +60,7 @@ namespace oopProject
             System.Action<Player> successShot = p =>
             {
                 p.IncreaseScore();
-                Message = "Congratulations! You've scored a goal! Юр'а(ну вы поняли) amazing!";
+                Message = "Congratulations! You've scored a goal! You're amazing!";
             };
 
             System.Action<Player> failureShot = p => Message = $"Unlucky this time! Ball goes to {p.Team.Ball.Owner}";

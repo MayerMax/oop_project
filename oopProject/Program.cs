@@ -17,14 +17,15 @@ namespace oopProject
             var container = new StandardKernel();
             container.Bind<IDatabase>().To<MongoDatabase>();
             container.Bind<IFootballDatabase>().To<FootballDatabase>();
-            container.Bind<Ball>().ToSelf();
             container.Bind<IAction>().To<GetFromDeckAction>();
             container.Bind<IAction>().To<InterceptionAction>();
             container.Bind<IAction>().To<PassAction>();
             container.Bind<IAction>().To<PressureAction>();
             container.Bind<IAction>().To<ShootAction>();
             container.Bind<IAction>().To<SwapAction>();
+            container.Bind<ISuccess>().To<Success>();
             var controller = container.Get<ConsoleController>();
+            controller.Loop();
         }
     }
 }
