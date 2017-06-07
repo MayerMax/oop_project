@@ -36,12 +36,12 @@ namespace oopProject
             container.Bind<IDatabase>().To<MongoDatabase>();
             container.Bind<IFootballDatabase>().To<FootballDatabase>();
             container.Bind<Ball>().ToSelf();
-            container.Bind<Action>().To<GetFromDeckAction>();
-            container.Bind<Action>().To<InterceptionAction>();
-            container.Bind<Action>().To<PassAction>();
-            container.Bind<Action>().To<PressureAction>();
-            container.Bind<Action>().To<ShootAction>();
-            container.Bind<Action>().To<SwapAction>();
+            container.Bind<IAction>().To<GetFromDeckAction>();
+            container.Bind<IAction>().To<InterceptionAction>();
+            container.Bind<IAction>().To<PassAction>();
+            container.Bind<IAction>().To<PressureAction>();
+            container.Bind<IAction>().To<ShootAction>();
+            container.Bind<IAction>().To<SwapAction>();
             return container;
         }
 
@@ -89,9 +89,8 @@ namespace oopProject
                 action.SetUp(Parameters.Container.Get<Game>().AddPlayer(player).AddPlayer(opponent));
                 var shootParams = new EnemyParameters(opponent.Team);
 
-                action.SetSuitable(shootParams);
                 Assert.True(ball.Place == ZoneType.ATT);
-                var executionStatus = action.Execute();
+                var executionStatus = action.Execute(shootParams);
                 if (executionStatus)
                 {
                     Assert.True(ball.Place == ZoneType.MID);
@@ -120,7 +119,7 @@ namespace oopProject
             var player = players.Item1;
             var opponent = players.Item2;
 
-            PressureAction action = Parameters.Container.Get<PressureAction>();
+            IAction action = Parameters.Container.Get<PressureAction>();
             action.SetUp(Parameters.Container.Get<Game>().AddPlayer(player).AddPlayer(opponent));
             var attackingZoneType = ZoneType.DEF;
             var attackingZone = player.Team.Squad[attackingZoneType];
@@ -130,9 +129,8 @@ namespace oopProject
             var playerZoneRankings = attackingZone.GetCards().Select(f => f.Rank).ToList();
 
             var parameters = new PressureParameters(attackingZoneType, opponent.Team);
-            action.SetSuitable(parameters);
 
-            var executed = action.Execute();
+            var executed = action.Execute(parameters);
             if (executed)
             {
                 var newOpponentsRanking = defendingZone.GetCards().Select(f => f.Rank).ToList();
@@ -164,14 +162,13 @@ namespace oopProject
             Deck deck = new Deck(Parameters.Container.Get<IFootballDatabase>());
             var player = Parameters.GeneratePlayer(ball);
 
-            var action = Parameters.Container.Get<GetFromDeckAction>();
+            IAction action = Parameters.Container.Get<GetFromDeckAction>();
             action.SetUp(Parameters.Container.Get<Game>().AddPlayer(player));
 
             var deckParameters = new GetFromDeckParameters(deck);
             Assert.True(action.IsAvailable);
-            action.SetSuitable(deckParameters);
 
-            var executed = action.Execute();
+            var executed = action.Execute(deckParameters);
             Assert.True(executed);
 
             Assert.True(player.Team.Hand.Any);
@@ -190,16 +187,15 @@ namespace oopProject
             var players = Parameters.GetPlayers(ball);
             var first = players.Item1;
             var second = players.Item2;
-            var action = Parameters.Container.Get<PassAction>();
+            IAction action = Parameters.Container.Get<PassAction>();
             action.SetUp(Parameters.Container.Get<Game>().AddPlayer(first).AddPlayer(second));
 
             Assert.True(first.Team.HasBall);
             Assert.AreEqual(first.Team.Ball.Place, ZoneType.MID);
 
             var parameters = new EnemyParameters(second.Team);
-            Assert.True(action.SetSuitable(parameters));
 
-            if (action.Execute())
+            if (action.Execute(parameters))
                 Assert.AreEqual(first.Team.Ball.Place, ZoneType.ATT);
             else
             {
@@ -218,21 +214,21 @@ namespace oopProject
             var ball = Parameters.Container.Get<Ball>();
             Deck deck = new Deck(Parameters.Container.Get<IFootballDatabase>());
             var player = Parameters.GeneratePlayer(ball);
-            var action = Parameters.Container.Get<SwapAction>();
+            IAction action = Parameters.Container.Get<SwapAction>();
             action.SetUp(Parameters.Container.Get<Game>().AddPlayer(player));
             Assert.True(action.IsAvailable);
 
             var invalidParameters = new SwapParameters(12, ZoneType.MID, 150);
-            Assert.False(action.SetSuitable(invalidParameters));
+            Assert.Throws(typeof(ArgumentException), () => action.Execute(invalidParameters));
 
             var position = 3;
             var zone = ZoneType.MID;
             var parameters = new SwapParameters(position, zone, 2);
-            Assert.True(action.SetSuitable(parameters));
 
             var swappedCard = player.Team.Squad[zone][position].Card;
             var substitution = player.Team.Hand[parameters.NewCardPosition];
-            action.Execute();
+
+            action.Execute(parameters);
             Assert.AreEqual(player.Team.Squad[zone][position].Card, substitution);
             Assert.True(player.Team.Hand.Contains(swappedCard));
             Assert.False(player.Team.Hand.Contains(substitution));
@@ -250,7 +246,7 @@ namespace oopProject
             var first = players.Item1;
             var second = players.Item2;
             var game = Parameters.Container.Get<Game>().AddPlayer(first).AddPlayer(second);
-            var action = Parameters.Container.Get<InterceptionAction>();
+            IAction action = Parameters.Container.Get<InterceptionAction>();
             action.SetUp(game);
 
             var ballPlace = ZoneType.MID;
@@ -258,9 +254,8 @@ namespace oopProject
             Assert.AreEqual(first.Team.Ball.Place, ballPlace);
 
             var parameters = new EnemyParameters(first.Team);
-            Assert.True(action.SetSuitable(parameters));
 
-            if (action.Execute())
+            if (action.Execute(parameters))
             {
                 Assert.True(second.Team.HasBall);
                 Assert.AreEqual(second.Team.Ball.Place, ballPlace);

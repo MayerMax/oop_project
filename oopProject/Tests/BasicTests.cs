@@ -7,8 +7,6 @@ using NUnit.Framework;
 
 namespace oopProject
 {
-    [SetUpFixture]
-    [TestFixture]
     class BasicTests
     {
         private FootballDatabase db;
@@ -20,15 +18,17 @@ namespace oopProject
             db = new FootballDatabase(new MongoDatabase());
             game = new Game(db, new Ball());
         }
-        
+
         [Test]
-        public void InitPlayer() {
+        public void InitPlayer()
+        {
             var player = new Player("Max", Squad.GetRandomSquad(db, "N", "4-3-3"),
                                     new Hand(db.GetCards(10).ToList()), new Ball());
             Console.WriteLine(player.PrintTeam());
         }
         [Test]
-        public void CheckDeck() {
+        public void CheckDeck()
+        {
             var deck = new Deck(db);
             var card = deck.GetCard();
             Assert.True(card.GetType() == typeof(FootballCard));
@@ -36,7 +36,8 @@ namespace oopProject
 
 
         [Test]
-        public void SquadValidation() {
+        public void SquadValidation()
+        {
             Assert.True(Squad.ValidateSquad("4-3-3"));
             Assert.True(Squad.ValidateSquad("3-5-2"));
             Assert.False(Squad.ValidateSquad("5-1-1-1"));

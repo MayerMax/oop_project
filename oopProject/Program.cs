@@ -18,12 +18,12 @@ namespace oopProject
             container.Bind<IDatabase>().To<MongoDatabase>();
             container.Bind<IFootballDatabase>().To<FootballDatabase>();
             container.Bind<Ball>().ToSelf();
-            container.Bind<Action>().To<GetFromDeckAction>();
-            container.Bind<Action>().To<InterceptionAction>();
-            container.Bind<Action>().To<PassAction>();
-            container.Bind<Action>().To<PressureAction>();
-            container.Bind<Action>().To<ShootAction>();
-            container.Bind<Action>().To<SwapAction>();
+            container.Bind<IAction>().To<GetFromDeckAction>();
+            container.Bind<IAction>().To<InterceptionAction>();
+            container.Bind<IAction>().To<PassAction>();
+            container.Bind<IAction>().To<PressureAction>();
+            container.Bind<IAction>().To<ShootAction>();
+            container.Bind<IAction>().To<SwapAction>();
             var controller = container.Get<ConsoleController>();
         }
     }

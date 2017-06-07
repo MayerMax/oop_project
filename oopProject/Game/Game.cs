@@ -49,16 +49,22 @@ namespace oopProject
         }
         public void AddPlayer(string name, string squadFormation, string squadName)
         {
-            if (!Squad.ValidateSquad(squadFormation))
-                throw new ArgumentException("Incorrect squad given!");
+            ValidateFormation(squadFormation);
             var squad = Squad.GetRandomSquad(db, squadName, squadFormation);
             players.Add(new Player(name, squad, new Hand(db.GetCards(10).ToList()), ball));
         }
 
         public Game AddPlayer(Player player)
         {
+            ValidateFormation(player.Team.Squad.Formation);
             players.Add(player);
             return this;
+        }
+
+        private void ValidateFormation(string formation)
+        {
+            if (!Squad.ValidateSquad(formation))
+                throw new ArgumentException("Incorrect squad given!");
         }
     }    
 }
