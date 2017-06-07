@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Arslanova | Shaposhnikov presentation</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="css/reveal.css">
+<link rel="stylesheet" href="css/theme/night.css" id="theme">
+<link rel="stylesheet" href="lib/css/zenburn.css">
+<style>
+.block {
+    border: 1px solid white;
+    text-align: center;
+    vertical-align: middle;
+}
+.circle {
+    background: #838da6;
+    border-radius: 200px;
+    color: white;
+    height: 300px;
+    font-weight: bold;
+    width: 300px;
+    display: table;
+    margin: 20px auto;
+}
+.circle p {
+    vertical-align: middle;
+    display: table-cell;
+}
+</style>
+</head>
+
+	
+	<div class="reveal slidehas-vertical-slides has-horizontal-slides ready">
+		<div class="slides" style="width:960px;">
+			<section id="Hello">
+				<div class="container-fluid text-center back-one">
+					<div class="one">
+						<h3>ScoreX</h3>
+						<img src = "player.png" width="300" height="300" class ="img-circle" alt="player">
+						<h4 id="txt-in">Итоговый проект по курсу &#10;Основы Проектирования на C#</h4>
+					</div>
+			</section>
+			<section id="game-topic">
+				<h3>Об игре</h3>
+				<section data-background-transition="zoom" style="background:#8b0000;">
+					<h3>Тема</h3>
+					<ul>
+						<li>Казуальная карточная(визуализация)игра</li>
+						<li>Антураж - футбольные команды и игроки</li>
+						<li>вдохновление - HeartStone</li>
+					</ul>
+				</section>
+				<section data-background-transition="zoom" style="background:#838da6">
+					<h3>Как это выглядит</h3>
+					<p>Фото демки юнити</p>
+				</section>
+				<section data-background-transition="zoom">
+					<h3>Суть</h3>
+					<div class="row">
+						<div class="col-md-4">Играют 2 игрока</div>
+	  					<div class="col-md-4">Сначала договариваются о правилах</div>
+	  					<div class="col-md-4">Поочередно ходят в соответствии с правилами</div>
+	  					<div class="col-md-4">Побеждает тот, у кого больше очков</div>
+					</div>
+				</section>
+			</section>
+			<section id="who-made-what">
+				<h3>Кто и что делал</h3>
+				<div class="row">
+					<div class="col-sm-6">
+						<h4>Максим</h4>
+						<img src = "https://pp.userapi.com/c627520/v627520473/23db4/2Gpdq64tqlQ.jpg" width="200" height="200" class ="img-circle" alt="player">
+						<ol>
+							<li>Actions</li>
+							<li>Unity</li>
+							<li>Внутрення логика</li>
+						</ol>
+					</div>
+					<div class="col-sm-6">
+						<h4>Елена</h4>
+						<img src = "elena.jpg" width="200" height="200" class ="img-circle" alt="player">
+						<ol>
+							<li>База данных</li>
+							<li>Конссольный контроллер</li>
+							<li>Actions</li>
+						</ol>
+					</div>
+				</div>
+			</section>
+			<section id="extend-points">
+				<h3>Точки расширения проекта</h3>
+				<div class="row">
+					<div class="col-md-4 block">
+						<div class="circle">
+							<p>Actions</p>
+						</div>
+					</div>
+					<div class="col-md-4 block">
+						<div class="circle">
+							<p>Хранилище</p>
+						</div>
+					</div>
+					<div class="col-md-4 block">
+						<div class="circle">
+							<p>Механика</p>
+						</div>
+					</div>
+			</section>
+			<section id="action-point">
+				<h3>Реализация механики</h3>
+				<p>Action - основа гибкости игры</p>
+				<pre style='color:#000020;background:#f6f8ff;'><span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>interface</span> IAction
+    <span style='color:#406080; '>{</span>
+        <span style='color:#200080; font-weight:bold; '>string</span> Explanation <span style='color:#406080; '>{</span> <span style='color:#200080; font-weight:bold; '>get</span><span style='color:#406080; '>;</span> <span style='color:#406080; '>}</span>
+        <span style='color:#200080; font-weight:bold; '>int</span> Value <span style='color:#406080; '>{</span> <span style='color:#200080; font-weight:bold; '>get</span><span style='color:#406080; '>;</span> <span style='color:#406080; '>}</span>
+        <span style='color:#200080; font-weight:bold; '>bool</span> IsAvailable <span style='color:#406080; '>{</span> <span style='color:#200080; font-weight:bold; '>get</span><span style='color:#406080; '>;</span> <span style='color:#406080; '>}</span>
+        <span style='color:#200080; font-weight:bold; '>bool</span> Execute<span style='color:#308080; '>(</span>IParameters parameters<span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
+        <span style='color:#200080; font-weight:bold; '>void</span> SetUp<span style='color:#308080; '>(</span>Game game<span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
+        <span style='color:#200080; font-weight:bold; '>void</span> Accept<span style='color:#308080; '>(</span>ISuccess success<span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
+    <span style='color:#406080; '>}</span>
+</pre>
+
+			<p style>Удобно хранить действия внутри одной структуры данных</p>
+			</section>
+			<section id="action-point">
+				<h3>Реализация механики</h3>
+				<p style="font-size:30px">Действия принимают разные параметры: разное количество разного типа</p>
+				<pre style='color:#000020;background:#f6f8ff;'><span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>abstract</span> <span style='color:#200080; font-weight:bold; '>class</span> Action<span style='color:#308080; '>&lt;</span>T<span style='color:#308080; '>></span> <span style='color:#308080; '>:</span> IAction
+        where T <span style='color:#308080; '>:</span> <span style='color:#200080; font-weight:bold; '>class</span><span style='color:#308080; '>,</span> IParameters
+    <span style='color:#406080; '>{</span>
+        <span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>abstract</span> <span style='color:#200080; font-weight:bold; '>bool</span> IsAvailable <span style='color:#406080; '>{</span> <span style='color:#200080; font-weight:bold; '>get</span><span style='color:#406080; '>;</span> <span style='color:#406080; '>}</span>
+        <span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>abstract</span> <span style='color:#200080; font-weight:bold; '>string</span> Explanation <span style='color:#406080; '>{</span> <span style='color:#200080; font-weight:bold; '>get</span><span style='color:#406080; '>;</span> <span style='color:#406080; '>}</span>
+        <span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>abstract</span> <span style='color:#200080; font-weight:bold; '>int</span> Value <span style='color:#406080; '>{</span> <span style='color:#200080; font-weight:bold; '>get</span><span style='color:#406080; '>;</span> <span style='color:#406080; '>}</span>
+
+        <span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>abstract</span> <span style='color:#200080; font-weight:bold; '>bool</span> AreSuitable<span style='color:#308080; '>(</span>T parameters<span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
+        <span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>abstract</span> <span style='color:#200080; font-weight:bold; '>bool</span> Execute<span style='color:#308080; '>(</span>T parameters<span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
+        <span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>abstract</span> <span style='color:#200080; font-weight:bold; '>void</span> Accept<span style='color:#308080; '>(</span>ISuccess success<span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
+
+        <span style='color:#200080; font-weight:bold; '>protected</span> <span style='color:#200080; font-weight:bold; '>bool</span> wasSuccessfullyExecuted<span style='color:#406080; '>;</span>
+        <span style='color:#200080; font-weight:bold; '>protected</span> Game game<span style='color:#406080; '>;</span>
+
+        <span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>void</span> SetUp<span style='color:#308080; '>(</span>Game game<span style='color:#308080; '>)</span> <span style='color:#308080; '>=</span><span style='color:#308080; '>></span> <span style='color:#200080; font-weight:bold; '>this</span><span style='color:#308080; '>.</span>game <span style='color:#308080; '>=</span> game<span style='color:#406080; '>;</span>
+        
+        <span style='color:#595979; '>// More Code .... </span>
+
+    <span style='color:#406080; '>}</span>
+</pre>
+			</section>
+
+			<section id="action-point">
+				<h3>Механика игры</h3>
+				<p style="font-size:25px;">Теперь можно писать так</p>
+				<pre style='color:#000020;background:#f6f8ff;'><span style='color:#200080; font-weight:bold; '>private</span> List<span style='color:#308080; '>&lt;</span>IAction<span style='color:#308080; '>></span> actions<span style='color:#406080; '>;</span>
+</pre>
+				<p style="font-size:25px;">Используя рефлексию, для действия можно находить нужные парсеры</p>
+				<pre style='color:#000020;background:#f6f8ff;'><span style='color:#200080; font-weight:bold; '>private</span> <span style='color:#200080; font-weight:bold; '>object</span> GetParser<span style='color:#308080; '>(</span>IAction action<span style='color:#308080; '>)</span>
+        <span style='color:#406080; '>{</span>
+            <span style='color:#200080; font-weight:bold; '>var</span> parametersType <span style='color:#308080; '>=</span> action<span style='color:#308080; '>.</span>GetType<span style='color:#308080; '>(</span><span style='color:#308080; '>)</span><span style='color:#308080; '>.</span>BaseType<span style='color:#308080; '>.</span>GetGenericArguments<span style='color:#308080; '>(</span><span style='color:#308080; '>)</span><span style='color:#308080; '>.</span>First<span style='color:#308080; '>(</span><span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
+            <span style='color:#200080; font-weight:bold; '>var</span> parserType <span style='color:#308080; '>=</span> FindParser<span style='color:#308080; '>(</span>parametersType<span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
+            <span style='color:#200080; font-weight:bold; '>return</span> parserType<span style='color:#308080; '>.</span>GetConstructor<span style='color:#308080; '>(</span><span style='color:#200080; font-weight:bold; '>new</span><span style='color:#308080; '>[</span><span style='color:#308080; '>]</span> <span style='color:#406080; '>{</span> <span style='color:#200080; font-weight:bold; '>typeof</span><span style='color:#308080; '>(</span>Game<span style='color:#308080; '>)</span> <span style='color:#406080; '>}</span><span style='color:#308080; '>)</span><span style='color:#308080; '>.</span>Invoke<span style='color:#308080; '>(</span><span style='color:#200080; font-weight:bold; '>new</span><span style='color:#308080; '>[</span><span style='color:#308080; '>]</span> <span style='color:#406080; '>{</span> game <span style='color:#406080; '>}</span><span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
+        <span style='color:#406080; '>}</span>
+</pre>
+				<p style="font-size:25px;">И возвращать нужные параметры</p>
+				<pre style='color:#000020;background:#f6f8ff;'><span style='color:#200080; font-weight:bold; '>private</span> Tuple<span style='color:#308080; '>&lt;</span>IAction<span style='color:#308080; '>,</span> IParameters<span style='color:#308080; '>></span> GetActionAndParameters<span style='color:#308080; '>(</span><span style='color:#200080; font-weight:bold; '>int</span> playerChoice<span style='color:#308080; '>)</span>
+        <span style='color:#406080; '>{</span>
+            <span style='color:#200080; font-weight:bold; '>var</span> action <span style='color:#308080; '>=</span> GetAvailableActions<span style='color:#308080; '>(</span><span style='color:#308080; '>)</span><span style='color:#308080; '>.</span>ElementAt<span style='color:#308080; '>(</span>playerChoice<span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
+            <span style='color:#200080; font-weight:bold; '>var</span> parser <span style='color:#308080; '>=</span> GetParser<span style='color:#308080; '>(</span>action<span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
+            <span style='color:#200080; font-weight:bold; '>var</span> parametersFormat <span style='color:#308080; '>=</span> <span style='color:#308080; '>(</span><span style='color:#200080; font-weight:bold; '>string</span><span style='color:#308080; '>)</span>parser<span style='color:#308080; '>.</span>GetType<span style='color:#308080; '>(</span><span style='color:#308080; '>)</span>
+                                                 <span style='color:#308080; '>.</span>GetMethod<span style='color:#308080; '>(</span><span style='color:#800000; '>"</span><span style='color:#1060b6; '>GetParametersFormat</span><span style='color:#800000; '>"</span><span style='color:#308080; '>)</span>
+                                                 <span style='color:#308080; '>.</span>Invoke<span style='color:#308080; '>(</span>parser<span style='color:#308080; '>,</span> <span style='color:#200080; font-weight:bold; '>new</span> <span style='color:#200080; font-weight:bold; '>object</span><span style='color:#308080; '>[</span><span style='color:#308080; '>]</span> <span style='color:#406080; '>{</span> <span style='color:#406080; '>}</span><span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
+</pre>
+			</section>
+
+
+
+		</div>
+
+	</div>
+	<script src="js/reveal.js"></script>
+	<script src="lib/js/head.min.js"></script>
+	<script src="jq/jquery-3.2.1.min.js"></script>
+ 	<script src="plugin/highlight/highlight.js"></script>
+	<script>
+		// Required, even if empty.
+		Reveal.initialize({
+		});
+	</script>
+
+	 <script>
+	 $(document).ready(function() {
+	 $("#txt-in").hide();	
+	 $("#txt-in").fadeIn(4000);
+	 });
+	 </script>
+
+</body>
+</html>
