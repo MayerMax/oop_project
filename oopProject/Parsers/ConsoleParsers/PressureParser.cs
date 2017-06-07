@@ -12,8 +12,11 @@ namespace oopProject
 
         public override PressureParameters Parse(string parameters)
         {
-            var verified = VerifyParameters(1, parameters);
-            return new PressureParameters((ZoneType)verified[0], game.GetOpponents.First().Team);
+            var splitted = parameters.Split(' ');
+            var zoneType = VerifyZoneType(splitted[0]);
+            splitted[0] = ((int)zoneType).ToString();
+            var verified = VerifyParameters(1, splitted);
+            return new PressureParameters(zoneType, game.GetOpponents.First().Team);
         }
     }
 }

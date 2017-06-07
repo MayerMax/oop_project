@@ -10,6 +10,8 @@ namespace oopProject
     {
         public override bool IsAvailable => !game.CurrentPlayer.Team.HasBall;
 
+        public override int Value => 30;
+
         public override string Explanation => "Try to intercept the ball";
 
         public override bool AreSuitable(EnemyParameters parameters) => true;

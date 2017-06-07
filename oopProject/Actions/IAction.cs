@@ -9,6 +9,7 @@ namespace oopProject
     public interface IAction
     {
         string Explanation { get; }
+        int Value { get; }
         bool IsAvailable { get; }
         bool Execute(IParameters parameters);
         void SetUp(Game game);

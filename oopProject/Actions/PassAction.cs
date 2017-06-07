@@ -6,6 +6,8 @@ namespace oopProject
     {
         public override string Explanation => "Pass the ball to the next zone";
 
+        public override int Value => 25;
+
         public override bool IsAvailable => game.CurrentPlayer.Team.HasBall && 
                                             game.CurrentPlayer.Team.Ball.Place != ZoneType.ATT;
 

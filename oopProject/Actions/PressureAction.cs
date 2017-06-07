@@ -17,6 +17,8 @@ namespace oopProject
 
         public override bool IsAvailable => game.CurrentPlayer.Team.Squad.Any;
 
+        public override int Value => 20;
+
         public override string Explanation => "Attacking an opponent zone, aiming to put off opponent's players";
 
         public override bool Execute(PressureParameters parameters)
@@ -43,7 +45,8 @@ namespace oopProject
         public override bool AreSuitable(PressureParameters parameters)
         {
             var team = game.CurrentPlayer.Team;
-            return team.Squad.AnyZone(parameters.ZoneType) && team != parameters.Enemy;
+            return parameters.ZoneType != ZoneType.GK && 
+                team.Squad.AnyZone(parameters.ZoneType) && team != parameters.Enemy;
         }
 
         public override void Accept(ISuccess success) => success.Apply(this, wasSuccessfullyExecuted);

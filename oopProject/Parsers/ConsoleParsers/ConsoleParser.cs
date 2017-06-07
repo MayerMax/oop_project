@@ -28,9 +28,8 @@ namespace oopProject
             
         }
 
-        public int[] VerifyParameters(int expectedAmount, string parameters)
+        public int[] VerifyParameters(int expectedAmount, string[] splitted)
         {
-            var splitted = parameters.Split(' ');
             if (expectedAmount != splitted.Length)
                 throw new ArgumentException($"Expected {expectedAmount} parameters, got {splitted.Length}");
 
@@ -48,6 +47,22 @@ namespace oopProject
                 }
             }
             return parsedParameters;
+        }
+
+        protected ZoneType VerifyZoneType(string strZoneType)
+        {
+            try
+            {
+                return (ZoneType)Enum.Parse(typeof(ZoneType), strZoneType);
+            }
+            catch (ArgumentException)
+            {
+                var zoneTypes = Enum.GetValues(typeof(ZoneType))
+                                    .OfType<ZoneType>()
+                                    .Where(t => t != 0).ToArray();
+                throw new ArgumentException(
+                    $"Expected one of {string.Join(", ", zoneTypes)}, got {strZoneType}");
+            }
         }
     }
 

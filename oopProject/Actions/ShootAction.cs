@@ -10,6 +10,8 @@ namespace oopProject
     {
         public override string Explanation => $"Make shoot if you're owning the ball and it is in {ZoneType.ATT}";
 
+        public override int Value => 100;
+
         public override bool IsAvailable => game.CurrentPlayer.Team.HasBall && 
                                             game.CurrentPlayer.Team.Ball.Place == ZoneType.ATT;
 

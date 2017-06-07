@@ -25,6 +25,8 @@ namespace oopProject
 
         public override string Explanation => "Swap cards";
 
+        public override int Value => 5;
+
         public override bool IsAvailable => game.CurrentPlayer.Team.Hand.Any && 
                                             game.CurrentPlayer.Team.Squad.Any;
 

@@ -11,6 +11,7 @@ namespace oopProject
     {
         public abstract bool IsAvailable { get; }
         public abstract string Explanation { get; }
+        public abstract int Value { get; }
 
         public abstract bool AreSuitable(T parameters);
         public abstract bool Execute(T parameters);
@@ -23,6 +24,7 @@ namespace oopProject
 
         public bool Execute(IParameters parameters)
         {
+            wasSuccessfullyExecuted = false;
             var converted = CheckParameters(parameters);
             return Execute(converted);
         }
