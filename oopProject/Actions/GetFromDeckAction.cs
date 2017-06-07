@@ -6,22 +6,15 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    public class GetFromDeckAction : Action
+    public class GetFromDeckAction : Action<GetFromDeckParameters>
     {
-        private GetFromDeckParameters parameters;
-
         public override string Explanation => "Get card from deck and put it in hand";
 
         public override bool IsAvailable => true;
 
-        public override bool SetSuitable(IParameters parameters) {
-            this.parameters = SetParameters<GetFromDeckParameters>(parameters);
-            return true;
-        }
+        public override bool AreSuitable(GetFromDeckParameters parameters) => true;
 
-        public override bool Execute() {
-            CheckParameters(parameters);
-
+        public override bool Execute(GetFromDeckParameters parameters) {
             Deck deck = parameters.Deck;
             if (!deck.Any)
                 return false;

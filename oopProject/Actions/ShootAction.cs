@@ -6,25 +6,18 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    public class ShootAction : Action
+    public class ShootAction : Action<EnemyParameters>
     {
-        private EnemyParameters parameters;
-
         public override string Explanation => $"Make shoot if you're owning the ball and it is in {ZoneType.ATT}";
 
         public override bool IsAvailable => game.CurrentPlayer.Team.HasBall && 
                                             game.CurrentPlayer.Team.Ball.Place == ZoneType.ATT;
 
-        public override bool SetSuitable(IParameters parameters)
-        {
-            this.parameters = SetParameters<EnemyParameters>(parameters);
-            return !this.parameters.Enemy.HasBall;
-        }
+        public override bool AreSuitable(EnemyParameters parameters)
+            => !parameters.Enemy.HasBall;
 
-        public override bool Execute()
+        public override bool Execute(EnemyParameters parameters)
         {
-            CheckParameters(parameters);
-
             var team = game.CurrentPlayer.Team;
             var opponentKeeper = parameters.Enemy.Squad[ZoneType.GK].GetCards().First();
             var result = this.SuccessfulOperation(team, z => z.ShootPower(), 

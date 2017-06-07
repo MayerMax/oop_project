@@ -2,26 +2,17 @@
 
 namespace oopProject
 {
-    public class PassAction : Action
+    public class PassAction : Action<EnemyParameters>
     {
-        private EnemyParameters parameters;
-
         public override string Explanation => "Pass the ball to the next zone";
 
         public override bool IsAvailable => game.CurrentPlayer.Team.HasBall && 
                                             game.CurrentPlayer.Team.Ball.Place != ZoneType.ATT;
 
-        public override bool SetSuitable(IParameters parameters)
-        {
-            this.parameters = SetParameters<EnemyParameters>(parameters);
-            return true;
-            
-        }
+        public override bool AreSuitable(EnemyParameters parameters) => true;
 
-        public override bool Execute()
+        public override bool Execute(EnemyParameters parameters)
         {
-            CheckParameters(parameters);
-
             var team = game.CurrentPlayer.Team;
             var result = this.SuccessfulOperation(team, z => z.PassPower(), parameters.Enemy, z => z.DefendPower());
             if (result)

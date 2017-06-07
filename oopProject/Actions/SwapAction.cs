@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    public class SwapAction : Action
+    public class SwapAction : Action<SwapParameters>
     {
-        private SwapParameters parameters;
-
-        public override bool Execute()
+        public override bool Execute(SwapParameters parameters)
         {
             game.CurrentPlayer.Team.SubstitutionFromHandToSquad(parameters.OldCardZone,
                 parameters.CardPosition, parameters.NewCardPosition);
@@ -18,12 +16,11 @@ namespace oopProject
             return wasSuccessfullyExecuted;
         }
 
-        public override bool SetSuitable(IParameters parameters)
+        public override bool AreSuitable(SwapParameters parameters)
         {
-            this.parameters = SetParameters<SwapParameters>(parameters);
             var team = game.CurrentPlayer.Team;
-            var isActive = team.Squad.IsActive(this.parameters.OldCardZone, this.parameters.CardPosition);
-            return isActive && team.Hand.Contains(this.parameters.NewCardPosition);
+            var isActive = team.Squad.IsActive(parameters.OldCardZone, parameters.CardPosition);
+            return isActive && team.Hand.Contains(parameters.NewCardPosition);
         }
 
         public override string Explanation => "Swap cards";

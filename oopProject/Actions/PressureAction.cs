@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    public class PressureAction : Action
+    public class PressureAction : Action<PressureParameters>
     {
-        private PressureParameters parameters;
         private Random rand;
 
         public PressureAction()
@@ -20,9 +19,8 @@ namespace oopProject
 
         public override string Explanation => "Attacking an opponent zone, aiming to put off opponent's players";
 
-        public override bool Execute()
+        public override bool Execute(PressureParameters parameters)
         {
-            CheckParameters(parameters);
             var zone = game.CurrentPlayer.Team.Squad[parameters.ZoneType];
             var pressure = zone.PressurePower();
             var opponentZone = parameters.Enemy.Squad[Ball.Transitions[parameters.ZoneType]];
@@ -42,11 +40,10 @@ namespace oopProject
             zone.RemoveDeadCards();
         }
 
-        public override bool SetSuitable(IParameters parameters)
+        public override bool AreSuitable(PressureParameters parameters)
         {
-            this.parameters = SetParameters<PressureParameters>(parameters);
             var team = game.CurrentPlayer.Team;
-            return team.Squad.AnyZone(this.parameters.ZoneType) && team != this.parameters.Enemy;
+            return team.Squad.AnyZone(parameters.ZoneType) && team != parameters.Enemy;
         }
 
         public override void Accept(ISuccess success) => success.Apply(this, wasSuccessfullyExecuted);

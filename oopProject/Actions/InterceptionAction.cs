@@ -6,24 +6,16 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    public class InterceptionAction : Action
+    public class InterceptionAction : Action<EnemyParameters>
     {
-        private EnemyParameters parameters;
-
         public override bool IsAvailable => !game.CurrentPlayer.Team.HasBall;
 
         public override string Explanation => "Try to intercept the ball";
 
-        public override bool SetSuitable(IParameters parameters)
-        {
-            this.parameters = SetParameters<EnemyParameters>(parameters);
-            return true;
-        }
+        public override bool AreSuitable(EnemyParameters parameters) => true;
 
-        public override bool Execute()
+        public override bool Execute(EnemyParameters parameters)
         {
-            CheckParameters(parameters);
-
             var team = game.CurrentPlayer.Team;
             var result = this.SuccessfulOperation(team, z => z.InterceptPower(), parameters.Enemy, 
                                                   z => z.DefendPower());

@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace oopProject
 {
-    public abstract class Action
+    public abstract class Action<T> : IAction
+        where T : class, IParameters
     {
         public abstract bool IsAvailable { get; }
         public abstract string Explanation { get; }
 
-        public abstract bool SetSuitable(IParameters parameters);
-        public abstract bool Execute();
+        public abstract bool AreSuitable(T parameters);
+        public abstract bool Execute(T parameters);
         public abstract void Accept(ISuccess success);
 
         protected bool wasSuccessfullyExecuted;
@@ -20,23 +21,24 @@ namespace oopProject
 
         public void SetUp(Game game) => this.game = game;
 
-        protected T SetParameters<T>(IParameters parameters) where T :class {
+        public bool Execute(IParameters parameters)
+        {
+            var converted = CheckParameters(parameters);
+            return Execute(converted);
+        }
+
+        protected T CheckParameters(IParameters parameters)
+        {
             var converted = parameters as T;
-            if (converted == null)
+            if (converted == null || !AreSuitable(converted))
                 throw new ArgumentException("Invalid parameters");
             return converted;
         }
-
-        protected void CheckParameters(IParameters parameters) {
-            if(parameters == null)
-                throw new InvalidOperationException("Parameters weren't set");
-        }
-         
     }
 
     public static class ActionExtensions
     {
-        public static bool SuccessfulOperation(this Action action, Team curTeam, Func<Zone, double> currentPlayerFunc, 
+        public static bool SuccessfulOperation(this IAction action, Team curTeam, Func<Zone, double> currentPlayerFunc, 
                                                Team anotherTeam, Func<Zone, double> opponentFunc)
         {
             var ballZone = curTeam.Ball.Place;
