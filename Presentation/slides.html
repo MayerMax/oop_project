@@ -31,6 +31,15 @@
     vertical-align: middle;
     display: table-cell;
 }
+
+.code {
+	background-color:black;
+
+}
+
+.pre {
+	background-color:black;
+}
 </style>
 </head>
 
@@ -110,85 +119,192 @@
 							<p>Механика</p>
 						</div>
 					</div>
+				</div>
 			</section>
-			<section id="action-point">
-				<h3>Реализация механики</h3>
-				<p>Action - основа гибкости игры</p>
-				<pre style='color:#000020;background:#f6f8ff;'><span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>interface</span> IAction
+<section id="game-action">
+				<h3>Actions</h3>
+				<section>
+					<img src = "pic2.png"  width="100%" heigth="175%"alt="player">
+					<img src = "pic1.png"  width="100%" heigth="130%"alt="player">
+				</section>
+
+				<section>
+					<p>Action - основа гибкости игры</p>
+					<pre style="background-color:black;">
+						<code style="background-color:black;">public interface IAction
+    {
+        string Explanation { get; }
+        int Value { get; }
+        bool IsAvailable { get; }
+        bool Execute(IParameters parameters);
+        void SetUp(Game game);
+        void Accept(ISuccess success);
+    }</code>
+					</pre>
+	<p>Удобно хранить действия в одной структуре данных</p>
+				</section>
+				<section>
+					<p>Разные действия принимают разное количество параметров разных типов</p>
+					<pre style="background-color:black;">
+						<code style="background-color:black;">
+public abstract class Action&#60;T&#62; : IAction
+        where T : class, IParameters
+    {
+        public abstract bool IsAvailable { get; }
+        public abstract string Explanation { get; }
+        public abstract int Value { get; }
+
+        public abstract bool AreSuitable(T parameters);
+        public abstract bool Execute(T parameters);
+        public abstract void Accept(ISuccess success);
+
+        protected bool wasSuccessfullyExecuted;
+        protected Game game;
+
+        // More code ...    
+    }</code>
+</pre>
+</section>
+	<section>
+		<p>Вызывается Action с конкретными параметрами</p>
+
+		<pre style="background-color:black;">
+			<code style="background-color:black;">
+	public abstract bool Execute(T parameters);
+
+	public bool Execute(IParameters parameters)
+        {
+            wasSuccessfullyExecuted = false;
+            var converted = CheckParameters(parameters);
+            return Execute(converted);
+        }
+			</code>
+		</pre>
+	</section>
+	<section>
+		<br>
+		<pre style='color:#000020;background:#f6f8ff; width:115%'><span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>class</span> GetFromDeckAction <span style='color:#308080; '>:</span> Action<span style='color:#308080; '>&lt;</span>GetFromDeckParameters<span style='color:#308080; '>></span>
     <span style='color:#406080; '>{</span>
-        <span style='color:#200080; font-weight:bold; '>string</span> Explanation <span style='color:#406080; '>{</span> <span style='color:#200080; font-weight:bold; '>get</span><span style='color:#406080; '>;</span> <span style='color:#406080; '>}</span>
-        <span style='color:#200080; font-weight:bold; '>int</span> Value <span style='color:#406080; '>{</span> <span style='color:#200080; font-weight:bold; '>get</span><span style='color:#406080; '>;</span> <span style='color:#406080; '>}</span>
-        <span style='color:#200080; font-weight:bold; '>bool</span> IsAvailable <span style='color:#406080; '>{</span> <span style='color:#200080; font-weight:bold; '>get</span><span style='color:#406080; '>;</span> <span style='color:#406080; '>}</span>
-        <span style='color:#200080; font-weight:bold; '>bool</span> Execute<span style='color:#308080; '>(</span>IParameters parameters<span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
-        <span style='color:#200080; font-weight:bold; '>void</span> SetUp<span style='color:#308080; '>(</span>Game game<span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
-        <span style='color:#200080; font-weight:bold; '>void</span> Accept<span style='color:#308080; '>(</span>ISuccess success<span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
+        <span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>override</span> <span style='color:#200080; font-weight:bold; '>string</span> Explanation <span style='color:#308080; '>=</span><span style='color:#308080; '>></span> <span style='color:#800000; '>"</span><span style='color:#1060b6; '>Get card from deck and put it in hand</span><span style='color:#800000; '>"</span><span style='color:#406080; '>;</span>
+
+        <span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>override</span> <span style='color:#200080; font-weight:bold; '>int</span> Value <span style='color:#308080; '>=</span><span style='color:#308080; '>></span> <span style='color:#008c00; '>5</span><span style='color:#406080; '>;</span>
+
+        <span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>override</span> <span style='color:#200080; font-weight:bold; '>bool</span> IsAvailable <span style='color:#308080; '>=</span><span style='color:#308080; '>></span> <span style='color:#200080; font-weight:bold; '>true</span><span style='color:#406080; '>;</span>
+
+        <span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>override</span> <span style='color:#200080; font-weight:bold; '>bool</span> AreSuitable<span style='color:#308080; '>(</span>GetFromDeckParameters parameters<span style='color:#308080; '>)</span> <span style='color:#308080; '>=</span><span style='color:#308080; '>></span> <span style='color:#200080; font-weight:bold; '>true</span><span style='color:#406080; '>;</span>
+
+        <span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>override</span> <span style='color:#200080; font-weight:bold; '>bool</span> Execute<span style='color:#308080; '>(</span>GetFromDeckParameters parameters<span style='color:#308080; '>)</span> <span style='color:#406080; '>{</span>
+            <span style='color:#200080; font-weight:bold; '>var</span> deck <span style='color:#308080; '>=</span> parameters<span style='color:#308080; '>.</span>Deck<span style='color:#406080; '>;</span>
+            <span style='color:#200080; font-weight:bold; '>if</span> <span style='color:#308080; '>(</span><span style='color:#308080; '>!</span>deck<span style='color:#308080; '>.</span>Any<span style='color:#308080; '>)</span>
+                <span style='color:#200080; font-weight:bold; '>return</span> <span style='color:#200080; font-weight:bold; '>false</span><span style='color:#406080; '>;</span>
+            game<span style='color:#308080; '>.</span>CurrentPlayer<span style='color:#308080; '>.</span>Team<span style='color:#308080; '>.</span>Hand<span style='color:#308080; '>.</span>InsertCard<span style='color:#308080; '>(</span>deck<span style='color:#308080; '>.</span>GetCard<span style='color:#308080; '>(</span><span style='color:#308080; '>)</span><span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
+            wasSuccessfullyExecuted <span style='color:#308080; '>=</span> <span style='color:#200080; font-weight:bold; '>true</span><span style='color:#406080; '>;</span>
+            <span style='color:#200080; font-weight:bold; '>return</span> wasSuccessfullyExecuted<span style='color:#406080; '>;</span>
+        <span style='color:#406080; '>}</span>
+
+        <span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>override</span> <span style='color:#200080; font-weight:bold; '>void</span> Accept<span style='color:#308080; '>(</span>ISuccess success<span style='color:#308080; '>)</span> <span style='color:#308080; '>=</span><span style='color:#308080; '>></span> 
+            success<span style='color:#308080; '>.</span>Apply<span style='color:#308080; '>(</span><span style='color:#200080; font-weight:bold; '>this</span><span style='color:#308080; '>,</span> wasSuccessfullyExecuted<span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
     <span style='color:#406080; '>}</span>
 </pre>
+		</pre>
+	</section>
+	</section>
 
-			<p style>Удобно хранить действия внутри одной структуры данных</p>
-			</section>
-			<section id="action-point">
-				<h3>Реализация механики</h3>
-				<p style="font-size:30px">Действия принимают разные параметры: разное количество разного типа</p>
-				<pre style='color:#000020;background:#f6f8ff;'><span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>abstract</span> <span style='color:#200080; font-weight:bold; '>class</span> Action<span style='color:#308080; '>&lt;</span>T<span style='color:#308080; '>></span> <span style='color:#308080; '>:</span> IAction
-        where T <span style='color:#308080; '>:</span> <span style='color:#200080; font-weight:bold; '>class</span><span style='color:#308080; '>,</span> IParameters
-    <span style='color:#406080; '>{</span>
-        <span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>abstract</span> <span style='color:#200080; font-weight:bold; '>bool</span> IsAvailable <span style='color:#406080; '>{</span> <span style='color:#200080; font-weight:bold; '>get</span><span style='color:#406080; '>;</span> <span style='color:#406080; '>}</span>
-        <span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>abstract</span> <span style='color:#200080; font-weight:bold; '>string</span> Explanation <span style='color:#406080; '>{</span> <span style='color:#200080; font-weight:bold; '>get</span><span style='color:#406080; '>;</span> <span style='color:#406080; '>}</span>
-        <span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>abstract</span> <span style='color:#200080; font-weight:bold; '>int</span> Value <span style='color:#406080; '>{</span> <span style='color:#200080; font-weight:bold; '>get</span><span style='color:#406080; '>;</span> <span style='color:#406080; '>}</span>
+<section>
+	<h3>Хранилище</h3>
+	<section>
+	<p>Разные способы загрузки данных для игры</p>
+	<pre style="background-color:black;">
+		<code style="background-color:black;">
+public interface IDatabase
+    { 
+        PlayerInfo GetPlayerInfo(string name);
+        PlayerInfo GetPlayerOfType(params string[] types);
+        IEnumerable&#60;PlayerInfo&#62; GetPlayers(int count);
+    }
+		</code>
+	</pre>
+	</section>
 
-        <span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>abstract</span> <span style='color:#200080; font-weight:bold; '>bool</span> AreSuitable<span style='color:#308080; '>(</span>T parameters<span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
-        <span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>abstract</span> <span style='color:#200080; font-weight:bold; '>bool</span> Execute<span style='color:#308080; '>(</span>T parameters<span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
-        <span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>abstract</span> <span style='color:#200080; font-weight:bold; '>void</span> Accept<span style='color:#308080; '>(</span>ISuccess success<span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
-
-        <span style='color:#200080; font-weight:bold; '>protected</span> <span style='color:#200080; font-weight:bold; '>bool</span> wasSuccessfullyExecuted<span style='color:#406080; '>;</span>
-        <span style='color:#200080; font-weight:bold; '>protected</span> Game game<span style='color:#406080; '>;</span>
-
-        <span style='color:#200080; font-weight:bold; '>public</span> <span style='color:#200080; font-weight:bold; '>void</span> SetUp<span style='color:#308080; '>(</span>Game game<span style='color:#308080; '>)</span> <span style='color:#308080; '>=</span><span style='color:#308080; '>></span> <span style='color:#200080; font-weight:bold; '>this</span><span style='color:#308080; '>.</span>game <span style='color:#308080; '>=</span> game<span style='color:#406080; '>;</span>
-        
-        <span style='color:#595979; '>// More Code .... </span>
-
-    <span style='color:#406080; '>}</span>
+	<section>
+		<p>Надстройка над IDataBase для создания объектов игры</p>
+		<pre style="background-color:black;">
+		<code style="background-color:black;">
+public interface IFootballDatabase
+    {
+        FootballCard GetCardOfType(ZoneType zone);
+        IEnumerable&#60;FootballCard&#62;GetCards(int count);
+    }
+		</code>
+	</pre>
+	</section>
+</section>
+<section>
+	<h3>Механика</h3>
+	<section>
+		<ul>
+			<li>Легко добавлять способы расчета характеристик Action-а</li>
+			<li>На уровне кода настаивать баланс в игре</li>
+			<li>Большое количество показателей для игровых объектов</li>
+		</ul>
+	</section>
+	<section>
+		<p>Пример рассчета характеристики успешности паса</p>
+		<pre style="background-color:black;">
+			<code style="background-color:black;">
+public static double PassPower(this Zone zone)
+{
+    var totalAvgDef = zone.CardsAttributes(f => f.Defend).Average();
+    var totalAvgMid = zone.CardsAttributes(f => f.Midfield).Average();
+    var totalAvgAtt = zone.CardsAttributes(f => f.Attack).Average();
+    return (totalAvgDef + totalAvgMid + totalAvgAtt) / 3;
+}</code>
 </pre>
-			</section>
-
-			<section id="action-point">
-				<h3>Механика игры</h3>
-				<p style="font-size:25px;">Теперь можно писать так</p>
-				<pre style='color:#000020;background:#f6f8ff;'><span style='color:#200080; font-weight:bold; '>private</span> List<span style='color:#308080; '>&lt;</span>IAction<span style='color:#308080; '>></span> actions<span style='color:#406080; '>;</span>
-</pre>
-				<p style="font-size:25px;">Используя рефлексию, для действия можно находить нужные парсеры</p>
-				<pre style='color:#000020;background:#f6f8ff;'><span style='color:#200080; font-weight:bold; '>private</span> <span style='color:#200080; font-weight:bold; '>object</span> GetParser<span style='color:#308080; '>(</span>IAction action<span style='color:#308080; '>)</span>
+	</section>
+	<section>
+		<pre style='color:#000020;background:#f6f8ff; width:115%'><span style='color:#200080; font-weight:bold; '>private</span> <span style='color:#200080; font-weight:bold; '>static</span> IEnumerable<span style='color:#308080; '>&lt;</span><span style='color:#200080; font-weight:bold; '>double</span><span style='color:#308080; '>></span> CardsAttributes<span style='color:#308080; '>(</span><span style='color:#200080; font-weight:bold; '>this</span> Zone zone<span style='color:#308080; '>,</span> Func<span style='color:#308080; '>&lt;</span>FootballCard<span style='color:#308080; '>,</span> 
+            <span style='color:#200080; font-weight:bold; '>double</span><span style='color:#308080; '>></span> attributeSelector<span style='color:#308080; '>)</span>
         <span style='color:#406080; '>{</span>
-            <span style='color:#200080; font-weight:bold; '>var</span> parametersType <span style='color:#308080; '>=</span> action<span style='color:#308080; '>.</span>GetType<span style='color:#308080; '>(</span><span style='color:#308080; '>)</span><span style='color:#308080; '>.</span>BaseType<span style='color:#308080; '>.</span>GetGenericArguments<span style='color:#308080; '>(</span><span style='color:#308080; '>)</span><span style='color:#308080; '>.</span>First<span style='color:#308080; '>(</span><span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
-            <span style='color:#200080; font-weight:bold; '>var</span> parserType <span style='color:#308080; '>=</span> FindParser<span style='color:#308080; '>(</span>parametersType<span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
-            <span style='color:#200080; font-weight:bold; '>return</span> parserType<span style='color:#308080; '>.</span>GetConstructor<span style='color:#308080; '>(</span><span style='color:#200080; font-weight:bold; '>new</span><span style='color:#308080; '>[</span><span style='color:#308080; '>]</span> <span style='color:#406080; '>{</span> <span style='color:#200080; font-weight:bold; '>typeof</span><span style='color:#308080; '>(</span>Game<span style='color:#308080; '>)</span> <span style='color:#406080; '>}</span><span style='color:#308080; '>)</span><span style='color:#308080; '>.</span>Invoke<span style='color:#308080; '>(</span><span style='color:#200080; font-weight:bold; '>new</span><span style='color:#308080; '>[</span><span style='color:#308080; '>]</span> <span style='color:#406080; '>{</span> game <span style='color:#406080; '>}</span><span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
+            <span style='color:#200080; font-weight:bold; '>var</span> attributes <span style='color:#308080; '>=</span> zone<span style='color:#308080; '>.</span>GetCards<span style='color:#308080; '>(</span><span style='color:#308080; '>)</span><span style='color:#308080; '>.</span>Select<span style='color:#308080; '>(</span>f <span style='color:#308080; '>=</span><span style='color:#308080; '>></span> attributeSelector<span style='color:#308080; '>(</span>f<span style='color:#308080; '>)</span><span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
+            <span style='color:#200080; font-weight:bold; '>if</span> <span style='color:#308080; '>(</span><span style='color:#308080; '>!</span>attributes<span style='color:#308080; '>.</span>Any<span style='color:#308080; '>(</span><span style='color:#308080; '>)</span><span style='color:#308080; '>)</span>
+                <span style='color:#200080; font-weight:bold; '>return</span> <span style='color:#200080; font-weight:bold; '>new</span> List<span style='color:#308080; '>&lt;</span><span style='color:#200080; font-weight:bold; '>double</span><span style='color:#308080; '>></span><span style='color:#308080; '>(</span><span style='color:#308080; '>)</span> <span style='color:#406080; '>{</span> <span style='color:#008c00; '>0</span> <span style='color:#406080; '>}</span><span style='color:#406080; '>;</span>
+            <span style='color:#200080; font-weight:bold; '>return</span> attributes<span style='color:#406080; '>;</span>
         <span style='color:#406080; '>}</span>
 </pre>
-				<p style="font-size:25px;">И возвращать нужные параметры</p>
-				<pre style='color:#000020;background:#f6f8ff;'><span style='color:#200080; font-weight:bold; '>private</span> Tuple<span style='color:#308080; '>&lt;</span>IAction<span style='color:#308080; '>,</span> IParameters<span style='color:#308080; '>></span> GetActionAndParameters<span style='color:#308080; '>(</span><span style='color:#200080; font-weight:bold; '>int</span> playerChoice<span style='color:#308080; '>)</span>
-        <span style='color:#406080; '>{</span>
-            <span style='color:#200080; font-weight:bold; '>var</span> action <span style='color:#308080; '>=</span> GetAvailableActions<span style='color:#308080; '>(</span><span style='color:#308080; '>)</span><span style='color:#308080; '>.</span>ElementAt<span style='color:#308080; '>(</span>playerChoice<span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
-            <span style='color:#200080; font-weight:bold; '>var</span> parser <span style='color:#308080; '>=</span> GetParser<span style='color:#308080; '>(</span>action<span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
-            <span style='color:#200080; font-weight:bold; '>var</span> parametersFormat <span style='color:#308080; '>=</span> <span style='color:#308080; '>(</span><span style='color:#200080; font-weight:bold; '>string</span><span style='color:#308080; '>)</span>parser<span style='color:#308080; '>.</span>GetType<span style='color:#308080; '>(</span><span style='color:#308080; '>)</span>
-                                                 <span style='color:#308080; '>.</span>GetMethod<span style='color:#308080; '>(</span><span style='color:#800000; '>"</span><span style='color:#1060b6; '>GetParametersFormat</span><span style='color:#800000; '>"</span><span style='color:#308080; '>)</span>
-                                                 <span style='color:#308080; '>.</span>Invoke<span style='color:#308080; '>(</span>parser<span style='color:#308080; '>,</span> <span style='color:#200080; font-weight:bold; '>new</span> <span style='color:#200080; font-weight:bold; '>object</span><span style='color:#308080; '>[</span><span style='color:#308080; '>]</span> <span style='color:#406080; '>{</span> <span style='color:#406080; '>}</span><span style='color:#308080; '>)</span><span style='color:#406080; '>;</span>
-</pre>
-			</section>
+	</section>
+</section>
+<section>
+	<h3>Общая структура решения</h3>
+</section>
+</div>
+</div>
 
-
-
-		</div>
-
-	</div>
 	<script src="js/reveal.js"></script>
 	<script src="lib/js/head.min.js"></script>
 	<script src="jq/jquery-3.2.1.min.js"></script>
  	<script src="plugin/highlight/highlight.js"></script>
 	<script>
-		// Required, even if empty.
-		Reveal.initialize({
-		});
+		
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
 	</script>
 
 	 <script>
