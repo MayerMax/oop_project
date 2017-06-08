@@ -1,9 +1,6 @@
-﻿using oopProject;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace oopProject
 {
@@ -12,12 +9,7 @@ namespace oopProject
         public static readonly int MAXCHAR = 10;
         private Func<List<string>, int> evaluateFunction;
 
-        private double rank;
-        public double Rank { get { return EvaluateGeneralRank(); }
-            private set {
-                rank = value;
-            }
-        }
+        public double Rank { get; private set; }
 
         public int Defend { get; set; }
         public int Attack { get; set; }
@@ -28,7 +20,7 @@ namespace oopProject
 
         public override string ToString() {
             var list = GeneralDescription().ToList();
-            return playerInfo["Name"] + " " + string.Join(" ", list.Select(value => value + " " + playerInfo[value])) + " " + PreferredZone.ToString();
+            return PlayerInfo["Name"] + " " + string.Join(" ", list.Select(value => value + " " + PlayerInfo[value])) + " " + PreferredZone.ToString();
             
         }
 
@@ -43,24 +35,23 @@ namespace oopProject
         }
 
         // probably generalize idea of evaluation functions by creating for each single class, where intrinsic logic will be added.
-        protected override int EvaluateAttackRank() => ClampByModulo(evaluateFunction(playerInfo.ATT));
+        protected override int EvaluateAttackRank() => ClampByModulo(evaluateFunction(PlayerInfo.ATT));
 
 
-        protected override int EvaluateBalanceRank() => ClampByModulo(evaluateFunction(playerInfo.MID));
+        protected override int EvaluateBalanceRank() => ClampByModulo(evaluateFunction(PlayerInfo.MID));
 
 
-        protected override int EvaluateDefendRank() => ClampByModulo(evaluateFunction(playerInfo.DEF));
+        protected override int EvaluateDefendRank() => ClampByModulo(evaluateFunction(PlayerInfo.DEF));
 
 
         protected override double EvaluateGeneralRank() {
 
-            var optimum = playerInfo.ParseAttribute("Rating") / MAXCHAR;
+            var optimum = PlayerInfo.ParseAttribute("Rating") / MAXCHAR;
             if (CurrentZone != PreferredZone)
             {
                 optimum = (optimum / 3);
                 if (optimum == 0)
                     return 1;
-
             }
             return optimum;
         }
@@ -71,7 +62,7 @@ namespace oopProject
         }
         
 
-        public override IEnumerable<string> GeneralDescription() => playerInfo.GENERAL.Select(f => f);
+        public override IEnumerable<string> GeneralDescription() => PlayerInfo.GENERAL.Select(f => f);
         
 
         protected override int ClampByModulo(int curValue)
@@ -81,7 +72,7 @@ namespace oopProject
 
         
         private int AverageThroughValues(List<string> list) {
-            return (int) list.Select(el => playerInfo.ParseAttribute(el)).Average();
+            return (int) list.Select(el => PlayerInfo.ParseAttribute(el)).Average();
         }
 
         public override bool Equals(object obj)

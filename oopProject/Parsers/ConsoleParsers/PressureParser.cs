@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
 namespace oopProject
 {
@@ -14,9 +10,7 @@ namespace oopProject
         {
             var splitted = parameters.Split(' ');
             var zoneType = VerifyZoneType(splitted[0]);
-            splitted[0] = ((int)zoneType).ToString();
-            var verified = VerifyParameters(1, splitted);
-            return new PressureParameters(zoneType, game.GetOpponents.First().Team);
+            return new PressureParameters(zoneType, Game.GetOpponents.First().Team);
         }
     }
 }

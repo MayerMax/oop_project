@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace oopProject
+﻿namespace oopProject
 {
     public interface ISuccess
     {
@@ -96,7 +90,7 @@ namespace oopProject
 
         private void Apply(System.Action<Game> success, System.Action<Game> failure, bool successful)
         {
-            if (successful) Apply(success); else Apply(failure);
+            Apply(successful ? success : failure);
         }
 
         private void Apply(System.Action<Game> action) => action(game);

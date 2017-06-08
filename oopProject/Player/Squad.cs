@@ -1,9 +1,7 @@
-﻿using oopProject;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace oopProject
 {
@@ -93,7 +91,7 @@ namespace oopProject
         private static Dictionary<ZoneType, List<FootballCard>> GetSquadZones(IFootballDatabase db, 
                                                                               string formation)
         {
-            int[] eachzoneSize = formation.Split('-').Select(elem => int.Parse(elem)).ToArray();
+            int[] eachzoneSize = formation.Split('-').Select(int.Parse).ToArray();
             var squad = new Dictionary<ZoneType, List<FootballCard>>
             {
                 { ZoneType.DEF, db.GetCards(eachzoneSize[0]).ToList() },

@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace oopProject
 {
@@ -154,7 +152,7 @@ namespace oopProject
         }
 
         private Type FindParser(Type expectedTypeParameter)
-            => GetParserTypes().Where(t => t.BaseType.GetGenericArguments().First() == expectedTypeParameter).First();
+            => GetParserTypes().First(t => t.BaseType.GetGenericArguments().First() == expectedTypeParameter);
 
         private IEnumerable<Type> GetParserTypes()
         {

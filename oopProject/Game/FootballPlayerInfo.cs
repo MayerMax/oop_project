@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace oopProject
 {
@@ -26,9 +22,5 @@ namespace oopProject
 
         public readonly List<string> GENERAL = new List<string>() {
             "Stamina", "Balance", "Agility", "Strength"};
-
-
-
-
     }
 }

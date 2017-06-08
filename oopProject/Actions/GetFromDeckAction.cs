@@ -20,11 +20,11 @@ namespace oopProject
             var deck = parameters.Deck;
             if (!deck.Any)
                 return false;
-            game.CurrentPlayer.Team.Hand.InsertCard(deck.GetCard());
-            wasSuccessfullyExecuted = true;
-            return wasSuccessfullyExecuted;
+            Game.CurrentPlayer.Team.Hand.InsertCard(deck.GetCard());
+            WasSuccessfullyExecuted = true;
+            return WasSuccessfullyExecuted;
         }
 
-        public override void Accept(ISuccess success) => success.Apply(this, wasSuccessfullyExecuted);
+        public override void Accept(ISuccess success) => success.Apply(this, WasSuccessfullyExecuted);
     }
 }

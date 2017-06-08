@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 
 namespace oopProject
 {
@@ -9,6 +7,5 @@ namespace oopProject
         PlayerInfo GetPlayerInfo(string name);
         PlayerInfo GetPlayerOfType(params string[] types);
         IEnumerable<PlayerInfo> GetPlayers(int count);
-        //IEnumerable<PlayerInfo> WithEqualAttribute(string attribute);
     }
 }

@@ -12,28 +12,28 @@ namespace oopProject
 
         public override int Value => 100;
 
-        public override bool IsAvailable => game.CurrentPlayer.Team.HasBall && 
-                                            game.CurrentPlayer.Team.Ball.Place == ZoneType.ATT;
+        public override bool IsAvailable => Game.CurrentPlayer.Team.HasBall && 
+                                            Game.CurrentPlayer.Team.Ball.Place == ZoneType.ATT;
 
         public override bool AreSuitable(EnemyParameters parameters)
             => !parameters.Enemy.HasBall;
 
         public override bool Execute(EnemyParameters parameters)
         {
-            var team = game.CurrentPlayer.Team;
+            var team = Game.CurrentPlayer.Team;
             var opponentKeeper = parameters.Enemy.Squad[ZoneType.GK].GetCards().First();
             var result = this.SuccessfulOperation(team, z => z.ShootPower(), 
                                                   parameters.Enemy, z => z.WithAdditionalPower(opponentKeeper));
             if (result)
             {
                 team.Ball.Restart(parameters.Enemy);
-                wasSuccessfullyExecuted = true;
+                WasSuccessfullyExecuted = true;
             }
             else
                 team.Ball.InterceptedBy(parameters.Enemy);
-            return wasSuccessfullyExecuted;
+            return WasSuccessfullyExecuted;
         }
 
-        public override void Accept(ISuccess success) => success.Apply(this, wasSuccessfullyExecuted);
+        public override void Accept(ISuccess success) => success.Apply(this, WasSuccessfullyExecuted);
     }
 }

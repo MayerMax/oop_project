@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace oopProject
+﻿namespace oopProject
 {
     public class Team
     {
@@ -12,7 +6,7 @@ namespace oopProject
         public readonly Hand Hand;
         public Ball Ball { get; private set; }
 
-        public bool HasBall { get { return Ball != null && Ball.IsOwner(this); } }
+        public bool HasBall => Ball != null && Ball.IsOwner(this);
 
         public Team(Squad starts, Hand subs, Ball ball) {
             Squad = starts;

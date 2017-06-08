@@ -1,23 +1,19 @@
-﻿using oopProject;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace oopProject
 {
     public class FootballDatabase : IFootballDatabase
     {
-        private IDatabase database;
-        private Dictionary<ZoneType, string[]> types = new Dictionary<ZoneType, string[]>
+        private readonly IDatabase database;
+        private readonly Dictionary<ZoneType, string[]> types = new Dictionary<ZoneType, string[]>
         {
             [ZoneType.GK] = new[] { "GK" },
             [ZoneType.DEF] = new[] {"CB", "LCB", "RCB", "LB", "RB", "Sub" },
             [ZoneType.MID] = new[] {"CM", "LDM", "RDM", "CDM", "CAM", "LM", "RM" },
             [ZoneType.ATT] = new[] { "ST", "CF", "LW", "RW"}
         };
-        private Dictionary<string, ZoneType> reversedTypes;
+        private readonly Dictionary<string, ZoneType> reversedTypes;
 
 
         public FootballDatabase(IDatabase database)

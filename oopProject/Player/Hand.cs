@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace oopProject
 {
     public class Hand
     {
         private List<FootballCard> hand;
-        public int HandSize { get { return hand.Count; }}
-        public bool Any { get { return hand.Any(); } }
-        public FootballCard Peek { get { return Any ? hand[hand.Count - 1] : null; } }
+        public int HandSize => hand.Count;
+        public bool Any => hand.Any();
+        public FootballCard Peek => Any ? hand[hand.Count - 1] : null;
 
         public Hand(List<FootballCard> starterPack) {
             hand = starterPack;
@@ -48,7 +45,7 @@ namespace oopProject
 
         public string Print()
         {
-            var cards = string.Join(", ", hand.Select(c => c.CardName).ToArray());
+            var cards = string.Join(", ", hand.Select(c => $"{c.CardName}({c.Rank})").ToArray());
             return $"[{cards}]";
         }
     }

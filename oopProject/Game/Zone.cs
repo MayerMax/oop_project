@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace oopProject
 {
@@ -11,7 +9,7 @@ namespace oopProject
         private List<Position> cards;
 
         public bool Any => Count > 0;
-        public int Count => cards.Where(f => !(f.IsFree)).Count();
+        public int Count => cards.Count(f => !(f.IsFree));
 
         public Zone(ZoneType type, List<FootballCard> cards) : base(cards.Count, type)
         {
@@ -118,7 +116,7 @@ namespace oopProject
 
         private static IEnumerable<double> CardsAttributes(this Zone zone, Func<FootballCard, double> attributeSelector)
         {
-            var attributes = zone.GetCards().Select(f => attributeSelector(f));
+            var attributes = zone.GetCards().Select(attributeSelector);
             if (!attributes.Any())
                 return new List<double>() { 0 };
             return attributes;

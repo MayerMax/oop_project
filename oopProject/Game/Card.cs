@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace oopProject
 {
@@ -11,14 +7,14 @@ namespace oopProject
     {
         public readonly string CardName;
 
-        protected readonly T playerInfo;
-        protected readonly int maxAttributeRank;
+        protected readonly T PlayerInfo;
+        protected readonly int MaxAttributeRank;
 
-        
-        public Card(T pl, int maxValue) {
-            playerInfo = pl;
+
+        protected Card(T pl, int maxValue) {
+            PlayerInfo = pl;
             CardName = pl["Name"];
-            maxAttributeRank = maxValue;
+            MaxAttributeRank = maxValue;
         }
 
 

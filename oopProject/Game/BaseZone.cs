@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace oopProject
+﻿namespace oopProject
 {   
     // this class describes container for a squad line 
     public abstract class BaseZone
@@ -13,7 +7,7 @@ namespace oopProject
         public readonly ZoneType Type;
         public readonly string ZoneName;
 
-        public BaseZone(int size, ZoneType type)
+        protected BaseZone(int size, ZoneType type)
         {
             Type = type;
             Size = size;

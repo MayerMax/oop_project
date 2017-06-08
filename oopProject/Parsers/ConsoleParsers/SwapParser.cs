@@ -9,7 +9,6 @@ namespace oopProject
     public class SwapParser : ConsoleParser<SwapParameters>
     {
         public SwapParser(Game game) : base(game) { }
-
         
         public override SwapParameters Parse(string parameters)
         {

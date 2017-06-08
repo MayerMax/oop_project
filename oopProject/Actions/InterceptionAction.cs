@@ -8,7 +8,7 @@ namespace oopProject
 {
     public class InterceptionAction : Action<EnemyParameters>
     {
-        public override bool IsAvailable => !game.CurrentPlayer.Team.HasBall;
+        public override bool IsAvailable => !Game.CurrentPlayer.Team.HasBall;
 
         public override int Value => 30;
 
@@ -18,17 +18,17 @@ namespace oopProject
 
         public override bool Execute(EnemyParameters parameters)
         {
-            var team = game.CurrentPlayer.Team;
+            var team = Game.CurrentPlayer.Team;
             var result = this.SuccessfulOperation(parameters.Enemy, z => z.InterceptPower(), team, 
                                                   z => z.DefendPower());
             if (result)
             {
                 parameters.Enemy.Ball.InterceptedBy(team);
-                wasSuccessfullyExecuted = true;
+                WasSuccessfullyExecuted = true;
             }
-            return wasSuccessfullyExecuted;
+            return WasSuccessfullyExecuted;
         }
 
-        public override void Accept(ISuccess success) => success.Apply(this, wasSuccessfullyExecuted);
+        public override void Accept(ISuccess success) => success.Apply(this, WasSuccessfullyExecuted);
     }
 }

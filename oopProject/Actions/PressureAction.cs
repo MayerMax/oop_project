@@ -15,7 +15,7 @@ namespace oopProject
             rand = new Random();
         }
 
-        public override bool IsAvailable => game.CurrentPlayer.Team.Squad.Any;
+        public override bool IsAvailable => Game.CurrentPlayer.Team.Squad.Any;
 
         public override int Value => 20;
 
@@ -23,18 +23,18 @@ namespace oopProject
 
         public override bool Execute(PressureParameters parameters)
         {
-            var zone = game.CurrentPlayer.Team.Squad[parameters.ZoneType];
+            var zone = Game.CurrentPlayer.Team.Squad[parameters.ZoneType];
             var pressure = zone.PressurePower();
             var opponentZone = parameters.Enemy.Squad[Ball.Transitions[parameters.ZoneType]];
             var opponentPressure = opponentZone.PressurePower();
             if (pressure >= opponentPressure)
             {
                 DecreaseRankings(opponentZone, 10, 30);
-                wasSuccessfullyExecuted = true;
+                WasSuccessfullyExecuted = true;
             }
             else
                 DecreaseRankings(zone, 10, 15);
-            return wasSuccessfullyExecuted;
+            return WasSuccessfullyExecuted;
         }
 
         private void DecreaseRankings(Zone zone, int minDecrease, int maxDecrease) {
@@ -44,11 +44,11 @@ namespace oopProject
 
         public override bool AreSuitable(PressureParameters parameters)
         {
-            var team = game.CurrentPlayer.Team;
+            var team = Game.CurrentPlayer.Team;
             return parameters.ZoneType != ZoneType.GK && 
                 team.Squad.AnyZone(parameters.ZoneType) && team != parameters.Enemy;
         }
 
-        public override void Accept(ISuccess success) => success.Apply(this, wasSuccessfullyExecuted);
+        public override void Accept(ISuccess success) => success.Apply(this, WasSuccessfullyExecuted);
     }
 }

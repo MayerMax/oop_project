@@ -10,11 +10,11 @@ namespace oopProject
     public abstract class ConsoleParser<T>
         where T : class, IParameters
     {
-        protected Game game;
-        
-        public ConsoleParser(Game game)
+        protected Game Game;
+
+        protected ConsoleParser(Game game)
         {
-            this.game = game;
+            this.Game = game;
 
         }
 

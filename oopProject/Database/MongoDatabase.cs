@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 using MongoDB.Bson;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace oopProject
 {
     public class MongoDatabase : IDatabase
     {
-        private IMongoCollection<BsonDocument> collection;
+        private readonly IMongoCollection<BsonDocument> collection;
 
         public MongoDatabase()
         {
@@ -22,22 +20,18 @@ namespace oopProject
 
         public PlayerInfo GetPlayerInfo(string name)
         {
-            var document = collection.AsQueryable()
-                                     .Where(attrs => attrs["Name"].Equals(name))
-                                     .First();
+            var document = collection
+                                     .AsQueryable()
+                                     .First(attrs => attrs["Name"].Equals(name));
             var attributes = BsonDocToDictionary(document);
             return new FootballPlayerInfo(attributes);
         }
 
         public PlayerInfo GetPlayerOfType(params string[] types)
         {
-            var bson_types = types.Select(type => (BsonValue)type);
-            var query = collection.AsQueryable()
-                                  .Where(attrs => bson_types.Contains(attrs["Club_Position"]))
-                                  .Sample(1)
-                                  .First();
+            var bsonTypes = types.Select(type => (BsonValue)type);
             var player = collection.AsQueryable()
-                                    .Where(attrs => bson_types.Contains(attrs["Club_Position"]))
+                                    .Where(attrs => bsonTypes.Contains(attrs["Club_Position"]))
                                     .Sample(1)
                                     .First();
             var attributes = BsonDocToDictionary(player);

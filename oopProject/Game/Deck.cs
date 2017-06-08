@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace oopProject
 {
@@ -20,7 +18,6 @@ namespace oopProject
             return deck.Pop();
         }
 
-        public bool Any { get { return deck.Any(); } }
-
+        public bool Any => deck.Any();
     }
 }

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace oopProject
 {
@@ -17,14 +13,14 @@ namespace oopProject
         public abstract bool Execute(T parameters);
         public abstract void Accept(ISuccess success);
 
-        protected bool wasSuccessfullyExecuted;
-        protected Game game;
+        protected Game Game { get; private set; }
+        protected bool WasSuccessfullyExecuted { get; set; }
 
-        public void SetUp(Game game) => this.game = game;
+        public void SetUp(Game game) => Game = game;
 
         public bool Execute(IParameters parameters)
         {
-            wasSuccessfullyExecuted = false;
+            WasSuccessfullyExecuted = false;
             var converted = CheckParameters(parameters);
             return Execute(converted);
         }

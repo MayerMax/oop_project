@@ -10,15 +10,15 @@ namespace oopProject
     {
         public override bool Execute(SwapParameters parameters)
         {
-            game.CurrentPlayer.Team.SubstitutionFromHandToSquad(parameters.OldCardZone,
+            Game.CurrentPlayer.Team.SubstitutionFromHandToSquad(parameters.OldCardZone,
                 parameters.CardPosition, parameters.NewCardPosition);
-            wasSuccessfullyExecuted = true;
-            return wasSuccessfullyExecuted;
+            WasSuccessfullyExecuted = true;
+            return WasSuccessfullyExecuted;
         }
 
         public override bool AreSuitable(SwapParameters parameters)
         {
-            var team = game.CurrentPlayer.Team;
+            var team = Game.CurrentPlayer.Team;
             var isActive = team.Squad.IsActive(parameters.OldCardZone, parameters.CardPosition);
             return isActive && team.Hand.Contains(parameters.NewCardPosition);
         }
@@ -27,9 +27,9 @@ namespace oopProject
 
         public override int Value => 5;
 
-        public override bool IsAvailable => game.CurrentPlayer.Team.Hand.Any && 
-                                            game.CurrentPlayer.Team.Squad.Any;
+        public override bool IsAvailable => Game.CurrentPlayer.Team.Hand.Any && 
+                                            Game.CurrentPlayer.Team.Squad.Any;
 
-        public override void Accept(ISuccess success) => success.Apply(this, wasSuccessfullyExecuted);
+        public override void Accept(ISuccess success) => success.Apply(this, WasSuccessfullyExecuted);
     }
 }
