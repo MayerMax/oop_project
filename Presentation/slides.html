@@ -127,6 +127,10 @@
 					<img src = "pic2.png"  width="100%" heigth="175%"alt="player">
 					<img src = "pic1.png"  width="100%" heigth="130%"alt="player">
 				</section>
+				<section>
+					<p>схема основных Action-ов</p>
+					<img src="Graphs/Action.png" width="130%" alt="action">
+				</section>
 
 				<section>
 					<p>Action - основа гибкости игры</p>
@@ -227,7 +231,7 @@ public interface IDatabase
 	</section>
 
 	<section>
-		<p>Надстройка над IDataBase для создания объектов игры</p>
+		<p>Обертка для IDatabase для создания объектов игры</p>
 		<pre style="background-color:black;">
 		<code style="background-color:black;">
 public interface IFootballDatabase
@@ -244,7 +248,7 @@ public interface IFootballDatabase
 	<section>
 		<ul>
 			<li>Легко добавлять способы расчета характеристик Action-а</li>
-			<li>На уровне кода настаивать баланс в игре</li>
+			<li>На уровне кода настраивать баланс в игре</li>
 			<li>Большое количество показателей для игровых объектов</li>
 		</ul>
 	</section>
@@ -274,7 +278,270 @@ public static double PassPower(this Zone zone)
 	</section>
 </section>
 <section>
+	<section>
 	<h3>Общая структура решения</h3>
+	<img src="Graphs/Game.png" alt="game screen">
+	</section>
+
+	<section id="game-class">
+		<h3>Game</h3>
+		<pre style="background-color:black;">
+			<code style="background-color:black;">
+public class Game
+{        
+    public readonly Deck Deck;
+    public int MovesLeft { get; private set; }
+    public Player CurrentPlayer { get; }
+    public string Message { get; }
+    public IEnumerable&#60;Player&#62; GetOpponents { get; }
+    private void Next();
+    public void Turn(Tuple&#60;IAction, IParameters&#62; executionPair);
+    public bool IsEnd { get; }
+    public void AddPlayer(Player player);
+}
+			</code>
+		</pre>
+	</section>
+	<section id="player-class">
+		<h3>Player</h3>
+		<pre style="background-color:black;">
+			<code style="background-color:black;">
+	public class Player
+	{
+	    public readonly string Name;
+	    public Team Team { get; set; }
+	    public int Score { get; private set; }
+
+	    public void IncreaseScore(int points);
+	}
+			</code>
+		</pre>
+	</section>
+	<section id="team-class">
+		<h3>Team</h3>
+		<pre style="background-color:black;">
+			<code style="background-color:black;">
+    public class Team
+    {
+        public readonly Squad Squad;
+        public readonly Hand Hand;
+        public Ball Ball { get; private set; }
+        public bool HasBall { get; }
+        public void Update(Ball ball);
+
+        public void SubstitutionFromHandToSquad(ZoneType type, 
+                                                int cardPosition,
+                                                int newCardPosition);
+    }
+	</code>
+		</pre>
+	</section>
+	<section id="hand-class">
+		<h3>Hand</h3>
+		<pre style="background-color:black;">
+			<code style="background-color:black;">
+    public class Hand
+    {
+        public int HandSize { get; }
+        public bool Any { get; }
+        public FootballCard Peek { get; }
+
+        public bool Remove(FootballCard card);
+        public void InsertCard(FootballCard card);
+        public IEnumerable&#60;FootballCard&#62; GetCardsByRank(int count);
+        public bool Contains(FootballCard card);
+    }
+			</code>
+		</pre>
+	</section>
+	<section id="squad-class">
+		<h3>Squad</h3>
+		<pre style="background-color:black;">
+			<code style="background-color:black;">
+    public class Squad
+    {
+        private Dictionary&#60;ZoneType, Zone> squad;
+
+        public readonly string Formation;
+        public string Name { get; private set; }
+        public bool Any { get; }
+
+        public bool IsActive(ZoneType zone, int position);
+        
+        public FootballCard Remove(ZoneType type, int cardIndex);
+
+        public void Insert(ZoneType type, FootballCard card, 
+        				   int position);
+        
+        public double GetZonePower(ZoneType zoneType,
+                                   Func&#60;Zone, double> calculate);
+    }
+			</code>
+		</pre>
+	</section>
+	<section id="zone-class">
+		<h3>Zone</h3>
+		<pre style="background-color:black;">
+			<code style="background-color:black;">
+    public class Zone : BaseZone
+    {
+        public bool Any;
+        public int Count;
+
+        public IEnumerable&#60;FootballCard> GetCards();
+
+        public FootballCard RemoveCard(int cardIndex);
+
+        public void RemoveDeadCards();
+
+        public void InsertCard(FootballCard card, int position);
+    }
+			</code>
+		</pre>
+	</section>
+	<section id="zone-class-2">
+		<h3>Zone Extensions</h3>
+		<pre style="background-color:black;">
+			<code style="background-color:black;">
+    static class ZoneExtensions
+    {
+        public static double PassPower(this Zone zone);
+        public static double DefendPower(this Zone zone);
+        public static double WithAdditionalPower(this Zone zone, 
+                                                 FootballCard card);
+        public static double InterceptPower(this Zone zone);
+        public static double ShootPower(this Zone zone);
+        public static double PressurePower(this Zone zone);
+
+        public static void DecreaseRandomCardRank(this Zone zone, 
+                                                  int percent);
+    }</code>
+		</pre>
+	</section>
+	<section id="ball-class">
+		<h3>Ball</h3>
+		<pre style="background-color:black;">
+			<code style="background-color:black;">
+    public class Ball
+    {
+        private List&#60;Team> observers;
+        private Team owner;
+        public ZoneType Place { get; private set; }
+
+        public void AddObserver(Team observer);
+        public void Move();
+        public void InterceptedBy(Team newOwner);
+        public void Restart(Team newOwner);
+        private void UpdateObservers(Team newOwner);
+    }
+			</code>
+		</pre>
+	</section>
+</section>
+<section>
+	<h3>Текущее состояние игры</h3>
+	<section>
+		<br>
+		<p>Консольный режим</p>
+		<img src="cons-1.png" alt="console">
+		<img src="cons-2.png" width="105%" alt="console">
+	</section>
+	<section>
+		<p>Взаимодействие с пользователем с консоли</p>
+		<img src="Graphs/Parser.png" alt="parser">
+	</section>
+	<section>
+		Перспективы
+	</section>
+</section>
+<section>
+	<h3>DI-контейнер</h3>
+	<pre style="background-color:black;">
+		<code style="background-color:black;">
+    // ...
+    var container = new StandardKernel();
+    container.Bind&#60;IDatabase>().To&#60;MongoDatabase>();
+    container.Bind&#60;IFootballDatabase>().To&#60;FootballDatabase>();
+    container.Bind&#60;IAction>().To&#60;GetFromDeckAction>();
+    container.Bind&#60;IAction>().To&#60;InterceptionAction>();
+    container.Bind&#60;IAction>().To&#60;PassAction>();
+    container.Bind&#60;IAction>().To&#60;PressureAction>();
+    container.Bind&#60;IAction>().To&#60;ShootAction>();
+    container.Bind&#60;IAction>().To&#60;SwapAction>();
+    container.Bind&#60;ISuccess>().To&#60;Success>();
+    var controller = container.Get&#60;ConsoleController>();
+    controller.Loop();
+		</code>
+	</pre>
+</section>
+<section>
+	<h3>Тестирование</h3>
+	<section>
+		<h4>Объекты тестирования</h4>
+		<p>Вся игра построена на Action-ах. Суть тестов - корректное изменение состояния игры после применения Action-а</p>
+		<p>Метод тестирования:</p>
+		<ol>
+			<li>Создаем несколько юнит-тестов на каждое действие</li>
+			<li>Исполняем действие на заданных параметрах</li>
+			<li>Проверяем, что состояние корректно изменилось</li>
+		</ol>
+	</section>
+	<section>
+		<h4>Пример теста</h4>
+		<pre style="background-color:black;">
+			<code style="background-color:black;">
+    [Test]
+    public void CheckPassTransition()
+    {
+        var ball = Parameters.Container.Get&#60;Ball>();
+        var players = Parameters.GetPlayers(ball);
+        var first = players.Item1;
+        var second = players.Item2;
+        IAction action = Parameters.Container.Get&#60;PassAction>();
+        action.SetUp(Parameters.Container.Get&#60;Game>()
+        		    			.AddPlayer(first)
+        		    			.AddPlayer(second));
+
+        Assert.True(first.Team.HasBall);
+        Assert.AreEqual(first.Team.Ball.Place, ZoneType.MID);
+
+        var parameters = new EnemyParameters(second.Team);
+
+        if (action.Execute(parameters))
+            Assert.AreEqual(first.Team.Ball.Place, ZoneType.ATT);
+        else
+        {
+            Assert.True(second.Team.HasBall);
+            Assert.AreEqual(second.Team.Ball.Place, ZoneType.MID);
+        }</code>
+		</pre>
+	</section>
+	<section>
+		<p>Общий подход к написанию тестов в итоге такой:</p>
+		<ol>
+			<li>Проинициализировать игру</li>
+			<li>Взять интересующее действие</li>
+			<li>Задать параметры</li>
+			<li>Проверять то, что захочется: результат исполнения, счет, success</li>
+		</ol>
+	</section>
+	<section>
+		<br>
+		<h4>Устойчивость к ошибкам пользовательского ввода</h4>
+		<p>Невозможно привести игру в некорректное состояние - у Action есть две проверки:</p>
+		<ul>
+			<li><p>Доступно ли действие</p>
+				<pre style='color:#d1d1d1;background:#000000;'><span style='color:#e66170; font-weight:bold; '>public</span> <span style='color:#e66170; font-weight:bold; '>abstract</span> <span style='color:#e66170; font-weight:bold; '>bool</span> IsAvailable <span style='color:#b060b0; '>{</span> <span style='color:#e66170; font-weight:bold; '>get</span><span style='color:#b060b0; '>;</span> <span style='color:#b060b0; '>}</span>
+</pre>
+			</li>
+
+			<li><p>Верные ли параметры</p>
+				<pre style='color:#d1d1d1;background:#000000;'><span style='color:#e66170; font-weight:bold; '>public</span> <span style='color:#e66170; font-weight:bold; '>abstract</span> <span style='color:#e66170; font-weight:bold; '>bool</span> AreSuitable<span style='color:#d2cd86; '>(</span>T parameters<span style='color:#d2cd86; '>)</span><span style='color:#b060b0; '>;</span>
+</pre>
+			</li>
+		</ul>
+	<p>Некорректный ввод обрабатывается и производится новая попытка ввода</p>
+	</section>
 </section>
 </div>
 </div>
