@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace oopProject
 {
@@ -46,7 +47,7 @@ namespace oopProject
         public void InsertCard(FootballCard card, int position) {
             if (!cards[position].IsFree)
                 throw new InvalidOperationException("This position is not available");
-            card.CurrentZone = Type;
+            card.MoveToZone(Type);
             cards[position].Card = card;
         }
 
@@ -63,7 +64,7 @@ namespace oopProject
             var places = new List<Position>(cards.Count+1);
             for (int i = 0; i < cards.Count; i++)
             {
-                cards[i].CurrentZone = Type;
+                cards[i].MoveToZone(Type);
                 places.Insert(i, new Position(i, cards[i]));
             }
             return places;

@@ -14,9 +14,13 @@ namespace oopProject
         public int Defend { get; set; }
         public int Attack { get; set; }
         public int Midfield { get; set; }
+        public double TotalDamage { get; private set; }
+        public double MaxRankWithDamage => MaxRank - TotalDamage;
+
+        private double MaxRank => PlayerInfo.ParseAttribute("Rating") / MAXCHAR;
 
         public readonly ZoneType PreferredZone;
-        public ZoneType CurrentZone { get; set; }
+        public ZoneType CurrentZone { get; private set; }
 
         public override string ToString() {
             var list = GeneralDescription().ToList();
@@ -31,7 +35,7 @@ namespace oopProject
             Attack = EvaluateAttackRank();
             CurrentZone = ZoneType.NONE;
             PreferredZone = curZone;
-            Rank = EvaluateGeneralRank();
+            Rank = MaxRank;
         }
 
         // probably generalize idea of evaluation functions by creating for each single class, where intrinsic logic will be added.
@@ -44,23 +48,32 @@ namespace oopProject
         protected override int EvaluateDefendRank() => ClampByModulo(evaluateFunction(PlayerInfo.DEF));
 
 
-        protected override double EvaluateGeneralRank() {
-
-            var optimum = PlayerInfo.ParseAttribute("Rating") / MAXCHAR;
+        protected override double EvaluateGeneralRank()
+        {
+            var rank = MaxRank;
             if (CurrentZone != PreferredZone)
             {
-                optimum = (optimum / 3);
-                if (optimum == 0)
+                rank = Math.Round(rank / 3, 1);
+                if (rank == 0)
                     return 1;
             }
-            return optimum;
+            return rank;
         }
 
-        public void DecreaseRank(int percent) {
-            double coef = 1 - percent / 100;
-            Rank = (int) (Rank * coef);
+        public void DecreaseRank(double percent) {
+            var coef = 1 - percent / 100;
+            var decreased = Math.Round(Rank * coef, 1);
+            TotalDamage += Rank - decreased;
+            Rank = decreased;
         }
-        
+
+        public void MoveToZone(ZoneType zone)
+        {
+            CurrentZone = zone;
+            Rank = EvaluateGeneralRank() - TotalDamage;
+        }
+
+        public void LeaveZone() => CurrentZone = ZoneType.NONE;
 
         public override IEnumerable<string> GeneralDescription() => PlayerInfo.GENERAL.Select(f => f);
         

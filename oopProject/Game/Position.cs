@@ -23,7 +23,7 @@
         }
 
         public void Release() {
-            Card.CurrentZone = ZoneType.NONE;
+            Card.LeaveZone();
             Card = null;
         }
     }

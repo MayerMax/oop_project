@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -120,20 +121,20 @@ namespace oopProject
 
             IAction action = Parameters.Container.Get<PressureAction>();
             action.SetUp(Parameters.Container.Get<Game>().AddPlayer(player).AddPlayer(opponent));
-            var attackingZoneType = ZoneType.DEF;
-            var attackingZone = player.Team.Squad[attackingZoneType];
-            var defendingZone = opponent.Team.Squad[ZoneType.ATT];
+            var attackedZoneType = ZoneType.DEF;
+            var attackingZone = player.Team.Squad[ZoneType.ATT];
+            var defendingZone = opponent.Team.Squad[attackedZoneType];
 
             var opponetZoneRankings = defendingZone.GetCards().Select(f => f.Rank).ToList();
             var playerZoneRankings = attackingZone.GetCards().Select(f => f.Rank).ToList();
 
-            var parameters = new PressureParameters(attackingZoneType, opponent.Team);
+            var parameters = new PressureParameters(attackedZoneType, opponent.Team);
 
             var executed = action.Execute(parameters);
             if (executed)
             {
                 var newOpponentsRanking = defendingZone.GetCards().Select(f => f.Rank).ToList();
-                for (int idx = 0; idx < newOpponentsRanking.Count(); idx++)
+                for (int idx = 0; idx < newOpponentsRanking.Count; idx++)
                 {
                     Assert.True(newOpponentsRanking[idx] <= opponetZoneRankings[idx]);
                 }

@@ -23,9 +23,9 @@ namespace oopProject
 
         public override bool Execute(PressureParameters parameters)
         {
-            var zone = Game.CurrentPlayer.Team.Squad[parameters.ZoneType];
+            var zone = Game.CurrentPlayer.Team.Squad[Ball.Transitions[parameters.ZoneType]];
             var pressure = zone.PressurePower();
-            var opponentZone = parameters.Enemy.Squad[Ball.Transitions[parameters.ZoneType]];
+            var opponentZone = parameters.Enemy.Squad[parameters.ZoneType];
             var opponentPressure = opponentZone.PressurePower();
             if (pressure >= opponentPressure)
             {

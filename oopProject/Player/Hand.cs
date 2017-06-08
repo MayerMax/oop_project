@@ -45,7 +45,7 @@ namespace oopProject
 
         public string Print()
         {
-            var cards = string.Join(", ", hand.Select(c => $"{c.CardName}({c.Rank})").ToArray());
+            var cards = string.Join(", ", hand.Select(c => $"{c.CardName}({c.MaxRankWithDamage})").ToArray());
             return $"[{cards}]";
         }
     }

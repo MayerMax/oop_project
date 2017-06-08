@@ -7,7 +7,7 @@ namespace oopProject
     public class Game
     {
         public static readonly int PLAYERS_AMOUNT = 2;
-        public static readonly int MOVES_AMOUNT = 2;
+        public static readonly int MOVES_AMOUNT = 45;
 
         private IFootballDatabase db;
         private List<Player> players;
