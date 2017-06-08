@@ -60,10 +60,12 @@ namespace oopProject
 
         private List<Position> FillWithCards(List<FootballCard> cards)
         {
-
             var places = new List<Position>(cards.Count+1);
             for (int i = 0; i < cards.Count; i++)
-               places.Insert(i, new Position(i, cards[i]));
+            {
+                cards[i].CurrentZone = Type;
+                places.Insert(i, new Position(i, cards[i]));
+            }
             return places;
         }
     }

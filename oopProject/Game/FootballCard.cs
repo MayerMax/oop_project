@@ -29,7 +29,7 @@ namespace oopProject
             Defend = EvaluateDefendRank();
             Midfield = EvaluateBalanceRank();
             Attack = EvaluateAttackRank();
-            CurrentZone = curZone;
+            CurrentZone = ZoneType.NONE;
             PreferredZone = curZone;
             Rank = EvaluateGeneralRank();
         }
