@@ -32,7 +32,15 @@ namespace oopProject
             foreach (var playerInfo in database.GetPlayers(count))
             {
                 var availableZones = playerInfo["Preffered_Position"];
-                var mostPreferred = reversedTypes[availableZones.Split('/').ToList()[0]];
+                ZoneType mostPreferred;
+                try
+                {
+                    mostPreferred = reversedTypes[availableZones.Split('/').ToList()[0]];
+                }
+                catch (KeyNotFoundException)
+                {
+                    mostPreferred = ZoneType.MID;
+                }
                 yield return new FootballCard((FootballPlayerInfo)playerInfo, mostPreferred);
             }
         }

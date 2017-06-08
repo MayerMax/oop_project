@@ -61,10 +61,10 @@ namespace oopProject
         }
 
         public void DecreaseRank(double percent) {
-            var coef = 1 - percent / 100;
-            var decreased = Math.Round(Rank * coef, 1);
-            TotalDamage += Rank - decreased;
-            Rank = decreased;
+            //var damage = MaxRank * percent / 125;
+            var damage = 5;
+            TotalDamage += damage;
+            Rank = Math.Round(Rank - damage, 1);
         }
 
         public void MoveToZone(ZoneType zone)

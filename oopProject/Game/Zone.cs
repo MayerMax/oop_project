@@ -51,12 +51,12 @@ namespace oopProject
             cards[position].Card = card;
         }
 
-        public string Print() {
-            var names =
-                cards.Where(pos => !pos.IsFree)
-                .Select(pos => $"{pos.Number + 1}.{pos.Card.CardName}({pos.Card.Rank}) ");
+        public string Print()
+        {
+            var names = cards.Select(pos => pos.IsFree
+                ? $"{pos.Number + 1}.[DEAD]"
+                : $"{pos.Number + 1}.{pos.Card.CardName}({pos.Card.Rank}) ");
             return string.Join("--", names);
-
         }
 
         private List<Position> FillWithCards(List<FootballCard> cards)
