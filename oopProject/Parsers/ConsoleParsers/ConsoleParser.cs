@@ -66,7 +66,7 @@ namespace oopProject
 
         protected IEnumerable<ZoneType> VerifyZoneTypes(string[] parameters, int[] indexes)
         {
-            if (parameters.Length < indexes.Length)
+            if (parameters.Length <= indexes.Last())
                 throw new ArgumentException("Invalid parameters");
             return parameters.Select(VerifyZoneType);
         }
