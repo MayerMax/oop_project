@@ -13,7 +13,7 @@ namespace oopProject
         public override SwapInSquadParameters Parse(string parameters)
         {
             var splitted = parameters.Split(' ');
-            var zoneTypes = VerifyZoneTypes(new[] {splitted[0], splitted[2]}).ToArray();
+            var zoneTypes = VerifyZoneTypes(splitted, new[] {0, 2}).ToArray();
             splitted[0] = ((int)zoneTypes[0]).ToString();
             splitted[2] = ((int)zoneTypes[1]).ToString();
             var verified = VerifyParameters(4, splitted);

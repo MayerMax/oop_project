@@ -64,8 +64,12 @@ namespace oopProject
             }
         }
 
-        protected IEnumerable<ZoneType> VerifyZoneTypes(string[] strZoneTypes)
-            => strZoneTypes.Select(VerifyZoneType);
+        protected IEnumerable<ZoneType> VerifyZoneTypes(string[] parameters, int[] indexes)
+        {
+            if (parameters.Length < indexes.Length)
+                throw new ArgumentException("Invalid parameters");
+            return parameters.Select(VerifyZoneType);
+        }
     }
 
     public class ParseException : Exception
