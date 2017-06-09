@@ -4,18 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ninject;
+using ooPproject;
 
 namespace oopProject
 {
     public class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
-            //var holder = new MongDbHolder("FullData.csv", "Pictures");
-            //holder.CreateFromCSV();
-            //Console.ReadKey();
             var container = new StandardKernel();
-            container.Bind<IDatabase>().To<MongoDatabase>();
+            container.Bind<IDatabase>().To<CSVDatabase>();
             container.Bind<IFootballDatabase>().To<FootballDatabase>();
             container.Bind<IBall>().To<Ball>();
             container.Bind<IAction>().To<GetFromDeckAction>();
@@ -26,8 +24,16 @@ namespace oopProject
             container.Bind<IAction>().To<SwapAction>();
             container.Bind<IAction>().To<SwapInSquadAction>();
             container.Bind<ISuccess>().To<Success>();
-            var controller = container.Get<ConsoleController>();
-            controller.Loop();
+
+            try
+            {
+                var controller = container.Get<ConsoleController>();
+                controller.Loop();
+            }
+            catch (DatabaseException e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
     }
 }

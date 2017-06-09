@@ -31,9 +31,11 @@ namespace oopProject
                                                  .Invoke(parser, new object[] { });
             while (true)
             {
-                var strParameters = GetUserInput(parametersFormat);
+                var strParameters = parametersFormat;
                 try
                 {
+                    if (strParameters != "")
+                        strParameters = GetUserInput(parametersFormat);
                     return Tuple.Create(action, GetParameters(parser, strParameters));
                 }
                 catch (ArgumentException e)
@@ -75,7 +77,6 @@ namespace oopProject
             }
             Console.WriteLine("The game is over!");
             Console.WriteLine($"{game.Score}\nThe winner is {game.Winner}");
-            return;
         }
 
         private void ShowAvailableActions()
@@ -141,7 +142,7 @@ namespace oopProject
             {
                 return (IParameters)parser.GetType().GetMethod("Parse").Invoke(parser, new[] { strParameters });
             }
-            catch (TargetInvocationException e) { throw (e.InnerException); }
+            catch (TargetInvocationException e) { throw e.InnerException; }
         }
 
         private object GetParser(IAction action)
