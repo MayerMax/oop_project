@@ -78,6 +78,7 @@
 					</div>
 				</section>
 			</section>
+			<section>
 			<section id="who-made-what">
 				<h3>Кто и что делал</h3>
 				<br>
@@ -88,7 +89,7 @@
 						<ol>
 							<li>Actions</li>
 							<li>Внутренняя логика</li>
-							<li>Тесты.DI-контейнер</li>
+							<li>Тесты.  DI-контейнер</li>
 						</ol>
 					</div>
 					<div class="col-sm-6">
@@ -100,6 +101,41 @@
 						</ol>
 					</div>
 				</div>
+				</section>
+				<section>
+				<h3><a href="https://www.kaggle.com/artimous/complete-fifa-2017-player-dataset-global">Данные о футболистах</a></h3>
+				<br>
+				<table>
+					<thead>
+						<tr>
+						<th>Name</th>
+						<th>Rating</th>
+						<th>Preferred pos</th>
+						<th>Skill</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Cristiano Ronaldo</td>
+							<td>94</td>
+							<td>LW/ST</td>
+							<td>5</td>
+						</tr>
+						<tr>
+							<td>David Silva</td>
+							<td>87</td>
+							<td>CM</td>
+							<td>4</td>
+						</tr>
+						<tr>
+							<td>Fedor Smolov</td>
+							<td>79</td>
+							<td>ST</td>
+							<td>2</td>
+						</tr>
+					</tbody>
+				</table>
+				</section>
 			</section>
 			<section id="extend-points">
 				<h3>Точки расширения проекта</h3>
@@ -124,8 +160,9 @@
 <section id="game-action">
 				<h3>Actions</h3>
 				<section>
-					<img src = "pic2.png"  width="100%" heigth="175%"alt="player">
-					<img src = "pic1.png"  width="100%" heigth="130%"alt="player">
+					<br>
+					<img src = "pic-2.png" width="130%" alt="player">
+					<img src = "pic-1.png"  width="130%" heigth="105%"alt="player">
 				</section>
 				<section>
 					<p>схема основных Action-ов</p>
@@ -211,6 +248,30 @@ public abstract class Action&#60;T&#62; : IAction
     <span style='color:#406080; '>}</span>
 </pre>
 		</pre>
+	</section>
+	<section>
+		<br>
+		<h4>ISuccess</h4>
+		<p>Меняет глобальное состояние игры в зависимости от результата действия</p>
+		<pre style='color:#d1d1d1;background:#000000;'><span style='color:#e66170; font-weight:bold; '>public</span> <span style='color:#e66170; font-weight:bold; '>interface</span> ISuccess
+    <span style='color:#b060b0; '>{</span>
+        <span style='color:#e66170; font-weight:bold; '>string</span> Message <span style='color:#b060b0; '>{</span> <span style='color:#e66170; font-weight:bold; '>get</span><span style='color:#b060b0; '>;</span> <span style='color:#b060b0; '>}</span>
+        <span style='color:#e66170; font-weight:bold; '>void</span> Apply<span style='color:#d2cd86; '>(</span>PassAction action<span style='color:#d2cd86; '>,</span> <span style='color:#e66170; font-weight:bold; '>bool</span> successful<span style='color:#d2cd86; '>)</span><span style='color:#b060b0; '>;</span>
+        <span style='color:#9999a9; '>// More code...</span>
+    <span style='color:#b060b0; '>}</span>
+</pre>
+
+		<pre style='color:#d1d1d1;background:#000000;'><span style='color:#e66170; font-weight:bold; '>public</span> <span style='color:#e66170; font-weight:bold; '>void</span> Apply<span style='color:#d2cd86; '>(</span>PassAction action<span style='color:#d2cd86; '>,</span> <span style='color:#e66170; font-weight:bold; '>bool</span> successful<span style='color:#d2cd86; '>)</span>
+    <span style='color:#b060b0; '>{</span>
+        <span style='color:#e66170; font-weight:bold; '>var</span> successPass <span style='color:#d2cd86; '>=</span> SuccessAction<span style='color:#d2cd86; '>(</span>action<span style='color:#d2cd86; '>,</span> 
+                          g <span style='color:#d2cd86; '>=</span><span style='color:#d2cd86; '>></span> $<span style='color:#02d045; '>"</span><span style='color:#00c4c4; '>ball moves to {game.BallPlace}, Nice!</span><span style='color:#02d045; '>"</span><span style='color:#d2cd86; '>)</span><span style='color:#b060b0; '>;</span>
+            
+        <span style='color:#e66170; font-weight:bold; '>var</span> failurePass <span style='color:#d2cd86; '>=</span> FailureAction<span style='color:#d2cd86; '>(</span>action<span style='color:#d2cd86; '>,</span> 
+                          g <span style='color:#d2cd86; '>=</span><span style='color:#d2cd86; '>></span> $<span style='color:#02d045; '>"</span><span style='color:#00c4c4; '>ball was intercepted by {game.BallOwner}</span><span style='color:#02d045; '>"</span><span style='color:#d2cd86; '>)</span><span style='color:#b060b0; '>;</span>
+        Apply<span style='color:#d2cd86; '>(</span>successPass<span style='color:#d2cd86; '>,</span> failurePass<span style='color:#d2cd86; '>,</span> successful<span style='color:#d2cd86; '>)</span><span style='color:#b060b0; '>;</span>
+    <span style='color:#b060b0; '>}</span>
+</pre>
+
 	</section>
 	</section>
 
@@ -325,16 +386,17 @@ public class Game
     {
         public readonly Squad Squad;
         public readonly Hand Hand;
-        public Ball Ball { get; private set; }
+        public IBall Ball { get; private set; }
         public bool HasBall { get; }
-        public void Update(Ball ball);
+        public void Update(IBall ball);
 
         public void SubstitutionFromHandToSquad(ZoneType type, 
                                                 int cardPosition,
                                                 int newCardPosition);
-    }
-	</code>
-		</pre>
+        
+        public void SwapInSquad(ZoneType first, int firstPos, 
+                                ZoneType second, int secondPos;    
+    }</code></pre>
 	</section>
 	<section id="hand-class">
 		<h3>Hand</h3>
@@ -422,7 +484,7 @@ public class Game
 		<h3>Ball</h3>
 		<pre style="background-color:black;">
 			<code style="background-color:black;">
-    public class Ball
+    public class Ball: IBall
     {
         private List&#60;Team> observers;
         private Team owner;
@@ -462,6 +524,7 @@ public class Game
     var container = new StandardKernel();
     container.Bind&#60;IDatabase>().To&#60;MongoDatabase>();
     container.Bind&#60;IFootballDatabase>().To&#60;FootballDatabase>();
+    container.Bind&#60;IBall&#62;().To&#60;Ball&#62;();
     container.Bind&#60;IAction>().To&#60;GetFromDeckAction>();
     container.Bind&#60;IAction>().To&#60;InterceptionAction>();
     container.Bind&#60;IAction>().To&#60;PassAction>();
@@ -477,6 +540,7 @@ public class Game
 <section>
 	<h3>Тестирование</h3>
 	<section>
+		<br>
 		<h4>Объекты тестирования</h4>
 		<p>Вся игра построена на Action-ах. Суть тестов - корректное изменение состояния игры после применения Action-а</p>
 		<p>Метод тестирования:</p>
@@ -543,6 +607,7 @@ public class Game
 	<p>Некорректный ввод обрабатывается и производится новая попытка ввода</p>
 	</section>
 </section>
+<section></section>
 </div>
 </div>
 

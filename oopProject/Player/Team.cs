@@ -4,18 +4,18 @@
     {
         public readonly Squad Squad;
         public readonly Hand Hand;
-        public Ball Ball { get; private set; }
+        public IBall Ball { get; private set; }
 
         public bool HasBall => Ball != null && Ball.IsOwner(this);
 
-        public Team(Squad starts, Hand subs, Ball ball) {
+        public Team(Squad starts, Hand subs, IBall ball) {
             Squad = starts;
             Hand = subs;
             Ball = ball;
             Ball.AddObserver(this);
         }
 
-        public void Update(Ball ball) => Ball = ball;
+        public void Update(IBall ball) => Ball = ball;
 
         public void SubstitutionFromHandToSquad(ZoneType type, int cardPosition, 
                                                 int newCardPosition) {
@@ -26,7 +26,8 @@
             Hand.InsertCard(oldCard);
         }
 
-        public void SwapInSquad(ZoneType first, int firstPos, ZoneType second, int secondPos)
+        public void SwapInSquad(ZoneType first, int firstPos, 
+                                ZoneType second, int secondPos)
             => Squad.Swap(first, firstPos, second, secondPos);
 
         public override bool Equals(object obj)

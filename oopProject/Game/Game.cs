@@ -11,7 +11,7 @@ namespace oopProject
 
         private IFootballDatabase db;
         private List<Player> players;
-        private Ball ball;
+        private IBall ball;
         private ISuccess success;
 
         private int currentPlayerIdx;
@@ -34,11 +34,11 @@ namespace oopProject
                 }
         }
 
-        public Game(IFootballDatabase database)
+        public Game(IFootballDatabase database, IBall ball)
         {
             db = database;
             players = new List<Player>();
-            ball = new Ball();
+            this.ball = ball;
             Deck = new Deck(db);
             success = new Success(this);
             MovesLeft = MOVES_AMOUNT; 

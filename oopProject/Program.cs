@@ -17,6 +17,7 @@ namespace oopProject
             var container = new StandardKernel();
             container.Bind<IDatabase>().To<MongoDatabase>();
             container.Bind<IFootballDatabase>().To<FootballDatabase>();
+            container.Bind<IBall>().To<Ball>();
             container.Bind<IAction>().To<GetFromDeckAction>();
             container.Bind<IAction>().To<InterceptionAction>();
             container.Bind<IAction>().To<PassAction>();

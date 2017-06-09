@@ -8,7 +8,7 @@
         
         public int Score { get; private set; }
 
-        public Player(string name, Squad squad, Hand hand, Ball ball){
+        public Player(string name, Squad squad, Hand hand, IBall ball){
             Name = name;
             Team = new Team(squad, hand, ball);
         }

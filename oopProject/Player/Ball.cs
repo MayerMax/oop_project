@@ -4,8 +4,8 @@ using System.Linq;
 
 namespace oopProject
 {
-    public class Ball
-    {
+    public class Ball : IBall 
+    {       
         public static ReadOnlyDictionary<ZoneType, ZoneType> Transitions =
             new ReadOnlyDictionary < ZoneType, ZoneType>(
                 new Dictionary<ZoneType, ZoneType>() {
@@ -19,6 +19,7 @@ namespace oopProject
 
         public string Owner => owner.Squad.Name;
 
+        
         public Ball(ZoneType whereToStart=ZoneType.NONE) {
             observers = new List<Team>();
             if (whereToStart != ZoneType.NONE)
@@ -35,7 +36,7 @@ namespace oopProject
             observers.Add(observer);
         }
 
-        public void NotifyObserversExcept(Team team)
+        private void NotifyObserversExcept(Team team)
         {
             foreach (var observer in observers.Where(o => !o.Equals(team)))
                 observer.Update(null);

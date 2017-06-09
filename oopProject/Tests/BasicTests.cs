@@ -16,7 +16,7 @@ namespace oopProject
         public void SetUp()
         {
             db = new FootballDatabase(new MongoDatabase());
-            game = new Game(db);
+            game = new Game(db, new Ball());
         }
 
         [Test]

@@ -53,7 +53,7 @@ namespace oopProject
             var firstCard = this[first][firstPos].Release();
             var secondCard = this[second][secondPos].Release();
             this[first].InsertCard(secondCard, firstPos);
-            this[second].InsertCard(firstCard, firstPos);
+            this[second].InsertCard(firstCard, secondPos);
         }
 
         public FootballCard Remove(ZoneType type, int cardIndex) {

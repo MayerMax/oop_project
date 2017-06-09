@@ -13,7 +13,7 @@ namespace oopProject
     {
         public static StandardKernel Container = Parameters.GetContainer();
 
-        public static Tuple<Player, Player> GetPlayers(Ball ball)
+        public static Tuple<Player, Player> GetPlayers(IBall ball)
         {
             var db = Container.Get<IFootballDatabase>();
             var first = new Player("Max", Squad.GetRandomSquad(db, "N", "3-4-3"),
@@ -24,7 +24,7 @@ namespace oopProject
 
         }
 
-        public static Player GeneratePlayer(Ball ball, string name = "Leo")
+        public static Player GeneratePlayer(IBall ball, string name = "Leo")
         {
             var db = Container.Get<IFootballDatabase>();
             return new Player(name, Squad.GetRandomSquad(db, "N", "3-4-3"),
@@ -36,6 +36,7 @@ namespace oopProject
             var container = new StandardKernel();
             container.Bind<IDatabase>().To<MongoDatabase>();
             container.Bind<IFootballDatabase>().To<FootballDatabase>();
+            container.Bind<IBall>().To<Ball>();
             container.Bind<IAction>().To<GetFromDeckAction>();
             container.Bind<IAction>().To<InterceptionAction>();
             container.Bind<IAction>().To<PassAction>();
@@ -53,7 +54,7 @@ namespace oopProject
         [Test]
         public void CheckMovement()
         {
-            Ball ball = new Ball();
+            Ball ball = Parameters.Container.Get<Ball>();
             var players = Parameters.GetPlayers(ball);
             ball.Move();
             Assert.True(ball.Place == ZoneType.ATT);
@@ -64,7 +65,7 @@ namespace oopProject
         [Test]
         public void CheckInterception()
         {
-            Ball ball = new Ball();
+            Ball ball = Parameters.Container.Get<Ball>();
             var players = Parameters.GetPlayers(ball);
             ball.Move();
             ball.InterceptedBy(players.Item2.Team);
@@ -241,7 +242,7 @@ namespace oopProject
         [Test]
         public void CheckIntercept()
         {
-            var ball = Parameters.Container.Get<Ball>();
+            var ball = Parameters.Container.Get<IBall>();
             var players = Parameters.GetPlayers(ball);
             var first = players.Item1;
             var second = players.Item2;
