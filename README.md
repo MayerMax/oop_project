@@ -6,3 +6,7 @@ Important to note, that we want flexible way of using cards for futher project g
 
 Source link for a players database:<br>
 https://www.kaggle.com/artimous/complete-fifa-2017-player-dataset-global
+
+
+Ссылка на презентацию:
+https://mayermax.github.io/oop_project/Presentation/slides.html#/Hello
