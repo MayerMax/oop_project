@@ -8,6 +8,7 @@ namespace oopProject
         where T : class, IParameters
     {
         protected Game Game;
+        private static HashSet<Type> emptyInputTypes = new HashSet<Type>{typeof(Deck), typeof(Team)};
 
         protected ConsoleParser(Game game)
         {
@@ -18,11 +19,10 @@ namespace oopProject
         public abstract T Parse(string parameters);
 
         public string GetParametersFormat() {
-            var fieldsString = typeof(T).GetFields().Where(f => f.IsInitOnly)
+            var fieldsString = typeof(T).GetFields().Where(f => f.IsInitOnly && 
+                                                           !emptyInputTypes.Contains(f.FieldType))
                                   .Select(f => $"{f.Name}({f.FieldType.Name})");
-            return $"{string.Join(",", fieldsString)}";
-            
-            
+            return $"{string.Join(",", fieldsString)}";   
         }
 
         public int[] VerifyParameters(int expectedAmount, string[] splitted)
@@ -30,7 +30,6 @@ namespace oopProject
             if (expectedAmount != splitted.Length)
                 throw new ArgumentException($"Expected {expectedAmount} parameters, got {splitted.Length}");
 
-            var constructorParameters = typeof(T).GetConstructors().First().GetParameters();
             var parsedParameters = new int[splitted.Length];
             for (var i = 0; i < splitted.Length; i++)
             {
@@ -50,9 +49,12 @@ namespace oopProject
         {
             try
             {
-                return (ZoneType)Enum.Parse(typeof(ZoneType), strZoneType);
+                var type = (ZoneType)Enum.Parse(typeof(ZoneType), strZoneType);
+                if (!Enum.IsDefined(typeof(ZoneType), type))
+                    throw new InvalidCastException();
+                return type;
             }
-            catch (ArgumentException)
+            catch (Exception)
             {
                 var zoneTypes = Enum.GetValues(typeof(ZoneType))
                                     .OfType<ZoneType>()

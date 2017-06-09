@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ooPproject
+namespace oopProject
 {
     public class DatabaseException : InvalidOperationException
     {
