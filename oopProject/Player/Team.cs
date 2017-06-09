@@ -26,6 +26,9 @@
             Hand.InsertCard(oldCard);
         }
 
+        public void SwapInSquad(ZoneType first, int firstPos, ZoneType second, int secondPos)
+            => Squad.Swap(first, firstPos, second, secondPos);
+
         public override bool Equals(object obj)
         {
             if (obj == null)

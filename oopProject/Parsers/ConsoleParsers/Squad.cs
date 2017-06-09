@@ -15,10 +15,11 @@ namespace oopProject
         private Dictionary<ZoneType, Zone> squad;
 
         public readonly string Formation;
-        public string Name { get; private set; }
+        public readonly string Name;
 
         public bool Any => squad.Values.Select(z => z.Any).Aggregate((a, b) => a | b);
         public bool AnyZone(ZoneType zone) => squad[zone].Any;
+        public int Count => squad.Values.Select(z => z.Count).Sum();
 
         public bool IsActive(ZoneType zone, int position)
         {
@@ -45,6 +46,14 @@ namespace oopProject
                 { ZoneType.MID, new Zone(ZoneType.MID, team[ZoneType.MID]) },
                 { ZoneType.ATT, new Zone(ZoneType.ATT, team[ZoneType.ATT]) }
             };
+        }
+
+        public void Swap(ZoneType first, int firstPos, ZoneType second, int secondPos)
+        {
+            var firstCard = this[first][firstPos].Release();
+            var secondCard = this[second][secondPos].Release();
+            this[first].InsertCard(secondCard, firstPos);
+            this[second].InsertCard(firstCard, firstPos);
         }
 
         public FootballCard Remove(ZoneType type, int cardIndex) {

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Reflection;
 
 namespace oopProject
 {
@@ -64,6 +61,9 @@ namespace oopProject
                     $"Expected one of {string.Join(", ", zoneTypes)}, got {strZoneType}");
             }
         }
+
+        protected IEnumerable<ZoneType> VerifyZoneTypes(string[] strZoneTypes)
+            => strZoneTypes.Select(VerifyZoneType);
     }
 
     public class ParseException : Exception

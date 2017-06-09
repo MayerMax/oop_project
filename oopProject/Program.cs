@@ -23,6 +23,7 @@ namespace oopProject
             container.Bind<IAction>().To<PressureAction>();
             container.Bind<IAction>().To<ShootAction>();
             container.Bind<IAction>().To<SwapAction>();
+            container.Bind<IAction>().To<SwapInSquadAction>();
             container.Bind<ISuccess>().To<Success>();
             var controller = container.Get<ConsoleController>();
             controller.Loop();

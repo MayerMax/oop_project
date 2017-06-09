@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace oopProject
+﻿namespace oopProject
 {
     public class InterceptionAction : Action<EnemyParameters>
     {

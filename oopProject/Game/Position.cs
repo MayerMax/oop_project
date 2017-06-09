@@ -22,9 +22,11 @@
             return base.GetHashCode();
         }
 
-        public void Release() {
+        public FootballCard Release() {
             Card.LeaveZone();
+            var card = (FootballCard) Card.Clone();
             Card = null;
+            return card;
         }
     }
 }

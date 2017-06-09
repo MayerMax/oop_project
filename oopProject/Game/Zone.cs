@@ -10,7 +10,7 @@ namespace oopProject
         private List<Position> cards;
 
         public bool Any => Count > 0;
-        public int Count => cards.Count(f => !(f.IsFree));
+        public int Count => cards.Count(f => !f.IsFree);
 
         public Zone(ZoneType type, List<FootballCard> cards) : base(cards.Count, type)
         {

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace oopProject
 {
-    public class FootballCard : Card<FootballPlayerInfo>
+    public class FootballCard : Card<FootballPlayerInfo>, ICloneable
     {
         public static readonly int MAXCHAR = 10;
         private Func<List<string>, int> evaluateFunction;
@@ -61,8 +61,7 @@ namespace oopProject
         }
 
         public void DecreaseRank(double percent) {
-            //var damage = MaxRank * percent / 125;
-            var damage = 5;
+            var damage = MaxRank * percent / 125;
             TotalDamage += damage;
             Rank = Math.Round(Rank - damage, 1);
         }
@@ -102,5 +101,8 @@ namespace oopProject
         {
             return CardName.GetHashCode();
         }
+
+        public object Clone()
+            => MemberwiseClone();
     }
 }
