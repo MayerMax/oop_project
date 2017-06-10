@@ -68,7 +68,8 @@ namespace oopProject
         {
             if (parameters.Length <= indexes.Last())
                 throw new ArgumentException("Invalid parameters");
-            return parameters.Select(VerifyZoneType);
+            foreach (var ind in indexes)
+                yield return VerifyZoneType(parameters[ind]);
         }
     }
 
